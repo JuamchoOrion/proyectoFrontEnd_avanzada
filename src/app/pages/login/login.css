@@ -1,0 +1,32 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* ocupa toda la pantalla */
+  background: linear-gradient(to right, #004466, #008080);
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background-color: #008080;
+  border: none;
+  border-radius: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #006666;
+}
+
+.toggle-link {
+  color: #008080;
+  cursor: pointer;
+  text-decoration: underline;
+}
