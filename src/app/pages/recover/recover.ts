@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-recover',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './recover.html',
-  styleUrl: './recover.css'
+  styleUrl: './recover.css',
 })
-export class Recover {
-
-}
+export class Recover {}

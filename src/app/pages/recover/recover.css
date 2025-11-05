@@ -26,3 +26,10 @@ body {
   cursor: pointer;
   text-decoration: underline;
 }
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* ocupa toda la pantalla */
+  background: linear-gradient(to right, #004466, #008080);
+}

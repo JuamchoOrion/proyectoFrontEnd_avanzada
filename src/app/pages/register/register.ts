@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-register',
-  imports: [],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './register.html',
-  styleUrl: './register.css'
+  styleUrls: ['./register.css'],
 })
-export class Register {
-
-}
+export class Register {}
