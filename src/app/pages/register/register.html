@@ -1,32 +1,49 @@
 <div class="login-container">
   <div class="auth-card">
     <h3 class="text-center mb-4 text-primary">Registrarse</h3>
-    <form>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="mb-3">
         <label class="form-label">Nombre completo</label>
-        <input type="text" class="form-control" placeholder="Tu nombre" />
+        <input type="text" class="form-control" placeholder="Tu nombre" formControlName="name" />
       </div>
+
       <div class="mb-3">
         <label class="form-label">Correo electrónico</label>
-        <input type="email" class="form-control" placeholder="ejemplo@email.com" />
+        <input
+          type="email"
+          class="form-control"
+          placeholder="ejemplo@email.com"
+          formControlName="email"
+        />
       </div>
-      <div class="mb-3">
-        <label class="form-label">Teléfono</label>
-        <input type="tel" class="form-control" placeholder="+57 300 000 0000" />
-      </div>
+
       <div class="mb-3">
         <label class="form-label">Contraseña</label>
-        <input type="password" class="form-control" placeholder="Mínimo 8 caracteres" />
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Mínimo 8 caracteres"
+          formControlName="password"
+        />
       </div>
+
       <div class="mb-3">
         <label class="form-label">Rol</label>
-        <select class="form-select">
-          <option>Usuario</option>
-          <option>Anfitrión</option>
+        <select class="form-select" formControlName="role">
+          <option value="GUEST">Guest</option>
+          <option value="HOST">Host</option>
         </select>
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">Fecha de nacimiento</label>
+        <input type="date" class="form-control" formControlName="dateBirth" />
+      </div>
+
       <button type="submit" class="btn btn-primary w-100">Crear cuenta</button>
     </form>
+
     <p class="text-center mt-3">
       ¿Ya tienes cuenta?
       <a routerLink="/login" class="toggle-link">Inicia sesión</a>
