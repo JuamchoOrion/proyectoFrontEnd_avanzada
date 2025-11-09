@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+<app-sidebar-profile></app-sidebar-profile>
+
+<main class="content">
+  <h2 class="mb-4 text-primary">Mis Reservas</h2>
+
+  <!-- FILTROS -->
+  <div class="search-section mb-4">
+    <form class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Fecha</label>
+        <input type="date" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Estado</label>
+        <select class="form-select">
+          <option>Todos</option>
+          <option>Confirmadas</option>
+          <option>Pendientes</option>
+          <option>Canceladas</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+      </div>
+    </form>
+  </div>
+
+  <app-reservation-section [reservas]="reservas" (cancelar)="onCancelarReserva($event)">
+  </app-reservation-section>
+</main>
+
+<app-notifications [notificaciones]="notificaciones" (limpiar)="onLimpiarNotificaciones()">
+</app-notifications>
+<app-footer></app-footer>

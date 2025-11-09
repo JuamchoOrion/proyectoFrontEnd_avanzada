@@ -1,0 +1,10 @@
+.search-section {
+  margin-bottom: 2rem;
+}
+.btn-primary {
+  background-color: #008080;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #006666;
+}

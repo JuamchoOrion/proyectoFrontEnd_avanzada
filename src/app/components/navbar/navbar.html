@@ -1,19 +1,48 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" style="background-color: #004466">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">🌍 MiViaje</a>
+    <a class="navbar-brand fw-bold text-white" href="#">🌍 MiViaje</a>
+
     <button
-      class="navbar-toggler"
+      class="navbar-toggler text-white border-0"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarNav"
     >
       <span class="navbar-toggler-icon bg-light"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="#">Explorar</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Mis Reservas</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Convertirme en Anfitrión</a></li>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Explorar</a>
+        </li>
+
+        <li class="nav-item ms-2">
+          <button
+            class="btn text-white position-relative"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#notificacionesPanel"
+          >
+            🔔
+            <!-- Badge de cantidad -->
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.7rem"
+            >
+              3
+            </span>
+          </button>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Mis Reservas</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Convertirme en Anfitrión</a>
+        </li>
+
         <li class="nav-item">
           <a class="btn btn-outline-light ms-3" href="#">Ingresar / Registrarse</a>
         </li>

@@ -1,0 +1,19 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="notificacionesPanel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Notificaciones</h5>
+    <button class="btn-clear" (click)="limpiarLista()">Limpiar</button>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <div *ngIf="notificaciones.length === 0" class="text-center text-muted">
+      No tienes notificaciones
+    </div>
+
+    <div *ngFor="let n of notificaciones" class="notification-item">
+      <div class="title">{{ n.titulo }}</div>
+      <div class="message">{{ n.mensaje }}</div>
+      <div class="time">{{ n.tiempo }}</div>
+    </div>
+  </div>
+</div>

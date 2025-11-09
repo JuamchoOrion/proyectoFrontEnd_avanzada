@@ -1,0 +1,96 @@
+body {
+  background-color: #f4f9f8;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+app-sidebar-profile {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #e6f2f0;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+app-sidebar-profile img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+/* Contenido principal */
+.content {
+  margin-left: 260px; /* deja espacio para el sidebar */
+  padding: 2rem;
+  flex: 1;
+}
+
+/* Botones */
+.btn-primary {
+  background-color: #008080;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #006666;
+}
+
+.btn-cancelar {
+  background-color: #cc0000;
+  color: white;
+  border: none;
+}
+
+.btn-cancelar:hover {
+  background-color: #990000;
+}
+
+/* Footer */
+footer {
+  margin-left: 260px; /* evita que tape el sidebar */
+  background-color: #212529;
+  color: white;
+}
+
+/* Offcanvas / Notificaciones */
+.notification-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item .title {
+  font-weight: bold;
+  color: #004466;
+}
+
+.notification-item .time {
+  font-size: 0.85rem;
+  color: gray;
+}
+
+.offcanvas-header {
+  background-color: #008080;
+  color: white;
+}
+
+.btn-clear {
+  font-size: 0.85rem;
+  color: #fff;
+  background: transparent;
+  border: none;
+}
+
+.btn-clear:hover {
+  text-decoration: underline;
+}

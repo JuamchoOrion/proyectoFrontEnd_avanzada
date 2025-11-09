@@ -1,0 +1,8 @@
+.btn-cancelar {
+  background-color: #cc0000;
+  color: white;
+  border: none;
+}
+.btn-cancelar:hover {
+  background-color: #990000;
+}
