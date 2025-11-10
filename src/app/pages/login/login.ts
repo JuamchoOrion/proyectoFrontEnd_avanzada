@@ -3,7 +3,8 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.services';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,8 +14,12 @@ import { CommonModule } from '@angular/common';
 })
 export class Login {
   loginForm: FormGroup;
-
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private ngZone: NgZone // ✅ añade esto
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -29,6 +34,7 @@ export class Login {
       next: (response) => {
         console.log('✅ Login exitoso', response);
         alert('Login exitoso');
+        this.ngZone.run(() => this.router.navigate(['/landing']));
       },
       error: (error) => {
         console.error('❌ Error en el login', error);

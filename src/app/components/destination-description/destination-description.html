@@ -1,0 +1,7 @@
+<h4>Descripción</h4>
+<p>{{ description }}</p>
+
+<h4 class="mt-4" *ngIf="services?.length">Servicios incluidos</h4>
+<ul>
+  <li *ngFor="let s of services">{{ s }}</li>
+</ul>

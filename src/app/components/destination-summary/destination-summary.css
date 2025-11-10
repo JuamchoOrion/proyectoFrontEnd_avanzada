@@ -1,0 +1,13 @@
+.destination-summary-container {
+  margin-bottom: 2rem;
+}
+
+img {
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
+  font-weight: 600;
+  color: #004466;
+}

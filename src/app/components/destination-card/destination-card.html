@@ -1,9 +1,11 @@
-<div class="card">
+<div class="card shadow-sm h-100">
   <img [src]="image" class="card-img-top" [alt]="title" />
   <div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
     <p class="card-text">{{ description }}</p>
-    <p class="fw-bold text-success">{{ price }} / noche</p>
-    <a href="#" class="btn btn-primary">Ver detalles</a>
+    <p class="fw-bold text-success">{{ price | currency : 'COP' }} / noche</p>
+
+    <!-- 👇 Usa destinationId -->
+    <a [routerLink]="['/accommodation', destinationId]" class="stretched-link"> Ver detalle </a>
   </div>
 </div>

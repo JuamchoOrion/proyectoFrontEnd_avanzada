@@ -1,13 +1,20 @@
-<div id="mainCarousel" class="carousel slide container mb-5" data-bs-ride="carousel">
+<div *ngIf="loading" class="text-center my-3">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div
+  *ngIf="!loading && imagesToShow.length > 0"
+  id="mainCarousel"
+  class="carousel slide container mb-5"
+  data-bs-ride="carousel"
+>
   <div class="carousel-inner rounded">
-    <div class="carousel-item active">
-      <img src="https://picsum.photos/id/1018/1200/400" class="d-block w-100" alt="Playa" />
-    </div>
-    <div class="carousel-item">
-      <img src="https://picsum.photos/id/1015/1200/400" class="d-block w-100" alt="Montañas" />
-    </div>
-    <div class="carousel-item">
-      <img src="https://picsum.photos/id/1016/1200/400" class="d-block w-100" alt="Ciudad" />
+    <div
+      *ngFor="let img of imagesToShow; let i = index"
+      class="carousel-item"
+      [class.active]="i === 0"
+    >
+      <img [src]="img" class="d-block w-100" alt="Imagen {{ i + 1 }}" />
     </div>
   </div>
   <button
@@ -26,4 +33,8 @@
   >
     <span class="carousel-control-next-icon"></span>
   </button>
+</div>
+
+<div *ngIf="!loading && imagesToShow.length === 0" class="text-center text-muted">
+  <p>No hay imágenes disponibles.</p>
 </div>

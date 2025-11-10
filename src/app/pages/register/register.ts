@@ -12,7 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class Register {
   registerForm: FormGroup;
-
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required]],

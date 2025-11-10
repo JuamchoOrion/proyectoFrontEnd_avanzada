@@ -1,0 +1,8 @@
+<div class="card p-4" *ngIf="accommodation">
+  <h4 class="mb-3">Resumen</h4>
+  <p><strong>Alojamiento:</strong> {{ accommodation.name }}</p>
+  <p><strong>Precio por noche:</strong> ${{ accommodation.pricePerNight }}</p>
+  <p><strong>Noches:</strong> {{ nights }}</p>
+  <hr />
+  <h5 class="text-success">Total: ${{ total }}</h5>
+</div>

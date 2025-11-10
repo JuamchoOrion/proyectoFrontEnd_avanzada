@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+
+<main class="container my-5">
+  <div class="row g-4">
+    <div class="col-md-7">
+      <app-reservation-form
+        (reservationChange)="onReservationChange($event)"
+      ></app-reservation-form>
+    </div>
+    <div class="col-md-5">
+      <app-reservation-summary [accommodation]="accommodation" [reservation]="reservationData">
+      </app-reservation-summary>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

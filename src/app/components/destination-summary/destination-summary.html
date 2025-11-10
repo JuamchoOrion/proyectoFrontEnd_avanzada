@@ -1,0 +1,20 @@
+<div class="row destination-summary-container">
+  <div class="col-md-6">
+    <img [src]="destination.imageUrl" class="img-fluid rounded shadow" alt="Destination Image" />
+  </div>
+
+  <div class="col-md-6">
+    <h3>{{ destination.name }}</h3>
+
+    <p><strong>Location:</strong> {{ destination.location }}</p>
+    <p><strong>Price per night:</strong> ${{ destination.pricePerNight }}</p>
+    <p><strong>Capacity:</strong> {{ destination.capacity }} guests</p>
+
+    <p>
+      <strong>Services:</strong>
+      <span *ngFor="let service of destination.services; let i = index">
+        {{ service }}<span *ngIf="i < destination.services.length - 1">, </span>
+      </span>
+    </p>
+  </div>
+</div>

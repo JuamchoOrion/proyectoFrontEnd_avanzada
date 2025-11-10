@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="container my-5" *ngIf="!loading && destination">
+  <div class="row g-4">
+    <div class="col-md-7">
+      <app-carousel [accommodationId]="destination.id"></app-carousel>
+    </div>
+    <div class="col-md-5">
+      <app-destination-info [destination]="destination"></app-destination-info>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-8">
+      <app-destination-description
+        [description]="destination.description"
+        [services]="destination.services"
+      >
+      </app-destination-description>
+    </div>
+    <div class="col-md-4">
+      <!-- <app-map-location [locationUrl]="destination.locationUrl"></app-map-location> -->
+    </div>
+  </div>
+
+  <app-reviews-section [reviews]="reviews"></app-reviews-section>
+</div>
+
+<div class="text-center my-5" *ngIf="loading">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div class="text-center text-danger my-5" *ngIf="error">
+  {{ error }}
+</div>
+
+<app-footer></app-footer>

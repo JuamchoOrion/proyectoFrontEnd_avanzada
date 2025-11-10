@@ -1,0 +1,26 @@
+<h4 class="mb-4">📊 Métricas</h4>
+
+<div class="row text-center mb-5" *ngIf="metrics">
+  <div class="col-md-4 mb-3">
+    <div class="metric-card">
+      <p>Total Reservas</p>
+      <p class="metric-value">{{ metrics.totalReservations }}</p>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-3">
+    <div class="metric-card">
+      <p>Calificación Promedio</p>
+      <p class="metric-value">{{ metrics.averageRating }} ⭐</p>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-3">
+    <div class="metric-card">
+      <p>Ingresos Totales</p>
+      <p class="metric-value">
+        {{ metrics.totalRevenue | currency : 'COP' : 'symbol' : '1.0-0' }}
+      </p>
+    </div>
+  </div>
+</div>

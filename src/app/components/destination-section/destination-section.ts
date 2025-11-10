@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { DestinationCard } from '../destination-card/destination-card';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DestinationCard } from '../destination-card/destination-card';
+import { AccommodationService } from '../../services/accommodation.services';
 
 @Component({
   selector: 'app-destination-section',
@@ -9,25 +10,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './destination-section.html',
   styleUrls: ['./destination-section.css'],
 })
-export class DestinationsSection {
-  destinations = [
-    {
-      title: 'Cartagena',
-      description: 'Hermosas playas y vida nocturna vibrante.',
-      price: '$120',
-      image: 'https://picsum.photos/id/1040/400/250',
-    },
-    {
-      title: 'Medellín',
-      description: 'Ciudad de la eterna primavera.',
-      price: '$90',
-      image: 'https://picsum.photos/id/1025/400/250',
-    },
-    {
-      title: 'Bogotá',
-      description: 'Capital cultural y gastronómica.',
-      price: '$100',
-      image: 'https://picsum.photos/id/1031/400/250',
-    },
-  ];
+export class DestinationsSection implements OnInit {
+  destinations: any[] = [];
+
+  constructor(private accommodationService: AccommodationService) {}
+
+  ngOnInit() {
+    this.accommodationService.getAll().subscribe({
+      next: (response) => {
+        console.log('✅ Alojamientos cargados:', response);
+        this.destinations = response.content.content; // ⚠️ doble 'content' como te expliqué
+      },
+      error: (err) => console.error('❌ Error al cargar alojamientos:', err),
+    });
+  }
 }
