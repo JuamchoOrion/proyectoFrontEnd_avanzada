@@ -1,15 +1,19 @@
 <section class="container mb-5">
   <h2 class="mb-4 text-center text-primary">Destinos Cercanos</h2>
-  <div class="row g-4">
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary"></div>
+  </div>
+
+  <div *ngIf="!loading" class="row g-4">
     <div class="col-md-4" *ngFor="let d of destinations">
       <app-destination-card
         [title]="d.city"
         [description]="d.description"
-        [price]="d.pricePerNight"
-        [image]="d.mainImage"
+        [price]="d.price"
+        [image]="d.image"
         [destinationId]="d.id"
-      >
-      </app-destination-card>
+      ></app-destination-card>
     </div>
   </div>
 </section>

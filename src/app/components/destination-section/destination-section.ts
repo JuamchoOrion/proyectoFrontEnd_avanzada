@@ -2,26 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DestinationCard } from '../destination-card/destination-card';
 import { AccommodationService } from '../../services/accommodation.services';
+import { DestinationDTO } from '../../models/destination-dto';
 
 @Component({
   selector: 'app-destination-section',
   standalone: true,
-  imports: [DestinationCard, CommonModule],
+  imports: [CommonModule, DestinationCard],
   templateUrl: './destination-section.html',
   styleUrls: ['./destination-section.css'],
 })
 export class DestinationsSection implements OnInit {
-  destinations: any[] = [];
+  destinations: DestinationDTO[] = [];
+  loading = true;
 
   constructor(private accommodationService: AccommodationService) {}
 
-  ngOnInit() {
-    this.accommodationService.getAll().subscribe({
-      next: (response) => {
-        console.log('✅ Alojamientos cargados:', response);
-        this.destinations = response.content.content; // ⚠️ doble 'content' como te expliqué
+  ngOnInit(): void {
+    this.accommodationService.getDestinations().subscribe({
+      next: (data) => {
+        console.log('✅ Destinos cargados:', data);
+        this.destinations = data;
+        this.loading = false;
       },
-      error: (err) => console.error('❌ Error al cargar alojamientos:', err),
+      error: (err) => {
+        console.error('❌ Error al cargar alojamientos:', err);
+        this.loading = false;
+      },
     });
   }
 }

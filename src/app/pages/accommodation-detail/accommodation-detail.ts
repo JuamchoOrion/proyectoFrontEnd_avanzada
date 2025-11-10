@@ -8,7 +8,9 @@ import { DestinationInfo } from '../../components/destination-info/destination-i
 import { DestinationDescription } from '../../components/destination-description/destination-description';
 import { ReviewsSection } from '../../components/reviews-section/reviews-section';
 import { AccommodationService } from '../../services/accommodation.services';
-import { ReviewService } from '../../services/review.services'; // ✅ importa el nuevo servicio
+import { ReviewService } from '../../services/review.services';
+import { AccommodationDTO } from '../../models/accommodation-dto';
+import { ReviewDTO } from '../../models/review-dto';
 
 @Component({
   selector: 'app-accommodation-detail',
@@ -26,8 +28,8 @@ import { ReviewService } from '../../services/review.services'; // ✅ importa e
   styleUrls: ['./accommodation-detail.css'],
 })
 export class AccommodationDetail implements OnInit {
-  destination: any = null;
-  reviews: any[] = [];
+  destination?: AccommodationDTO;
+  reviews: ReviewDTO[] = [];
   loading = true;
   error = '';
 
@@ -37,27 +39,39 @@ export class AccommodationDetail implements OnInit {
     private reviewService: ReviewService
   ) {}
 
-  async ngOnInit() {
-    try {
-      // 1️⃣ Traer alojamiento
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      console.log('📦 ID del alojamiento desde la URL:', id);
-      const accommodationResponse: any = await this.accommodationService
-        .getAccommodationById(id)
-        .toPromise();
-      this.destination = accommodationResponse.content;
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log('📦 ID del alojamiento desde la URL:', id);
 
-      // 2️⃣ Traer reseñas usando el ID del alojamiento
-      const reviewResponse: any = await this.reviewService
-        .getReviewsByAccommodation(id)
-        .toPromise();
-
-      this.reviews = reviewResponse.content.content; // ⚠️ recuerda que viene doble content
-    } catch (e) {
-      console.error(e);
-      this.error = 'Error al cargar el destino o las reseñas.';
-    } finally {
+    if (!id) {
+      this.error = 'No se encontró el ID del alojamiento.';
       this.loading = false;
+      return;
     }
+
+    // 1️⃣ Obtener alojamiento
+    this.accommodationService.getAccommodationById(id).subscribe({
+      next: (data) => {
+        console.log('✅ Alojamiento cargado:', data);
+        this.destination = data;
+
+        this.reviewService.getReviewsByAccommodation(data.id).subscribe({
+          next: (reviews) => {
+            console.log('✅ Reseñas cargadas:', reviews);
+            this.reviews = reviews; // directamente ReviewDTO[]
+            this.loading = false;
+          },
+          error: (err) => {
+            console.error('❌ Error cargando reseñas:', err);
+            this.loading = false;
+          },
+        });
+      },
+      error: (err) => {
+        console.error('❌ Error cargando alojamiento:', err);
+        this.error = 'Error al cargar el alojamiento.';
+        this.loading = false;
+      },
+    });
   }
 }
