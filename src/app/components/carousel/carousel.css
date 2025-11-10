@@ -1,3 +1,24 @@
+#mainCarousel {
+  height: 35vh; /* 🔹 aproximadamente un tercio de la pantalla */
+  overflow: hidden;
+  border-radius: 16px;
+  margin-top: 1rem;
+}
+
 .carousel-inner img {
-  border-radius: 12px;
+  width: 100%;
+  height: 35vh;
+  object-fit: cover; /* 🔹 evita deformaciones */
+  filter: brightness(0.95); /* 🔹 opcional, da un toque profesional */
+  border-radius: 16px;
+}
+
+/* 🔹 Ajuste responsivo */
+@media (max-width: 768px) {
+  #mainCarousel {
+    height: 25vh;
+  }
+  .carousel-inner img {
+    height: 25vh;
+  }
 }

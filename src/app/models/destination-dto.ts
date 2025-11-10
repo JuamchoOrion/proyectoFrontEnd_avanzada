@@ -4,4 +4,5 @@ export interface DestinationDTO {
   description: string;
   price: number;
   image: string;
+  images: string[];
 }

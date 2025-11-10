@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { CreateUserDTO } from '../models/createUser-dto';
 @Injectable({
   providedIn: 'root',
 })
@@ -9,8 +9,8 @@ export class AuthService {
   private apiUrl = 'http://localhost:9090/api/auth';
 
   constructor(private http: HttpClient) {}
-  register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData, { withCredentials: true });
+  register(dto: CreateUserDTO): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, dto, { withCredentials: true });
   }
 
   login(credentials: any): Observable<any> {

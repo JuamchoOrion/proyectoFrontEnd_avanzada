@@ -1,31 +1,40 @@
 <app-navbar></app-navbar>
 
 <div class="container my-5" *ngIf="!loading && destination">
-  <div class="row g-4">
-    <div class="col-md-7"></div>
+  <!-- Sección superior: carrusel + tarjeta -->
+  <div class="row g-4 align-items-center">
+    <!-- Carrusel a la izquierda -->
+    <div class="col-md-7">
+      <app-carousel [images]="destination.images" showMode="all"></app-carousel>
+    </div>
+
+    <!-- Información del destino a la derecha -->
     <div class="col-md-5">
       <app-destination-info [destination]="destination"></app-destination-info>
     </div>
   </div>
 
+  <!-- Sección inferior: descripción y servicios -->
   <div class="row mt-5">
     <div class="col-md-8">
       <app-destination-description
         [description]="destination.description"
         [services]="destination.accommodationServiceTypes"
-      >
-      </app-destination-description>
+      ></app-destination-description>
     </div>
     <div class="col-md-4"></div>
   </div>
 
+  <!-- Reseñas -->
   <app-reviews-section [reviews]="reviews"></app-reviews-section>
 </div>
 
+<!-- Loader -->
 <div class="text-center my-5" *ngIf="loading">
   <div class="spinner-border text-primary"></div>
 </div>
 
+<!-- Error -->
 <div class="text-center text-danger my-5" *ngIf="error">
   {{ error }}
 </div>

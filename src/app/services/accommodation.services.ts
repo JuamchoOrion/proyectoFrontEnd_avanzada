@@ -33,7 +33,6 @@ export class AccommodationService {
         map((response) => {
           const page = response.content as PageResponse<AccommodationDTO>;
           const list = page.content;
-
           return list
             .filter((a) => a.status === 'ACTIVE')
             .map((a) => ({
@@ -42,6 +41,7 @@ export class AccommodationService {
               description: a.description,
               price: a.pricePerNight,
               image: a.mainImage || a.images?.[0] || 'assets/default.jpg',
+              images: a.images,
             }));
         })
       );
