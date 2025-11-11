@@ -1,0 +1,11 @@
+<aside class="sidebar text-center" *ngIf="host">
+  <img
+    [src]="host.photoUrl || 'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg'"
+    alt="Foto de perfil"
+    class="profile-pic"
+  />
+  <h4>{{ host.name }}</h4>
+  <p class="mb-1">📞 {{ host.phone }}</p>
+  <p class="mb-3">✉️ {{ host.email }}</p>
+  <button type="button" class="btn btn-primary btn-sm">Volver</button>
+</aside>

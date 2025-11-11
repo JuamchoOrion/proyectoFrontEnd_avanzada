@@ -13,4 +13,20 @@ export class ImageService {
       this.http.get<string[]>(`${this.apiUrl}/accommodation/${accommodationId}`)
     );
   }
+  /*
+  onFilesSelected(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (input.files) {
+    const files = Array.from(input.files);
+    const maxSize = 15 * 1024 * 1024; // 15 MB
+
+    for (const file of files) {
+      if (file.size > maxSize) {
+        alert(`El archivo ${file.name} supera el límite de 15 MB`);
+        return;
+      }
+    }
+    this.dto.images = files;
+  }
+}*/
 }

@@ -9,9 +9,9 @@ import { Notifications } from '../../components/notifications/notifications';
 import { DestinationSummary } from '../../components/destination-summary/destination-summary';
 import { DestinationMetrics } from '../../components/destination-metrics/destination-metrics';
 import { DestinationFilters } from '../../components/destination-filters/destination-filters';
-import { ReservationTable } from '../../components/reservation-table/reservation-table';
+import { ReservationTableComponent } from '../../components/reservation-table/reservation-table';
 import { ReviewCard } from '../../components/review-card/review-card';
-import { HostCommentCard } from '../../components/host-comment-card/host-comment-card';
+import { HostCommentCardComponent } from '../../components/host-comment-card/host-comment-card';
 
 // Servicios
 import { AccommodationService } from '../../services/accommodation.services';
@@ -31,9 +31,9 @@ import { MetricsService } from '../../services/metrics.services';
     DestinationSummary,
     DestinationMetrics,
     DestinationFilters,
-    ReservationTable,
+    ReservationTableComponent,
     ReviewCard,
-    HostCommentCard
+    HostCommentCardComponent
   ],
   templateUrl: './accommodation-metrics.html',
   styleUrls: ['./accommodation-metrics.css']
