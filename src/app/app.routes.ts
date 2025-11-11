@@ -6,6 +6,7 @@ import { Profile } from './pages/profile/profile';
 import { Recover } from './pages/recover/recover';
 import { AuthGuard } from './guards/auth.guard-guard';
 import { AccommodationDetail } from './pages/accommodation-detail/accommodation-detail';
+import { CreateAccommodationComponent } from './pages/create-accommodation/create-accommodation';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'landing', component: Landing, canActivate: [AuthGuard] },
   { path: 'accommodation/:id', component: AccommodationDetail },
+  {path: 'create-accommodation', component: CreateAccommodationComponent, canActivate: [AuthGuard]},
   { path: 'recover', component: Recover },
   { path: '**', redirectTo: 'login' },
 ];
