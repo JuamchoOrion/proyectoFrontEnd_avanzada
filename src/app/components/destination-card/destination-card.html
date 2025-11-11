@@ -3,9 +3,8 @@
   <div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
     <p class="card-text">{{ description }}</p>
-    <p class="fw-bold text-success">{{ price | currency : 'COP' }} / noche</p>
+    <p class="fw-bold text-success">{{ price | currency : 'COP' : 'symbol' : '1.0-0' }} / noche</p>
 
-    <!-- 👇 Usa destinationId -->
     <a [routerLink]="['/accommodation', destinationId]" class="stretched-link"> Ver detalle </a>
   </div>
 </div>

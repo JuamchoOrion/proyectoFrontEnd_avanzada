@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImageService } from '../../services/image.services'; // servicio de Cloudinary opcional
+import { ImageService } from '../../services/image.services'; // opcional
 
 @Component({
   selector: 'app-carousel',
@@ -10,8 +10,9 @@ import { ImageService } from '../../services/image.services'; // servicio de Clo
   styleUrls: ['./carousel.css'],
 })
 export class CarouselComponent implements OnInit {
-  @Input() images: string[] | null = null; // imágenes estáticas (landing)
-  @Input() accommodationId?: number; // si se usa Cloudinary
+  @Input() images: string[] | null = null; // imágenes recibidas directamente
+  @Input() accommodationId?: number; // si las carga dinámicamente
+  @Input() showMode: 'single' | 'all' = 'all'; // 🔥 nuevo: controla cuántas mostrar
 
   dynamicImages: string[] = [];
   loading = true;
@@ -20,7 +21,6 @@ export class CarouselComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      // Si se pasa accommodationId, carga dinámicamente desde backend
       if (this.accommodationId) {
         this.dynamicImages = await this.imageService.getImagesByAccommodationId(
           this.accommodationId
@@ -34,8 +34,11 @@ export class CarouselComponent implements OnInit {
   }
 
   get imagesToShow(): string[] {
-    // Si se usa Cloudinary → muestra dynamicImages
-    // Si no → usa las estáticas pasadas por Input
-    return this.accommodationId ? this.dynamicImages : this.images ?? [];
+    // 🔥 Determina qué imágenes mostrar según el modo
+    const source = this.accommodationId ? this.dynamicImages : this.images ?? [];
+    if (this.showMode === 'single' && source.length > 0) {
+      return [source[0]]; // solo la primera
+    }
+    return source;
   }
 }
