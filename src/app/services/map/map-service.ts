@@ -28,8 +28,8 @@ export class MapService implements OnDestroy {
       container: containerId,
       style: 'mapbox://styles/mapbox/standard',
       center: this.currentLocation,
-      zoom: 17,
-      pitch: 45,
+      zoom: 6,
+      pitch: 0,
     });
 
     this.map.addControl(new mapboxgl.NavigationControl());

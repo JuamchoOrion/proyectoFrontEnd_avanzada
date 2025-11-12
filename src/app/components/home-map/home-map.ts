@@ -4,27 +4,34 @@ import { RouterModule } from '@angular/router';
 import { AccommodationService } from '../../services/accommodation.services';
 import { DestinationDTO } from '../../models/destination-dto';
 import { MarkerDTO } from '../../models/marker-dto';
+import { Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-map',
-  imports: [RouterModule],
+  standalone: true, // ✅ importante
+  imports: [CommonModule, RouterModule], // ✅ agrega CommonModule
   templateUrl: './home-map.html',
-  styleUrl: './home-map.css',
+  styleUrls: ['./home-map.css'],
 })
 export class HomeMap implements OnInit {
-  // Se inyecta el servicio de mapa en el constructor del componente
+  @Input() mapHeight = '300px';
+  @Input() mapWidth = '100%';
   constructor(private mapService: MapService, private accommodationService: AccommodationService) {}
 
   ngOnInit(): void {
-    this.mapService.create();
-    this.accommodationService.getDestinations().subscribe({
-      next: (places) => {
-        const markers = this.mapItemsToMarkers(places);
-        this.mapService.drawMarkers(markers);
-      },
-      error: (err) => console.error('Error cargando destinos', err),
-    });
+    setTimeout(() => {
+      this.mapService.create();
+      this.accommodationService.getDestinations().subscribe({
+        next: (places) => {
+          const markers = this.mapItemsToMarkers(places);
+          this.mapService.drawMarkers(markers);
+        },
+        error: (err) => console.error('Error cargando destinos', err),
+      });
+    }, 200);
   }
+
   public mapItemsToMarkers(places: DestinationDTO[]): MarkerDTO[] {
     return places.map((item) => ({
       id: item.id || '',
