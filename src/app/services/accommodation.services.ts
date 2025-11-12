@@ -25,15 +25,30 @@ export class AccommodationService {
   private apiUrl = 'http://localhost:9090/api/accommodations';
 
   constructor(private http: HttpClient) {}
+<<<<<<< Updated upstream
   /**
+=======
+
+  // ============================================================
+  // 🔹 1️⃣ Obtener alojamientos activos (paginados)
+  // ============================================================
+>>>>>>> Stashed changes
   getDestinations(page = 0, size = 10): Observable<DestinationDTO[]> {
     return this.http
-      .get<ApiResponse<AccommodationDTO>>(`${this.apiUrl}?page=${page}&size=${size}`)
+      .get<ApiResponse<PageResponse<AccommodationDTO>>>(`${this.apiUrl}?page=${page}&size=${size}`)
       .pipe(
         map((response) => {
+<<<<<<< Updated upstream
           const page = response.content as PageResponse<AccommodationDTO>;
           //const list = page.content;
           const list = Array.isArray(page.content) ? page.content : (page as any).content || [];
+=======
+          const pageData = response.content as PageResponse<AccommodationDTO>;
+          const list: AccommodationDTO[] = Array.isArray(pageData.content)
+            ? pageData.content
+            : (pageData as any).content || [];
+
+>>>>>>> Stashed changes
           return list
             .filter((a) => a.status === 'ACTIVE')
             .map((a) => ({
@@ -47,6 +62,7 @@ export class AccommodationService {
                 latitude: a.latitude,
                 longitude: a.longitude,
               },
+<<<<<<< Updated upstream
             }));
         })
       );
@@ -74,17 +90,25 @@ export class AccommodationService {
                 latitude: a.latitude,
                 longitude: a.longitude,
               },
+=======
+>>>>>>> Stashed changes
             }));
         })
       );
   }
 
+  // ============================================================
+  // 🔹 2️⃣ Obtener alojamiento por ID
+  // ============================================================
   getAccommodationById(id: string | number): Observable<AccommodationDTO> {
     return this.http
       .get<{ error: boolean; content: AccommodationDTO }>(`${this.apiUrl}/${id}`)
-      .pipe(map((response) => response.content)); // ✅ solo devolvemos el objeto dentro de content
+      .pipe(map((response) => response.content));
   }
 
+  // ============================================================
+  // 🔹 3️⃣ Crear alojamiento (con imágenes y validaciones)
+  // ============================================================
   createAccommodation(dto: CreateAccommodationDTO): Observable<AccommodationDTO> {
     const formData = new FormData();
 
@@ -102,6 +126,10 @@ export class AccommodationService {
 
     return this.http.post<AccommodationDTO>(`${this.apiUrl}`, formData);
   }
+
+  // ============================================================
+  // 🔹 4️⃣ Obtener perfil del anfitrión
+  // ============================================================
   getHostProfile(
     id: string
   ): Observable<{ id: string; name: string; email: string; photoUrl?: string }> {
@@ -110,8 +138,6 @@ export class AccommodationService {
         error: boolean;
         data: { id: string; name: string; email: string; photoUrl?: string };
       }>(`http://localhost:9090/users/${id}`)
-      .pipe(
-        map((response) => response.data) // <-- extrae solo el campo "data"
-      );
+      .pipe(map((response) => response.data));
   }
 }
