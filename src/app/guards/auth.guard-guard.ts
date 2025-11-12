@@ -9,12 +9,10 @@ export const AuthGuard: CanActivateFn = () => {
 
   return authService.validateToken().pipe(
     map((response) => {
-      // Si el backend indica que el token es válido → acceso permitido
       if (response.content === true) {
         return true;
       }
 
-      // Si el token no es válido → redirigir al login
       router.navigate(['/login']);
       return false;
     }),

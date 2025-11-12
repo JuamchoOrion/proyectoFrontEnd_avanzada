@@ -1,63 +1,54 @@
-import { Component } from '@angular/core';
-import { Sidebar } from '../../components/sidebar/sidebar';
+import { Component, OnInit } from '@angular/core';
+import { SidebarProfileComponent } from '../../components/sidebar-profile/sidebar-profile';
 import { ReservationSection } from '../../components/reservation-section/reservation-section';
 import { Notifications } from '../../components/notifications/notifications';
-import { Navbar } from '../../components/navbar/navbar';
 import { Footer } from '../../components/footer/footer';
+import { ReservationService } from '../../services/reservation.services.ts';
+import { ReservationDTO } from '../../models/reservation-dto';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [Sidebar, ReservationSection, Notifications, Navbar, Footer],
+  imports: [SidebarProfileComponent, ReservationSection, Notifications, Footer],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
 })
-export class Profile {
-  reservas: any[] = []; // se llenará con un servicio HTTP
-  notificaciones: any[] = []; // se llenará con un servicio HTTP
+export class Profile implements OnInit {
+  reservas: ReservationDTO[] = [];
+  notificaciones: any[] = [];
+
+  constructor(private reservationService: ReservationService) {}
 
   ngOnInit() {
-    // 🔥 Datos de prueba (solo para ver el diseño)
-    this.reservas = [
-      {
-        id: '1',
-        titulo: 'Cartagena - Apartamento frente al mar',
-        imagen: 'https://picsum.photos/600/300?random=1',
-        checkin: '2025-09-10',
-        checkout: '2025-09-15',
-        estado: 'Confirmada',
-      },
-      {
-        id: '2',
-        titulo: 'Medellín - Loft moderno',
-        imagen: 'https://picsum.photos/600/300?random=2',
-        checkin: '2025-09-20',
-        checkout: '2025-09-22',
-        estado: 'Pendiente',
-      },
-      {
-        id: '3',
-        titulo: 'Bogotá - Habitación en Candelaria',
-        imagen: 'https://picsum.photos/600/300?random=3',
-        checkin: '2025-08-25',
-        checkout: '2025-08-27',
-        estado: 'Cancelada',
-      },
-    ];
-
-    this.notificaciones = [
-      {
-        titulo: 'Nueva reserva confirmada',
-        mensaje: 'Tu reserva en "Hotel Mar Azul" fue confirmada.',
-        tiempo: 'Hace 2 horas',
-      },
-      {
-        titulo: 'Mensaje de un anfitrión',
-        mensaje: 'El anfitrión respondió a tu solicitud.',
-        tiempo: 'Hace 5 horas',
-      },
-    ];
+    this.loadReservations();
   }
+
+  /** 🔹 Cargar reservas reales desde el backend */
+  loadReservations() {
+    this.reservationService.getUserReservations().subscribe({
+      next: (res) => {
+        this.reservas = res.map((r) => ({
+          ...r,
+          // 🔸 Mapeo adicional si tus componentes esperan otros nombres
+          titulo: `Reserva #${r.id}`,
+          imagen: `https://picsum.photos/600/300?random=${r.id}`,
+          checkin: r.checkIn.split('T')[0],
+          checkout: r.checkOut.split('T')[0],
+          estado:
+            r.reservationStatus === 'CONFIRMADA'
+              ? 'Confirmada'
+              : r.reservationStatus === 'PENDIENTE'
+              ? 'Pendiente'
+              : 'Cancelada',
+        }));
+        console.log('🟢 Reservas cargadas:', this.reservas);
+      },
+      error: (err) => {
+        console.error('❌ Error al cargar reservas:', err);
+      },
+    });
+  }
+
   onCancelarReserva(id: string) {
     console.log('Cancelar reserva con id:', id);
   }

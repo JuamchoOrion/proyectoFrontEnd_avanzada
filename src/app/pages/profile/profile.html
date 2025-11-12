@@ -1,35 +1,50 @@
-<app-navbar></app-navbar>
-<app-sidebar-profile></app-sidebar-profile>
+<div class="container-fluid mt-4 profile-layout">
+  <div class="row gx-4">
+    <!-- gx-4 agrega espacio entre columnas -->
 
-<main class="content">
-  <h2 class="mb-4 text-primary">Mis Reservas</h2>
+    <!-- 🧍 Sidebar -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <app-sidebar-profile></app-sidebar-profile>
+    </div>
 
-  <!-- FILTROS -->
-  <div class="search-section mb-4">
-    <form class="row g-3 align-items-end">
-      <div class="col-md-3">
-        <label class="form-label">Fecha</label>
-        <input type="date" class="form-control" />
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Estado</label>
-        <select class="form-select">
-          <option>Todos</option>
-          <option>Confirmadas</option>
-          <option>Pendientes</option>
-          <option>Canceladas</option>
-        </select>
-      </div>
-      <div class="col-md-2 d-grid">
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-      </div>
-    </form>
+    <!-- 📄 Contenido principal -->
+    <div class="col-lg-9 col-md-8">
+      <main class="content">
+        <h2 class="mb-4 text-primary fw-bold">Mis Reservas</h2>
+
+        <!-- FILTROS -->
+        <div class="search-section mb-4">
+          <form class="row g-3 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Estado</label>
+              <select class="form-select">
+                <option>Todos</option>
+                <option>Confirmadas</option>
+                <option>Pendientes</option>
+                <option>Canceladas</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-grid">
+              <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sección de reservas -->
+        <app-reservation-section [reservas]="reservas" (cancelar)="onCancelarReserva($event)">
+        </app-reservation-section>
+      </main>
+
+      <!-- Notificaciones -->
+      <app-notifications [notificaciones]="notificaciones" (limpiar)="onLimpiarNotificaciones()">
+      </app-notifications>
+
+      <!-- Footer -->
+      <app-footer></app-footer>
+    </div>
   </div>
-
-  <app-reservation-section [reservas]="reservas" (cancelar)="onCancelarReserva($event)">
-  </app-reservation-section>
-</main>
-
-<app-notifications [notificaciones]="notificaciones" (limpiar)="onLimpiarNotificaciones()">
-</app-notifications>
-<app-footer></app-footer>
+</div>
