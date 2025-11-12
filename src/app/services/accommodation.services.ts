@@ -26,10 +26,9 @@ export class AccommodationService {
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Obtener todos los alojamientos (para la landing)
   getDestinations(page = 0, size = 10): Observable<DestinationDTO[]> {
     return this.http
-      .get<ApiResponse<AccommodationDTO>>('${this.apiUrl}?page=${page}&size=${size}')
+      .get<ApiResponse<AccommodationDTO>>(`${this.apiUrl}?page=${page}&size=${size}`)
       .pipe(
         map((response) => {
           const page = response.content as PageResponse<AccommodationDTO>;
@@ -50,11 +49,11 @@ export class AccommodationService {
 
   getAccommodationById(id: string | number): Observable<AccommodationDTO> {
     return this.http
-      .get<{ error: boolean; content: AccommodationDTO }>('${this.apiUrl}/${id}')
+      .get<{ error: boolean; content: AccommodationDTO }>(`${this.apiUrl}/${id}`)
       .pipe(map((response) => response.content)); // ✅ solo devolvemos el objeto dentro de content
   }
 
-    createAccommodation(dto: CreateAccommodationDTO): Observable<AccommodationDTO> {
+  createAccommodation(dto: CreateAccommodationDTO): Observable<AccommodationDTO> {
     const formData = new FormData();
 
     formData.append('title', dto.title);
@@ -62,22 +61,25 @@ export class AccommodationService {
     formData.append('city', dto.city);
     formData.append('address', dto.address);
     formData.append('latitude', dto.latitude?.toString() || '');
-  formData.append('longitude', dto.longitude?.toString() || '');
+    formData.append('longitude', dto.longitude?.toString() || '');
     formData.append('pricePerNight', dto.pricePerNight.toString());
     formData.append('maxCapacity', dto.maxCapacity.toString());
-    
-    dto.services.forEach(service => formData.append('services', service));
-    dto.images.forEach(file => formData.append('images', file));
+
+    dto.services.forEach((service) => formData.append('services', service));
+    dto.images.forEach((file) => formData.append('images', file));
 
     return this.http.post<AccommodationDTO>(`${this.apiUrl}`, formData);
   }
- getHostProfile(id: string): Observable<{ id: string; name: string; email: string; photoUrl?: string }> {
-  return this.http
-    .get<{ error: boolean; data: { id: string; name: string; email: string; photoUrl?: string } }>(
-      `http://localhost:9090/users/${id}`
-    )
-    .pipe(
-      map(response => response.data) // <-- extrae solo el campo "data"
-    );
-}
+  getHostProfile(
+    id: string
+  ): Observable<{ id: string; name: string; email: string; photoUrl?: string }> {
+    return this.http
+      .get<{
+        error: boolean;
+        data: { id: string; name: string; email: string; photoUrl?: string };
+      }>(`http://localhost:9090/users/${id}`)
+      .pipe(
+        map((response) => response.data) // <-- extrae solo el campo "data"
+      );
+  }
 }

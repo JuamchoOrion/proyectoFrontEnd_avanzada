@@ -8,11 +8,20 @@ export const AuthGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return authService.validateToken().pipe(
-    map(() => true), // ✅ Si el backend responde 200 → acceso permitido
-    catchError((error) => {
-      console.warn('Token inválido o expirado:', error);
+    map((response) => {
+      // Si el backend indica que el token es válido → acceso permitido
+      if (response.content === true) {
+        return true;
+      }
+
+      // Si el token no es válido → redirigir al login
       router.navigate(['/login']);
-      return of(false); // 🚫 Bloquear acceso
+      return false;
+    }),
+    catchError((error) => {
+      console.warn('⚠️ Token inválido o expirado:', error);
+      router.navigate(['/login']);
+      return of(false);
     })
   );
 };

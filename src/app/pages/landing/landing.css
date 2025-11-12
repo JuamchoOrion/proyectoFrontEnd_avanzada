@@ -1,0 +1,103 @@
+:host {
+  display: block;
+  margin-top: 80px; /* 🔥 compensa la altura de la navbar */
+}
+/* 🌍 Hero principal */
+.hero-section {
+  background: linear-gradient(rgba(0, 68, 102, 0.6), rgba(0, 68, 102, 0.6)),
+    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')
+      center/cover no-repeat;
+  height: 90vh;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  animation: fadeInBg 1.2s ease-in-out forwards;
+}
+
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ✨ Efectos de animación */
+.fade-in {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeIn 1s ease-out forwards;
+}
+.fade-in-delay {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeIn 1s ease-out 0.5s forwards;
+}
+.fade-up {
+  opacity: 0;
+  transform: translateY(25px);
+  animation: fadeIn 1.2s ease-out forwards;
+}
+.fade-up-delay {
+  opacity: 0;
+  transform: translateY(25px);
+  animation: fadeIn 1.2s ease-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✈️ Botón principal */
+.scale-on-hover {
+  transition: all 0.3s ease;
+}
+.scale-on-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.3);
+}
+
+/* 🔍 Buscador */
+.search-wrapper {
+  margin-top: -50px;
+  z-index: 5;
+  position: relative;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 🖼️ Carrusel */
+.carousel-wrapper {
+  margin-top: 3rem;
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* 💬 Sección informativa */
+.info-section {
+  background: #f8fafb;
+  border-top: 2px solid #e0f0f0;
+}
+
+/* 🏡 Sección destinos */
+#destinos {
+  padding: 3rem 0;
+}
+
+/* 🧁 Transiciones suaves */
+section,
+div,
+h1,
+h2,
+p {
+  transition: all 0.3s ease-in-out;
+}

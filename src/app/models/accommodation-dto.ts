@@ -13,3 +13,7 @@ export interface AccommodationDTO {
   mainImage: string;
   status: string;
 }
+export interface LocationDTO {
+  latitude: number;
+  longitude: number;
+}
