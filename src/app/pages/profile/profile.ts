@@ -3,7 +3,7 @@ import { SidebarProfileComponent } from '../../components/sidebar-profile/sideba
 import { ReservationSection } from '../../components/reservation-section/reservation-section';
 import { Notifications } from '../../components/notifications/notifications';
 import { Footer } from '../../components/footer/footer';
-import { ReservationService } from '../../services/reservation.services.ts';
+import { ReservationService } from '../../services/reservation.services';
 import { ReservationDTO } from '../../models/reservation-dto';
 
 @Component({
@@ -35,9 +35,9 @@ export class Profile implements OnInit {
           checkin: r.checkIn.split('T')[0],
           checkout: r.checkOut.split('T')[0],
           estado:
-            r.reservationStatus === 'CONFIRMADA'
+            r.reservationStatus === 'CONFIRMED'
               ? 'Confirmada'
-              : r.reservationStatus === 'PENDIENTE'
+              : r.reservationStatus === 'PENDING'
               ? 'Pendiente'
               : 'Cancelada',
         }));
