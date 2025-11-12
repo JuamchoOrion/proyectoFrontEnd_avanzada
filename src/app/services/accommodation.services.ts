@@ -25,30 +25,15 @@ export class AccommodationService {
   private apiUrl = 'http://localhost:9090/api/accommodations';
 
   constructor(private http: HttpClient) {}
-<<<<<<< Updated upstream
   /**
-=======
-
-  // ============================================================
-  // 🔹 1️⃣ Obtener alojamientos activos (paginados)
-  // ============================================================
->>>>>>> Stashed changes
   getDestinations(page = 0, size = 10): Observable<DestinationDTO[]> {
     return this.http
       .get<ApiResponse<PageResponse<AccommodationDTO>>>(`${this.apiUrl}?page=${page}&size=${size}`)
       .pipe(
         map((response) => {
-<<<<<<< Updated upstream
           const page = response.content as PageResponse<AccommodationDTO>;
           //const list = page.content;
           const list = Array.isArray(page.content) ? page.content : (page as any).content || [];
-=======
-          const pageData = response.content as PageResponse<AccommodationDTO>;
-          const list: AccommodationDTO[] = Array.isArray(pageData.content)
-            ? pageData.content
-            : (pageData as any).content || [];
-
->>>>>>> Stashed changes
           return list
             .filter((a) => a.status === 'ACTIVE')
             .map((a) => ({
@@ -62,7 +47,6 @@ export class AccommodationService {
                 latitude: a.latitude,
                 longitude: a.longitude,
               },
-<<<<<<< Updated upstream
             }));
         })
       );
@@ -90,8 +74,6 @@ export class AccommodationService {
                 latitude: a.latitude,
                 longitude: a.longitude,
               },
-=======
->>>>>>> Stashed changes
             }));
         })
       );
@@ -109,21 +91,7 @@ export class AccommodationService {
   // ============================================================
   // 🔹 3️⃣ Crear alojamiento (con imágenes y validaciones)
   // ============================================================
-  createAccommodation(dto: CreateAccommodationDTO): Observable<AccommodationDTO> {
-    const formData = new FormData();
-
-    formData.append('title', dto.title);
-    formData.append('description', dto.description);
-    formData.append('city', dto.city);
-    formData.append('address', dto.address);
-    formData.append('latitude', dto.latitude?.toString() || '');
-    formData.append('longitude', dto.longitude?.toString() || '');
-    formData.append('pricePerNight', dto.pricePerNight.toString());
-    formData.append('maxCapacity', dto.maxCapacity.toString());
-
-    dto.services.forEach((service) => formData.append('services', service));
-    dto.images.forEach((file) => formData.append('images', file));
-
+  createAccommodation(formData: FormData): Observable<AccommodationDTO> {
     return this.http.post<AccommodationDTO>(`${this.apiUrl}`, formData);
   }
 

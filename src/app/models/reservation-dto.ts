@@ -8,4 +8,5 @@ export interface ReservationDTO {
   guestsNumber: number;
   totalPrice: number;
   reservationStatus: ReservationStatus;
+  imagen?: string; // URL de la imagen del alojamiento
 }

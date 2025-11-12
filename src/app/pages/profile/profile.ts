@@ -4,6 +4,7 @@ import { ReservationSection } from '../../components/reservation-section/reserva
 import { Notifications } from '../../components/notifications/notifications';
 import { Footer } from '../../components/footer/footer';
 import { ReservationService } from '../../services/reservation.services';
+import { AccommodationService } from '../../services/accommodation.services';
 import { ReservationDTO } from '../../models/reservation-dto';
 
 @Component({
@@ -15,9 +16,13 @@ import { ReservationDTO } from '../../models/reservation-dto';
 })
 export class Profile implements OnInit {
   reservas: ReservationDTO[] = [];
+  accommodation: any;
   notificaciones: any[] = [];
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(
+    private reservationService: ReservationService,
+    private accommodationService: AccommodationService
+  ) {}
 
   ngOnInit() {
     this.loadReservations();
@@ -27,11 +32,10 @@ export class Profile implements OnInit {
   loadReservations() {
     this.reservationService.getUserReservations().subscribe({
       next: (res) => {
+        // 🔹 Mapea las reservas con datos base
         this.reservas = res.map((r) => ({
           ...r,
-          // 🔸 Mapeo adicional si tus componentes esperan otros nombres
           titulo: `Reserva #${r.id}`,
-          imagen: `https://picsum.photos/600/300?random=${r.id}`,
           checkin: r.checkIn.split('T')[0],
           checkout: r.checkOut.split('T')[0],
           estado:
@@ -40,7 +44,31 @@ export class Profile implements OnInit {
               : r.reservationStatus === 'PENDING'
               ? 'Pendiente'
               : 'Cancelada',
+          imagen: '', // ← se llenará luego con la del alojamiento real
         }));
+
+        // 🔹 Por cada reserva, trae la imagen real del alojamiento
+        this.reservas.forEach((reserva) => {
+          const alojamientoId = reserva.accommodationId;
+          if (alojamientoId) {
+            this.accommodationService.getAccommodationById(alojamientoId).subscribe({
+              next: (alojamiento) => {
+                reserva.imagen =
+                  alojamiento.mainImage || alojamiento.images?.[0] || 'assets/default.jpg';
+              },
+              error: (err) => {
+                console.warn(
+                  `⚠️ No se pudo cargar la imagen del alojamiento ${alojamientoId}`,
+                  err
+                );
+                reserva.imagen = 'assets/default.jpg';
+              },
+            });
+          } else {
+            reserva.imagen = 'assets/default.jpg';
+          }
+        });
+
         console.log('🟢 Reservas cargadas:', this.reservas);
       },
       error: (err) => {

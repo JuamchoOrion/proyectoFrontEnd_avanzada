@@ -10,6 +10,7 @@ import { CreateAccommodationComponent } from './pages/create-accommodation/creat
 import { Map } from './components/map/map';
 import { RoleGuard } from './guards/role.guard-guard';
 import { HomeMap } from './components/home-map/home-map';
+import { CreateReservationComponent } from './pages/create-reservation/create-reservation';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
@@ -28,4 +29,9 @@ export const routes: Routes = [
   { path: 'home', redirectTo: 'landing' },
   { path: 'map', component: HomeMap },
   { path: '**', redirectTo: 'landing' },
+  {
+    path: 'accommodation/:id/reserve',
+    component: CreateReservationComponent,
+    canActivate: [AuthGuard],
+  },
 ];
