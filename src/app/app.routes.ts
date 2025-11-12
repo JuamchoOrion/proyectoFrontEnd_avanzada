@@ -9,6 +9,7 @@ import { AccommodationDetail } from './pages/accommodation-detail/accommodation-
 import { CreateAccommodationComponent } from './pages/create-accommodation/create-accommodation';
 import { Map } from './components/map/map';
 import { RoleGuard } from './guards/role.guard-guard';
+import { HomeMap } from './components/home-map/home-map';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
@@ -25,6 +26,6 @@ export const routes: Routes = [
   { path: 'recover', component: Recover },
   { path: 'logout', redirectTo: 'login' },
   { path: 'home', redirectTo: 'landing' },
-  { path: 'map', component: Map },
+  { path: 'map', component: HomeMap },
   { path: '**', redirectTo: 'landing' },
 ];
