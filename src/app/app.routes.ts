@@ -7,15 +7,23 @@ import { Recover } from './pages/recover/recover';
 import { AuthGuard } from './guards/auth.guard-guard';
 import { AccommodationDetail } from './pages/accommodation-detail/accommodation-detail';
 import { CreateAccommodationComponent } from './pages/create-accommodation/create-accommodation';
+import { Map } from './components/map/map';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'profile', component: Profile },
   { path: 'register', component: Register },
-  { path: 'landing', component: Landing, canActivate: [AuthGuard] },
+  { path: 'landing', component: Landing },
   { path: 'accommodation/:id', component: AccommodationDetail },
-  {path: 'create-accommodation', component: CreateAccommodationComponent, canActivate: [AuthGuard]},
+  {
+    path: 'create-accommodation',
+    component: CreateAccommodationComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'recover', component: Recover },
-  { path: '**', redirectTo: 'login' },
+  { path: 'logout', redirectTo: 'login' },
+  { path: 'home', redirectTo: 'landing' },
+  { path: 'map', component: Map },
+  { path: '**', redirectTo: 'landing' },
 ];

@@ -26,7 +26,6 @@ export class Landing implements OnInit {
       next: (data) => {
         console.log('✅ Destinos cargados:', data);
         this.destinations = data;
-        // ✅ Toma solo la primera imagen de cada alojamiento
         this.heroImages = data.map((d) => d.images?.[0] || d.image || 'assets/default.jpg');
         this.loading = false;
       },

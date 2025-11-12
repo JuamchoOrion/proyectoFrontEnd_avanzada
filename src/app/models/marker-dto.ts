@@ -1,8 +1,8 @@
-//import { LocationDTO } from "./accommodation-dto";
+import { LocationDTO } from './accommodation-dto';
 
 export interface MarkerDTO {
   id: number;
-  // location: LocationDTO,
+  location: LocationDTO;
   title: string;
   photoUrl: string;
 }
