@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Navbar {
   isLoggedIn = false;
-
+  isHost = false;
   constructor(private authService: AuthService, private router: Router) {}
   ngOnInit() {
     this.authService.validateToken().subscribe({
@@ -24,7 +24,15 @@ export class Navbar {
         this.isLoggedIn = false;
       },
     });
-
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.isHost = user?.role === 'ROLE_HOST';
+      },
+      error: (err) => {
+        console.error('error obteniendo rol ', err);
+        this.isHost = false;
+      },
+    });
     window.addEventListener('scroll', () => {
       const navbar = document.querySelector('.custom-navbar');
       if (window.scrollY > 20) navbar?.classList.add('scrolled');

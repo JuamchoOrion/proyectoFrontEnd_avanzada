@@ -1,0 +1,21 @@
+.map-container {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 2rem auto;
+}
+
+/* Móviles → más alto para que sea usable */
+@media (max-width: 768px) {
+  .map-container {
+    height: 400px;
+  }
+}
+
+/* Pantallas grandes → más bajo */
+@media (min-width: 1200px) {
+  .map-container {
+    height: 250px;
+  }
+}

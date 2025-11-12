@@ -27,8 +27,14 @@
         <li class="nav-item"><a class="nav-link" routerLink="/profile">Mi perfil</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/reservations">Reservas</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/host">Ser anfitrión</a></li>
-
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/host" *ngIf="!isHost">Ser anfitrión</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/create-accommodation" *ngIf="isHost"
+            >Crear Alojamiento</a
+          >
+        </li>
         <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
           <a class="btn btn-light btn-sm px-3 fw-semibold shadow-sm" routerLink="/login">
             Iniciar sesión

@@ -6,11 +6,12 @@ import { DestinationsSection } from '../../components/destination-section/destin
 import { Footer } from '../../components/footer/footer';
 import { AccommodationService } from '../../services/accommodation.services';
 import { DestinationDTO } from '../../models/destination-dto';
+import { HomeMap } from '../../components/home-map/home-map';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [Navbar, SearchFilter, CarouselComponent, DestinationsSection, Footer],
+  imports: [Navbar, SearchFilter, CarouselComponent, DestinationsSection, Footer, HomeMap],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
 })
