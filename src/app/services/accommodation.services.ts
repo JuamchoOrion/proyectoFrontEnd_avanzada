@@ -42,6 +42,10 @@ export class AccommodationService {
               price: a.pricePerNight,
               image: a.mainImage || a.images?.[0] || 'assets/default.jpg',
               images: a.images,
+              location: {
+                latitude: a.latitude,
+                longitude: a.longitude,
+              },
             }));
         })
       );
