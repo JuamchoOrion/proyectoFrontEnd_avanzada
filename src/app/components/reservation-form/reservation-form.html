@@ -38,19 +38,6 @@
       />
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">Comentarios (opcional)</label>
-      <textarea
-        class="form-control"
-        name="comments"
-        rows="3"
-        [(ngModel)]="reservation.comments"
-        (input)="updateReservation()"
-        placeholder="Ej: Necesito cuna para bebé"
-      >
-      </textarea>
-    </div>
-
     <button type="submit" class="btn btn-primary w-100">Confirmar Reserva</button>
   </form>
 </div>

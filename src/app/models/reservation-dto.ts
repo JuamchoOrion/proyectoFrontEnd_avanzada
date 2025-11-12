@@ -1,3 +1,4 @@
+import { ReservationStatus } from './reservationStatus-enum';
 export interface ReservationDTO {
   id: number;
   accommodationId: number;
@@ -6,5 +7,5 @@ export interface ReservationDTO {
   checkOut: string;
   guestsNumber: number;
   totalPrice: number;
-  reservationStatus: 'CONFIRMADA' | 'PENDIENTE' | 'CANCELADA';
+  reservationStatus: ReservationStatus;
 }

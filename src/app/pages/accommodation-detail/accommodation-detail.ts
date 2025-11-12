@@ -40,7 +40,7 @@ export class AccommodationDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log('📦 ID del alojamiento desde la URL:', id);
 
     if (!id) {

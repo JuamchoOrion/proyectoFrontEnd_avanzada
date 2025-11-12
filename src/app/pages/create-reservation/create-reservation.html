@@ -1,17 +1,22 @@
+<!-- create-reservation.html -->
 <app-navbar></app-navbar>
 
-<main class="container my-5">
-  <div class="row g-4">
+<div class="container mt-4">
+  <div class="row">
     <div class="col-md-7">
       <app-reservation-form
+        [accommodationId]="accommodation?.id"
         (reservationChange)="onReservationChange($event)"
       ></app-reservation-form>
     </div>
+
     <div class="col-md-5">
-      <app-reservation-summary [accommodation]="accommodation" [reservation]="reservationData">
-      </app-reservation-summary>
+      <app-reservation-summary
+        [accommodation]="accommodation"
+        [reservation]="reservationData"
+      ></app-reservation-summary>
     </div>
   </div>
-</main>
+</div>
 
 <app-footer></app-footer>
