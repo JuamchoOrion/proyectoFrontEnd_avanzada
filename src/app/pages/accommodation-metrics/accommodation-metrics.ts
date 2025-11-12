@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 // Componentes Standalone
 import { Navbar } from '../../components/navbar/navbar';
@@ -47,11 +49,11 @@ export class AccommodationMetrics implements OnInit {
   loading = true;
   error = '';
 
-  // Puedes reemplazar estos IDs con valores dinámicos según tu app
-  accommodationId = 1;
+  accommodationId!: number;
   hostId = 1;
 
   constructor(
+    private route: ActivatedRoute,
     private accommodationService: AccommodationService,
     private reviewService: ReviewService,
     private reservationService: ReservationService,
@@ -59,23 +61,35 @@ export class AccommodationMetrics implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.accommodationId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!this.accommodationId) {
+      this.error = 'No se proporcionó un ID de alojamiento válido.';
+      this.loading = false;
+      return;
+    }
+
     this.loading = true;
     try {
-      // 1️⃣ Traer información del alojamiento
-      const summaryResponse: any = await this.accommodationService.getAccommodationById(this.accommodationId).toPromise();
-      this.summary = summaryResponse.content || summaryResponse;
+      // 1️⃣ Información del alojamiento
+      this.summary = await firstValueFrom(
+        this.accommodationService.getAccommodationById(this.accommodationId)
+      );
 
-      // 2️⃣ Traer métricas
-      const metricsResponse: any = await this.metricsService.getByAccommodation(this.accommodationId).toPromise();
-      this.metrics = metricsResponse.content || metricsResponse;
+      // 2️⃣ Métricas del alojamiento
+      this.metrics = await firstValueFrom(
+        this.metricsService.getMetrics(this.accommodationId.toString())
+      );
 
-      // 3️⃣ Traer reservas del host
-      const reservationsResponse: any = await this.reservationService.getByHost(this.hostId).toPromise();
-      this.reservations = reservationsResponse.content || reservationsResponse;
+      // 3️⃣ Reservas del host
+      this.reservations = await firstValueFrom(
+        this.reservationService.getByHost(this.hostId)
+      );
 
-      // 4️⃣ Traer comentarios del alojamiento
-      const commentsResponse: any = await this.reviewService.getReviewsByAccommodation(this.accommodationId).toPromise();
-      this.comments = commentsResponse.content || commentsResponse;
+      // 4️⃣ Comentarios del alojamiento
+      this.comments = await firstValueFrom(
+        this.reviewService.getReviewsByAccommodation(this.accommodationId)
+      );
     } catch (e) {
       console.error(e);
       this.error = 'Error al cargar los datos de métricas, reservas o comentarios.';
