@@ -5,11 +5,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-<<<<<<< HEAD
-  imports: [RouterModule],
-=======
   imports: [RouterModule, CommonModule],
->>>>>>> origin/master
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
