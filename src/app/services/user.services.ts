@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, map } from 'rxjs';
 import { UserProfileDTO } from '../models/user-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/users';
+  private apiUrl = 'http://localhost:9090/users'; // 👈 ruta estándar con prefijo /api
 
   // ✅ Imagen por defecto en Cloudinary
   private defaultPhotoUrl =
@@ -19,13 +18,12 @@ export class UserService {
   /** ✅ Obtener perfil del usuario autenticado */
   getUserProfile(): Observable<UserProfileDTO> {
     return this.http
-      .get<{ error: boolean; content: UserProfileDTO }>(`${this.apiUrl}/profile`, {
+      .get<{ error: boolean; content: UserProfileDTO }>('http://localhost:9090/users/profile', {
         withCredentials: true,
       })
       .pipe(
         map((res) => {
           const user = res.content;
-          // Si no tiene foto, usa la predeterminada
           return { ...user, photoUrl: user.photoUrl || this.defaultPhotoUrl };
         })
       );
@@ -45,10 +43,18 @@ export class UserService {
         })
       );
   }
-
-  /** ✏️ Editar perfil */
+/*
   editUser(user: Partial<UserProfileDTO>): Observable<any> {
     return this.http.put(`${this.apiUrl}`, user, { withCredentials: true });
+    */
+
+
+  /** ✏️ Editar perfil (FormData para incluir imagen) */
+  editUser(formData: FormData): Observable<any> {
+    // ⚠️ No agregues 'Content-Type': Angular lo define automáticamente para multipart/form-data
+    return this.http.put(`${this.apiUrl}`, formData, {
+      withCredentials: true,
+    });
   }
 
   /** 🔐 Cambiar contraseña */

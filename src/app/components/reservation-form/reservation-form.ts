@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
 import { ReservationService } from '../../services/reservation.services';
 import { CreateReservationDTO } from '../../models/create-reservation-dto';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-form',
@@ -38,9 +40,15 @@ export class ReservationForm {
     this.reservationChange.emit(this.reservation);
   }
 
+  /** ✅ Confirmar la creación de la reserva */
   confirmReservation(form?: NgForm) {
     if (!this.reservation.checkIn || !this.reservation.checkOut) {
-      alert('⚠️ Por favor selecciona las fechas de check-in y check-out.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fechas requeridas',
+        text: 'Por favor selecciona las fechas de check-in y check-out.',
+        confirmButtonColor: '#007bff',
+      });
       return;
     }
 
@@ -54,13 +62,34 @@ export class ReservationForm {
     this.reservationService.createReservation(payload).subscribe({
       next: (res) => {
         console.log('✅ Reserva creada exitosamente:', res);
-        alert('🎉 Reserva confirmada correctamente');
-        form?.resetForm();
-        this.router.navigate(['/profile']); // 👈 Redirigir tras crear
+        Swal.fire({
+          icon: 'success',
+          title: '🎉 ¡Reserva exitosa!',
+          text: 'Tu reserva ha sido confirmada correctamente.',
+          confirmButtonColor: '#007bff',
+        }).then(() => {
+          form?.resetForm();
+          this.router.navigate(['/profile']); // 🔁 Redirigir tras crear
+        });
       },
       error: (err) => {
         console.error('❌ Error al crear la reserva:', err);
-        alert('Error al confirmar la reserva');
+
+        if (err.status === 422) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Fechas ocupadas',
+            text: 'Ya existe una reserva para esas fechas. Intenta con otras.',
+            confirmButtonColor: '#f39c12',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al crear la reserva',
+            text: 'Ocurrió un error inesperado. Intenta nuevamente.',
+            confirmButtonColor: '#d33',
+          });
+        }
       },
     });
   }
