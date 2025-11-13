@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { CreateUserDTO } from '../models/createUser-dto';
 import { map, catchError } from 'rxjs/operators';
+import { ResetPasswordDTO } from '../models/reset-password-dto';
 interface ResponseDTO<T> {
   error: boolean;
   content: T;
@@ -33,6 +34,14 @@ export class AuthService {
       withCredentials: true,
     });
   }
+  recoverPassword(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/password/reset`, { email }, { withCredentials: true });
+  }
+
+  confirmPasswordReset(dto: ResetPasswordDTO): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/password/confirm`, dto, { withCredentials: true });
+  }
+
   getCurrentUser(): Observable<any> {
     return this.http
       .get(`${this.apiUrl}/me`, {

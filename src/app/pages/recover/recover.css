@@ -33,3 +33,7 @@ body {
   min-height: 100vh; /* ocupa toda la pantalla */
   background: linear-gradient(to right, #004466, #008080);
 }
+:host {
+  display: block;
+  margin-top: -40px; /* 🔥 compensa la altura de la navbar */
+}
