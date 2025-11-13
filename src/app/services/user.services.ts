@@ -31,6 +31,21 @@ export class UserService {
       );
   }
 
+  /** 👤 Obtener usuario por ID */
+  getUserById(userId: string): Observable<UserProfileDTO> {
+    return this.http
+      .get<{ error: boolean; content: UserProfileDTO }>(`${this.apiUrl}/${userId}`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((res) => {
+          const user = res.content;
+          console.log('Usuario obtenido:', user);
+          return { ...user, photoUrl: user.photoUrl || this.defaultPhotoUrl };
+        })
+      );
+  }
+
   /** ✏️ Editar perfil */
   editUser(user: Partial<UserProfileDTO>): Observable<any> {
     return this.http.put(`${this.apiUrl}`, user, { withCredentials: true });

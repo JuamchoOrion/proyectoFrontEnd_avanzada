@@ -30,3 +30,7 @@
   cursor: pointer;
   text-decoration: underline;
 }
+:host {
+  display: block;
+  margin-top: -40px; /* 🔥 compensa la altura de la navbar */
+}

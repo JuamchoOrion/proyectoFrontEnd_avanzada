@@ -1,0 +1,11 @@
+.chat-container {
+  background-color: #f9fafc;
+  border-radius: 10px;
+}
+
+.chat-window {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

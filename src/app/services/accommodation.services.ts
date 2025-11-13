@@ -108,4 +108,43 @@ export class AccommodationService {
       }>(`http://localhost:9090/users/${id}`)
       .pipe(map((response) => response.data));
   }
+  searchDestinations(filters: any, page = 0, size = 10): Observable<DestinationDTO[]> {
+    const params: string[] = [];
+
+    if (filters.city) params.push(`city=${encodeURIComponent(filters.city)}`);
+    if (filters.checkIn) params.push(`checkIn=${encodeURIComponent(filters.checkIn)}`);
+    if (filters.checkOut) params.push(`checkOut=${encodeURIComponent(filters.checkOut)}`);
+    if (filters.maxPrice) params.push(`maxPrice=${filters.maxPrice}`);
+    if (filters.services) params.push(`services=${filters.services}`);
+
+    const query = params.length ? `?${params.join('&')}` : '';
+
+    return this.http
+      .get<ApiResponse<PageResponse<AccommodationDTO>>>(
+        `${this.apiUrl}${query}&page=${page}&size=${size}`
+      )
+      .pipe(
+        map((response) => {
+          const pageData = response.content as PageResponse<AccommodationDTO>;
+          const list: AccommodationDTO[] = Array.isArray(pageData.content)
+            ? pageData.content
+            : (pageData as any).content || [];
+
+          return list
+            .filter((a) => a.status === 'ACTIVE')
+            .map((a) => ({
+              id: a.id,
+              city: a.city,
+              description: a.description,
+              price: a.pricePerNight,
+              image: a.mainImage || a.images?.[0] || 'assets/default.jpg',
+              images: a.images,
+              location: {
+                latitude: a.latitude,
+                longitude: a.longitude,
+              },
+            }));
+        })
+      );
+  }
 }

@@ -14,7 +14,6 @@ export class DestinationInfo {
 
   constructor(private router: Router) {}
 
-  /** 🔹 Ir a la página de reserva */
   goToReservation() {
     if (this.destination?.id) {
       this.router.navigate([`/accommodation/${this.destination.id}/reserve`]);
