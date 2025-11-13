@@ -27,139 +27,109 @@ export class Chat implements OnInit {
   newEmail = '';
   firstMessage = '';
 
+  me!: UserProfileDTO;
+
   constructor(private chatService: ChatService, private userService: UserService) {}
 
   ngOnInit(): void {
-    // 🔌 Conectar WebSocket con cookies (sesión activa)
-    this.chatService.connect();
+    // 1) Obtener perfil y conectar WS
+    this.userService.getUserProfile().subscribe((me) => {
+      this.me = me;
+      this.chatService.connect(me.id);
+    });
 
-    // 🔄 Cargar lista de contactos
+    // 2) Cargar contactos
     this.loadContacts();
 
-    // 📩 Escuchar mensajes en tiempo real
     this.chatService.getMessages().subscribe((msg) => {
-      const selectedId = this.selectedContact?.id || this.selectedContact?.email;
-      if (msg.receiverId === selectedId || msg.senderId === selectedId) {
+      // Si no hay chat abierto, no hacemos nada
+      if (!this.selectedContact) return;
+
+      const friendId = this.selectedContact.id;
+
+      // Casos que deben actualizar el chat:
+      // 1. Yo envío -> senderId = yo, receiverId = amigo
+      // 2. Me escriben -> senderId = amigo, receiverId = yo
+
+      const isForThisChat =
+        (msg.senderId === this.me.id && msg.receiverId === friendId) ||
+        (msg.senderId === friendId && msg.receiverId === this.me.id);
+
+      if (isForThisChat) {
         this.messages.push(msg);
       }
     });
   }
 
-  // =========================
-  // 📜 Cargar lista de contactos
-  // =========================
+  // ================================
   loadContacts(): void {
     this.chatService.getContacts().subscribe({
-      next: (data) => {
-        console.log('📦 Datos recibidos del backend:', data);
-
-        const userIds = Array.isArray(data) ? data : [];
-        if (userIds.length === 0) {
-          this.contacts = [];
-          console.log('⚠️ No hay contactos');
-          return;
-        }
-
-        // Obtener info de cada usuario
-        const userRequests = userIds.map((userId: string) =>
-          this.userService.getUserById(userId).pipe(
-            catchError(() => {
-              return of({
-                id: userId,
-                username: userId,
-                email: userId,
+      next: (contactIds) => {
+        const reqs = contactIds.map((id) =>
+          this.userService.getUserById(id).pipe(
+            catchError(() =>
+              of({
+                id,
+                username: id,
+                email: id,
+                phone: null,
                 photoUrl: null,
-              } as UserProfileDTO);
-            })
+              } as UserProfileDTO)
+            )
           )
         );
 
-        forkJoin(userRequests).subscribe({
-          next: (users: UserProfileDTO[]) => {
-            this.contacts = users.map((user) => ({
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              phone: user.phone,
-              photoUrl: user.photoUrl,
-              displayName: user.username || user.email || user.id,
-            }));
-          },
-          error: (err) => console.error('❌ Error al cargar usuarios:', err),
+        forkJoin(reqs).subscribe((users) => {
+          this.contacts = users.map((u) => ({
+            ...u,
+            displayName: u.username || u.email || u.id,
+          }));
         });
       },
-      error: (err) => console.error('❌ Error al cargar contactos:', err),
     });
   }
 
-  // =========================
-  // 💬 Abrir un chat
-  // =========================
+  // ================================
   openChat(contact: Contact): void {
-    console.log('📱 Abriendo chat con:', contact);
-    this.selectedContact = { ...contact };
+    this.selectedContact = contact;
 
-    const contactId = contact.id || contact.email;
-    this.chatService.getChat(contactId).subscribe({
-      next: (data) => {
-        console.log('💬 Mensajes cargados:', data);
-        this.messages = data;
-      },
-      error: (err) => console.error('❌ Error al cargar mensajes:', err),
+    this.chatService.getChat(contact.id).subscribe((data) => {
+      this.messages = data;
     });
   }
 
-  // =========================
-  // ✉️ Enviar mensaje
-  // =========================
+  // ================================
   send(): void {
     if (!this.newMessage.trim() || !this.selectedContact) return;
 
-    const contactId = this.selectedContact.id || this.selectedContact.email;
+    const receiverId = this.selectedContact.id;
 
-    // 🚀 Llamar API para enviar y guardar el mensaje
-    this.chatService.sendMessage(contactId, this.newMessage).subscribe({
-      next: () => {
-        this.messages.push({
-          senderId: 'Yo',
-          receiverId: contactId,
-          content: this.newMessage,
-          timestamp: new Date().toISOString(),
-        });
-        this.newMessage = '';
-      },
-      error: (err) => console.error('❌ Error al enviar mensaje:', err),
-    });
+    // 1️⃣ Guardar en BD
+    this.chatService.sendMessage(receiverId, this.newMessage).subscribe();
+
+    // 2️⃣ Enviar en tiempo real
+    this.chatService.sendWS(receiverId, this.newMessage);
+
+    this.newMessage = '';
   }
 
-  // =========================
-  // 🟢 Iniciar nuevo chat
-  // =========================
+  // ================================
   startNewChat(): void {
     if (!this.newEmail.trim() || !this.firstMessage.trim()) return;
 
-    this.chatService.startChat(this.newEmail, this.firstMessage).subscribe({
-      next: () => {
-        alert('✅ Chat iniciado correctamente');
-        this.newEmail = '';
-        this.firstMessage = '';
-        this.loadContacts();
-      },
-      error: (err) => {
-        console.error('❌ Error al iniciar chat:', err);
-        alert('Error: no se pudo iniciar el chat (correo no válido o backend caído).');
-      },
+    this.chatService.startChat(this.newEmail, this.firstMessage).subscribe(() => {
+      alert('Chat iniciado');
+      this.loadContacts();
+      this.newEmail = '';
+      this.firstMessage = '';
     });
   }
 
-  // =========================
-  // 🧾 Utilidades
-  // =========================
-  getContactDisplayName(contact: Contact): string {
-    return contact.displayName || contact.username || contact.email || contact.id;
+  getContactDisplayName(c: Contact): string {
+    return c.displayName!;
   }
 
-  trackByContactId(index: number, contact: Contact): string {
-    return contact.id;
+  trackByContactId(index: number, c: Contact): string {
+    return c.id;
   }
 }

@@ -6,88 +6,94 @@ import { Subject, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ChatService {
-  private ws?: WebSocket;
+  private ws!: WebSocket;
   private messages$ = new Subject<any>();
+
   private apiUrl = 'http://localhost:9090/chat';
-  private wsUrl = 'ws://localhost:9090/chat-websocket';
+  private wsUrl = 'ws://localhost:9090/ws-chat'; // backend
 
   constructor(private http: HttpClient) {}
 
-  // ============================
-  // 🔌 Conectar con WebSocket
-  // ============================
-  connect(): void {
-    // Evita reconectar si ya está activo
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      console.log('⚙️ Conexión WebSocket ya activa');
-      return;
-    }
+  // ================================
+  // 🔌 Conectar WebSocket
+  // ================================
+  connect(userId: string): void {
+    this.ws = new WebSocket(`${this.wsUrl}/${userId}`);
 
-    // Crea conexión WebSocket (usa cookie automáticamente si el backend está en el mismo dominio)
-    this.ws = new WebSocket(this.wsUrl);
+    this.ws.onopen = () => console.log('🟢 WS conectado como', userId);
 
-    this.ws.onopen = () => console.log('✅ Conectado al WebSocket');
-
-    this.ws.onmessage = (msg) => {
+    this.ws.onmessage = (event) => {
       try {
-        const data = JSON.parse(msg.data);
-        console.log('📩 Mensaje recibido:', data);
-        this.messages$.next(data);
-      } catch (err) {
-        console.warn('📩 Mensaje plano recibido:', msg.data);
+        const msg = JSON.parse(event.data);
+        this.messages$.next(msg);
+      } catch {
+        console.warn('Mensaje WS (texto plano):', event.data);
       }
     };
 
-    this.ws.onerror = (err) => console.error('⚠️ Error WebSocket:', err);
-    this.ws.onclose = () => console.warn('🔴 Desconectado del WebSocket');
+    this.ws.onerror = (e) => console.error('❌ WS error:', e);
+    this.ws.onclose = () => console.warn('🔴 WS cerrado');
   }
 
-  // ============================
-  // 💬 Enviar mensaje
-  // ============================
-  // 💬 Enviar mensaje (REST + cookies)
+  // ================================
+  // 🟦 Enviar mensaje por REST (BD)
+  // ================================
   sendMessage(receiverId: string, content: string) {
-    const payload = { receiverId, content, timestamp: new Date().toISOString() };
-
-    console.log('📤 Enviando mensaje (REST):', payload);
-    return this.http.post(`${this.apiUrl}/send`, payload, {
-      withCredentials: true,
-      responseType: 'text',
-    });
+    return this.http.post(
+      `${this.apiUrl}/send`,
+      { receiverId, content },
+      { withCredentials: true, responseType: 'text' }
+    );
   }
 
-  // ============================
-  // 📥 Obtener mensajes antiguos
-  // ============================
+  // ================================
+  // 🟩 Enviar TIEMPO REAL (WS)
+  // ================================
+
+  sendWS(receiverId: string, content: string) {
+    const msg = {
+      receiverId,
+      content,
+      timestamp: new Date().toISOString(),
+    };
+
+    if (this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify(msg));
+    }
+  }
+
+  // ================================
+  // 📥 Obtener historial
+  // ================================
   getChat(friendId: string) {
     return this.http.get<any[]>(`${this.apiUrl}/${friendId}`, {
       withCredentials: true,
     });
   }
 
-  // ============================
-  // 📒 Obtener lista de contactos
-  // ============================
+  // ================================
+  // 📒 Obtener contactos
+  // ================================
   getContacts() {
     return this.http.get<string[]>(`${this.apiUrl}/contacts`, {
       withCredentials: true,
     });
   }
 
-  // ============================
+  // ================================
   // 🟢 Iniciar nuevo chat
-  // ============================
+  // ================================
   startChat(email: string, content: string) {
     return this.http.post(
       `${this.apiUrl}/start/${email}`,
       { content },
-      { responseType: 'text', withCredentials: true }
+      { withCredentials: true, responseType: 'text' }
     );
   }
 
-  // ============================
-  // 🧭 Obtener mensajes en vivo
-  // ============================
+  // ================================
+  // 📡 Stream en tiempo real
+  // ================================
   getMessages(): Observable<any> {
     return this.messages$.asObservable();
   }
