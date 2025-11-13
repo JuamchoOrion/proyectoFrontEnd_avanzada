@@ -3,6 +3,7 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { Landing } from './pages/landing/landing';
 import { Profile } from './pages/profile/profile';
+import { ProfileHost } from './pages/profile-host/profile-host'; // ✅ Importa tu nuevo perfil de anfitrión
 import { Recover } from './pages/recover/recover';
 import { AuthGuard } from './guards/auth.guard-guard';
 import { AccommodationDetail } from './pages/accommodation-detail/accommodation-detail';
@@ -19,6 +20,13 @@ export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'login', component: Login },
   { path: 'profile', component: Profile, canActivate: [AuthGuard] },
+
+  {
+    path: 'profile-host',
+    component: ProfileHost,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+
   { path: 'edit-profile', component: EditProfilePage, canActivate: [AuthGuard] },
   { path: 'register', component: Register },
   { path: 'landing', component: Landing },
@@ -33,16 +41,11 @@ export const routes: Routes = [
     path: 'create-accommodation',
     component: CreateAccommodationComponent,
     canActivate: [RoleGuard],
-
   },
-
   { path: 'chat', component: Chat },
   { path: 'recover', component: Recover },
   { path: 'logout', redirectTo: 'login' },
   { path: 'home', redirectTo: 'landing' },
   { path: 'map', component: HomeMap },
   { path: '**', redirectTo: 'landing' },
-  
-
-
 ];
