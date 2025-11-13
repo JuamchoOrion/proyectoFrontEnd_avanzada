@@ -12,15 +12,17 @@ import { CommonModule } from '@angular/common';
 })
 export class ReservationSection {
   @Input() reservas: any[] = [];
-  @Output() cancelar = new EventEmitter<string>();
+  @Output() cancelar = new EventEmitter<number>(); // envía el ID
 
-  reservaSeleccionada: any;
+  reservaSeleccionada: any = null;
 
   seleccionar(reserva: any) {
     this.reservaSeleccionada = reserva;
   }
 
   confirmarCancelacion() {
-    this.cancelar.emit(this.reservaSeleccionada?.id);
+    if (this.reservaSeleccionada) {
+      this.cancelar.emit(this.reservaSeleccionada.id);
+    }
   }
 }

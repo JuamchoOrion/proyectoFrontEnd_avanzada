@@ -1,9 +1,15 @@
+
 <div class="row g-4">
   <div class="col-md-6" *ngFor="let reserva of reservas">
-    <app-reservation-card [reserva]="reserva" (abrirModal)="seleccionar(reserva)">
+    <app-reservation-card 
+      [reserva]="reserva" 
+      (abrirModal)="seleccionar($event)">
     </app-reservation-card>
   </div>
 </div>
 
-<app-cancel-modal [reserva]="reservaSeleccionada" (confirmar)="confirmarCancelacion()">
+<!-- Modal -->
+<app-cancel-modal 
+  [reserva]="reservaSeleccionada" 
+  (confirmar)="confirmarCancelacion()">
 </app-cancel-modal>

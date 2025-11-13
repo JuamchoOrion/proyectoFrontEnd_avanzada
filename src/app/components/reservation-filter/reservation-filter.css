@@ -1,0 +1,12 @@
+.search-section {
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.search-section label {
+  font-weight: 600;
+}
+
+button {
+  height: 38px;
+}

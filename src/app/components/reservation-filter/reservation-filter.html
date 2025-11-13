@@ -1,0 +1,49 @@
+<div class="card p-3 mb-4 shadow-sm">
+  <form class="row g-3" (ngSubmit)="emitirFiltros()">
+
+    <!-- ESTADO -->
+    <div class="col-md-3">
+      <label class="form-label">Estado</label>
+      <select class="form-select" [(ngModel)]="filtros.status" name="status">
+        <option value="">Todos</option>
+        <option value="CONFIRMED">Confirmada</option>
+        <option value="PENDING">Pendiente</option>
+        <option value="CANCELED">Cancelada</option>
+        <option value="COMPLETED">Completada</option>
+      </select>
+    </div>
+
+    <!-- CHECK-IN -->
+    <div class="col-md-3">
+      <label class="form-label">Check-in</label>
+      <input type="date" class="form-control"
+             [(ngModel)]="filtros.checkIn" name="checkIn" />
+    </div>
+
+    <!-- CHECK-OUT -->
+    <div class="col-md-3">
+      <label class="form-label">Check-out</label>
+      <input type="date" class="form-control"
+             [(ngModel)]="filtros.checkOut" name="checkOut" />
+    </div>
+
+    <!-- FECHA EXACTA -->
+    <div class="col-md-3">
+      <label class="form-label">Fecha exacta</label>
+      <input type="date" class="form-control"
+             [(ngModel)]="filtros.fecha" name="fecha" />
+    </div>
+
+    <!-- BOTONES -->
+    <div class="col-md-3 d-grid">
+      <button type="submit" class="btn btn-primary mt-4">Filtrar</button>
+    </div>
+
+    <div class="col-md-3 d-grid">
+      <button type="button" class="btn btn-secondary mt-4" (click)="limpiar()">
+        Limpiar
+      </button>
+    </div>
+
+  </form>
+</div>

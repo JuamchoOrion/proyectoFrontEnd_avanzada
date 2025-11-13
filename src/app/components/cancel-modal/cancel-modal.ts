@@ -9,8 +9,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./cancel-modal.css'],
 })
 export class CancelModal {
-  @Input() reserva: any;
-  @Output() confirmar = new EventEmitter<void>();
+
+  @Input() reserva: any;   // ← ESTE FALTABA
+  @Output() confirmar = new EventEmitter<void>(); // ← ESTE FALTABA
 
   confirmarAccion() {
     this.confirmar.emit();
