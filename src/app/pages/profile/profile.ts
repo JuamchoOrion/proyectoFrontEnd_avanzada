@@ -52,19 +52,8 @@ export class Profile implements OnInit {
    *  =================================================== */
   aplicarFiltros(filtros: any) {
   this.reservationService.getUserReservationsFiltered(filtros).subscribe({
-    next: (res) => {
-      this.reservas = res.map(r => ({
-        ...r,
-        titulo: `Reserva #${r.id}`,
-        checkin: r.checkIn.split('T')[0],
-        checkout: r.checkOut.split('T')[0],
-        estado:
-          r.reservationStatus === 'CONFIRMED' ? 'Confirmada' :
-          r.reservationStatus === 'PENDING' ? 'Pendiente' :
-          r.reservationStatus === 'CANCELED' ? 'Cancelada' :
-          'Completada',
-      }));
-    }
+    next: (res) => this.mapearReservas(res),
+    error: (err) => console.error("❌ Error al aplicar filtros:", err)
   });
 }
 
