@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 
 // Componentes Standalone
 import { Navbar } from '../../components/navbar/navbar';
-import { Sidebar } from '../../components/sidebar/sidebar';
+import { SidebarProfileComponent } from '../../components/sidebar-profile/sidebar-profile';
 import { Notifications } from '../../components/notifications/notifications';
 import { DestinationSummary } from '../../components/destination-summary/destination-summary';
 import { DestinationMetrics } from '../../components/destination-metrics/destination-metrics';
@@ -28,7 +28,7 @@ import { MetricsService } from '../../services/metrics.services';
     CommonModule,
     FormsModule,
     Navbar,
-    Sidebar,
+    SidebarProfileComponent,
     Notifications,
     DestinationSummary,
     DestinationMetrics,
@@ -79,11 +79,6 @@ export class AccommodationMetrics implements OnInit {
       // 2️⃣ Métricas del alojamiento
       this.metrics = await firstValueFrom(
         this.metricsService.getMetrics(this.accommodationId.toString())
-      );
-
-      // 3️⃣ Reservas del host
-      this.reservations = await firstValueFrom(
-        this.reservationService.getByHost(this.hostId)
       );
 
       // 4️⃣ Comentarios del alojamiento
