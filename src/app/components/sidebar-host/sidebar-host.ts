@@ -2,10 +2,21 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-host',
-  imports: [],
+  standalone: true,
   templateUrl: './sidebar-host.html',
-  styleUrl: './sidebar-host.css',
+  styleUrls: ['./sidebar-host.css'],
 })
-export class SidebarHost {
+export class SidebarHostComponent {
+  nombre = 'María López';
+  correo = 'marialopez@mail.com';
+  telefono = '3109876543';
+  fotoPerfil = '';
 
+  nuevoAlojamiento() {
+    console.log('Nuevo alojamiento');
+  }
+
+  verMetricas() {
+    console.log('Ver métricas');
+  }
 }

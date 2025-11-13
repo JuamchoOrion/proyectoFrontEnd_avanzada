@@ -3,7 +3,7 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { Landing } from './pages/landing/landing';
 import { Profile } from './pages/profile/profile';
-import { ProfileHost } from './pages/profile-host/profile-host'; // ✅ Importa tu nuevo perfil de anfitrión
+import { ProfileHost } from './pages/profile-host/profile-host';
 import { Recover } from './pages/recover/recover';
 import { AuthGuard } from './guards/auth.guard-guard';
 import { AccommodationDetail } from './pages/accommodation-detail/accommodation-detail';
