@@ -1,0 +1,93 @@
+<div class="chat-container container py-4">
+  <div class="row">
+    <!-- CONTACTOS -->
+    <div class="col-md-4 border-end">
+      <h5 class="mb-3">💬 Contactos</h5>
+
+      <form (ngSubmit)="startNewChat()" class="mb-3">
+        <input
+          class="form-control mb-2"
+          placeholder="Correo del usuario"
+          [(ngModel)]="newEmail"
+          name="email"
+        />
+        <input
+          class="form-control mb-2"
+          placeholder="Primer mensaje"
+          [(ngModel)]="firstMessage"
+          name="firstMsg"
+        />
+        <button class="btn btn-success w-100">Iniciar chat</button>
+      </form>
+
+      <ul class="list-group">
+        <li
+          *ngFor="let c of contacts; trackBy: trackByContactId"
+          (click)="openChat(c)"
+          class="list-group-item list-group-item-action d-flex align-items-center"
+          style="cursor: pointer"
+        >
+          <img
+            [src]="
+              c.photoUrl ||
+              'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg'
+            "
+            class="rounded-circle me-2"
+            style="width: 40px; height: 40px; object-fit: cover"
+          />
+
+          <div>
+            <strong>{{ getContactDisplayName(c) }}</strong>
+            <br />
+            <small>{{ c.email }}</small>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- CHAT -->
+    <div class="col-md-8">
+      <div *ngIf="!selectedContact" class="text-center text-muted mt-5">
+        Selecciona o inicia un chat para comenzar
+      </div>
+
+      <div *ngIf="selectedContact">
+        <div class="bg-light p-3 rounded mb-3">
+          <h5 class="mb-0">{{ selectedContact.username }}</h5>
+          <small class="text-muted">{{ selectedContact.email }}</small>
+        </div>
+
+        <div
+          class="chat-messages bg-white border rounded p-3 mb-3"
+          style="height: 400px; overflow-y: auto"
+        >
+          <div *ngFor="let m of messages" class="mb-2">
+            <div [class.text-end]="m.senderId === me.id">
+              <div
+                class="d-inline-block p-2 rounded"
+                [class.bg-primary]="m.senderId === me.id"
+                [class.text-white]="m.senderId === me.id"
+                [class.bg-light]="m.senderId !== me.id"
+                style="max-width: 70%; word-wrap: break-word"
+              >
+                {{ m.content }}
+                <br />
+                <small class="text-muted">{{ m.timestamp | date : 'short' }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form (ngSubmit)="send()" class="d-flex">
+          <input
+            [(ngModel)]="newMessage"
+            name="msg"
+            class="form-control me-2"
+            placeholder="Escribe..."
+          />
+          <button class="btn btn-primary">Enviar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

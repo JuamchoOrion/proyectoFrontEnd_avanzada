@@ -1,0 +1,25 @@
+.sidebar {
+  text-align: center;
+  background-color: #f0f8f6;
+  border-radius: 12px;
+  padding: 2rem 1rem;
+}
+
+.profile-pic {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00695c;
+  margin-bottom: 1rem;
+}
+
+.sidebar h4 {
+  color: #004d40;
+  font-weight: 600;
+}
+
+.sidebar p {
+  font-size: 0.95rem;
+  color: #444;
+}

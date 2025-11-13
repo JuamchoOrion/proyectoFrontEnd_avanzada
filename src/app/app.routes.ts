@@ -9,23 +9,40 @@ import { AccommodationDetail } from './pages/accommodation-detail/accommodation-
 import { AccommodationMetrics } from './pages/accommodation-metrics/accommodation-metrics';
 import { CreateAccommodationComponent } from './pages/create-accommodation/create-accommodation';
 import { Map } from './components/map/map';
+import { RoleGuard } from './guards/role.guard-guard';
+import { HomeMap } from './components/home-map/home-map';
+import { CreateReservationComponent } from './pages/create-reservation/create-reservation';
+import { EditProfilePage } from './pages/edit-profile/edit-profile';
+import { Chat } from './pages/chat/chat';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'profile', component: Profile },
+  { path: 'profile', component: Profile, canActivate: [AuthGuard] },
+  { path: 'edit-profile', component: EditProfilePage, canActivate: [AuthGuard] },
   { path: 'register', component: Register },
   { path: 'landing', component: Landing },
-  { path: 'accommodation/:id', component: AccommodationDetail },
   { path: 'accommodation-metrics/:id', component: AccommodationMetrics },
+  {
+    path: 'accommodation/:id/reserve',
+    component: CreateReservationComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'accommodation/:id', component: AccommodationDetail, canActivate: [AuthGuard] },
   {
     path: 'create-accommodation',
     component: CreateAccommodationComponent,
-    canActivate: [AuthGuard],
+    canActivate: [RoleGuard],
+
   },
+
+  { path: 'chat', component: Chat },
   { path: 'recover', component: Recover },
   { path: 'logout', redirectTo: 'login' },
   { path: 'home', redirectTo: 'landing' },
-  { path: 'map', component: Map },
+  { path: 'map', component: HomeMap },
   { path: '**', redirectTo: 'landing' },
+  
+
+
 ];

@@ -1,0 +1,60 @@
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+  <!-- Imagen -->
+  <div class="text-center mb-3">
+    <div class="position-relative d-inline-block">
+      <img
+        [src]="user.photoPreview || user.photoUrl || 'assets/default-user.png'"
+        class="rounded-circle shadow-sm mb-2"
+        width="120"
+        height="120"
+        alt="Foto de perfil"
+      />
+      <button
+        *ngIf="user.photoPreview"
+        type="button"
+        class="btn btn-sm btn-danger position-absolute top-0 end-0"
+        (click)="removeImage()"
+      >
+        ✕
+      </button>
+    </div>
+    <input
+      type="file"
+      class="form-control mt-2"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+
+  <!-- Campos de texto -->
+  <div class="mb-3">
+    <label class="form-label">Nombre completo</label>
+    <input type="text" class="form-control" [(ngModel)]="user.name" name="name" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Teléfono</label>
+    <input type="text" class="form-control" [(ngModel)]="user.phone" name="phone" />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Fecha de nacimiento</label>
+    <input type="date" class="form-control" [(ngModel)]="user.dateBirth" name="dateBirth" required />
+  </div>
+
+  <!-- Rol -->
+  <div class="mb-3">
+    <label class="form-label">Rol</label>
+    <select class="form-select" [(ngModel)]="user.role" name="role" required>
+      <option [value]="Role.GUEST">Usuario (GUEST)</option>
+      <option [value]="Role.HOST">Anfitrión (HOST)</option>
+      <option [value]="Role.ADMIN">Administrador (ADMIN)</option>
+    </select>
+  </div>
+
+  <!-- Botones -->
+  <div class="d-flex justify-content-between mt-4">
+    <button type="submit" class="btn btn-primary w-50 me-2">Guardar cambios</button>
+    <button type="button" class="btn btn-secondary w-50" (click)="cancel()">Cancelar</button>
+  </div>
+</form>

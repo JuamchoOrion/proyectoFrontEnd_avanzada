@@ -1,30 +1,60 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, map } from 'rxjs';
+import { UserProfileDTO } from '../models/user-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/users';
+  private apiUrl = 'http://localhost:9090/users'; // 👈 ruta estándar con prefijo /api
+
+  // ✅ Imagen por defecto en Cloudinary
+  private defaultPhotoUrl =
+    'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg';
 
   constructor(private http: HttpClient) {}
 
- 
   /** ✅ Obtener perfil del usuario autenticado */
-  getUserProfile(): Observable<{ id: string; name: string; email: string; phone: string; photoUrl?: string }> {
+  getUserProfile(): Observable<UserProfileDTO> {
     return this.http
-      .get<{ error: boolean; data: { id: string; name: string; email: string; phone: string; photoUrl?: string } }>(
-        `${this.apiUrl}/profile`,
-        { withCredentials: true } // 🔒 Importante: envía cookie JWT
-      )
-      .pipe(map((res) => res.data));
+      .get<{ error: boolean; content: UserProfileDTO }>('http://localhost:9090/users/profile', {
+        withCredentials: true,
+      })
+      .pipe(
+        map((res) => {
+          const user = res.content;
+          return { ...user, photoUrl: user.photoUrl || this.defaultPhotoUrl };
+        })
+      );
   }
 
-  /** ✏️ Editar perfil */
-  editUser(user: { name: string; phone: string; photoUrl?: string }): Observable<any> {
+  /** 👤 Obtener usuario por ID */
+  getUserById(userId: string): Observable<UserProfileDTO> {
+    return this.http
+      .get<{ error: boolean; content: UserProfileDTO }>(`${this.apiUrl}/${userId}`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((res) => {
+          const user = res.content;
+          console.log('Usuario obtenido:', user);
+          return { ...user, photoUrl: user.photoUrl || this.defaultPhotoUrl };
+        })
+      );
+  }
+/*
+  editUser(user: Partial<UserProfileDTO>): Observable<any> {
     return this.http.put(`${this.apiUrl}`, user, { withCredentials: true });
+    */
+
+
+  /** ✏️ Editar perfil (FormData para incluir imagen) */
+  editUser(formData: FormData): Observable<any> {
+    // ⚠️ No agregues 'Content-Type': Angular lo define automáticamente para multipart/form-data
+    return this.http.put(`${this.apiUrl}`, formData, {
+      withCredentials: true,
+    });
   }
 
   /** 🔐 Cambiar contraseña */

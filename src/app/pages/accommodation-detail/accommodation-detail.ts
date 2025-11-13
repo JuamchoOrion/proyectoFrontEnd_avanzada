@@ -11,7 +11,10 @@ import { AccommodationService } from '../../services/accommodation.services';
 import { ReviewService } from '../../services/review.services';
 import { AccommodationDTO } from '../../models/accommodation-dto';
 import { ReviewDTO } from '../../models/review-dto';
-
+import { Map } from '../../components/map/map';
+import { MapService } from '../../services/map/map-service';
+import { Marker } from 'mapbox-gl';
+import { MarkerDTO } from '../../models/marker-dto';
 @Component({
   selector: 'app-accommodation-detail',
   standalone: true,
@@ -23,6 +26,7 @@ import { ReviewDTO } from '../../models/review-dto';
     DestinationInfo,
     DestinationDescription,
     ReviewsSection,
+    Map,
   ],
   templateUrl: './accommodation-detail.html',
   styleUrls: ['./accommodation-detail.css'],
@@ -36,11 +40,12 @@ export class AccommodationDetail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private accommodationService: AccommodationService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private mapService: MapService
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log('📦 ID del alojamiento desde la URL:', id);
 
     if (!id) {
@@ -55,6 +60,19 @@ export class AccommodationDetail implements OnInit {
         console.log('✅ Alojamiento cargado:', data);
         this.destination = data;
 
+        // Inicializar mapa con la ubicación del alojamiento'
+        const marker: MarkerDTO = {
+          id: Number(data.id),
+          title: data.address,
+          photoUrl: data.mainImage || data.images?.[0] || '',
+          location: {
+            latitude: data.latitude,
+            longitude: data.longitude,
+          },
+        };
+        setTimeout(() => {
+          this.mapService.drawMarkers([marker]);
+        }, 200);
         this.reviewService.getReviewsByAccommodation(data.id).subscribe({
           next: (reviews) => {
             console.log('✅ Reseñas cargadas:', reviews);

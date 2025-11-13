@@ -1,11 +1,9 @@
-<app-navbar></app-navbar>
-
 <!-- 🌍 Sección principal (Hero) -->
 <section
   class="hero-section text-center text-white d-flex align-items-center justify-content-center"
 >
   <div class="container">
-    <h1 class="display-5 fw-bold fade-in">Descubre tu próximo destino con MiViaje 🌴</h1>
+    <h1 class="display-5 fw-bold fade-in">Descubre tu próximo destino con StayNow</h1>
     <p class="lead mt-3 fade-in-delay">
       Encuentra alojamientos únicos, anfitriones increíbles y experiencias inolvidables en todo el
       país.
@@ -16,7 +14,7 @@
 
 <!-- 🔍 Buscador -->
 <div class="search-wrapper fade-up">
-  <app-search-filter></app-search-filter>
+  <app-search-filter (filtersChanged)="applyFilters($event)"></app-search-filter>
 </div>
 
 <!-- 🖼️ Carrusel principal -->
@@ -29,15 +27,16 @@
   <div class="container">
     <h2 class="text-primary mb-3">Viajar nunca fue tan fácil</h2>
     <p class="text-muted fs-5">
-      Con <strong>MiViaje</strong>, puedes reservar tu estancia ideal en segundos. Disfruta de
+      Con <strong>StayNow</strong>, puedes reservar tu estancia ideal en segundos. Disfruta de
       alojamientos verificados, anfitriones confiables y la mejor atención.
     </p>
   </div>
 </section>
-
+<app-home-map [mapHeight]="'600px'" [mapWidth]="'80%'"></app-home-map>
 <!-- 🏡 Destinos cercanos -->
 <section id="destinos" class="fade-up">
-  <app-destination-section></app-destination-section>
+  <app-destination-section [destinations]="destinations" [loading]="loading">
+  </app-destination-section>
 </section>
 
 <!-- 🌐 Footer -->

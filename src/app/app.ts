@@ -22,7 +22,8 @@ export class App implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
         const url = event.urlAfterRedirects;
-        this.isLoginPage = url.includes('/login') || url.includes('/register');
+        this.isLoginPage =
+          url.includes('/login') || url.includes('/register') || url.includes('/recover');
       });
 
     // ✅ Verifica el estado de sesión directamente (sin subscribe)

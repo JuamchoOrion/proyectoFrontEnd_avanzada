@@ -1,6 +1,6 @@
 html,
+/* === SEPARACIÓN GLOBAL DESPUÉS DE NAVBAR === */
 body {
-  height: auto;
-  overflow-x: hidden;
-  overflow-y: auto;
+  padding-top: 20px; /* Ajusta según la altura real de tu navbar */
+  background-color: #f8fafc;
 }

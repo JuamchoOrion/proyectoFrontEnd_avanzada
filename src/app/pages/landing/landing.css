@@ -1,6 +1,6 @@
 :host {
   display: block;
-  margin-top: 80px; /* 🔥 compensa la altura de la navbar */
+  margin-top: -20px; /* 🔥 compensa la altura de la navbar */
 }
 /* 🌍 Hero principal */
 .hero-section {

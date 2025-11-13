@@ -1,3 +1,4 @@
+import { LocationDTO } from './accommodation-dto';
 export interface DestinationDTO {
   id: string;
   city: string;
@@ -5,4 +6,5 @@ export interface DestinationDTO {
   price: number;
   image: string;
   images: string[];
+  location: LocationDTO;
 }

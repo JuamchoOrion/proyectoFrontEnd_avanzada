@@ -1,6 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
+import { ReservationService } from '../../services/reservation.services';
+import { CreateReservationDTO } from '../../models/create-reservation-dto';
 
 @Component({
   selector: 'app-reservation-form',
@@ -10,22 +15,82 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./reservation-form.css'],
 })
 export class ReservationForm {
-  @Output() reservationChange = new EventEmitter<any>();
+  @Input() accommodationId!: number;
+  @Output() reservationChange = new EventEmitter<CreateReservationDTO>();
 
-  reservation = {
+  reservation: CreateReservationDTO = {
+    accommodationId: 0,
     checkIn: '',
     checkOut: '',
     guests: 1,
-    comments: '',
   };
 
-  // Emitir cambios cada vez que el usuario modifica algo
+  constructor(
+    private reservationService: ReservationService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    if (this.accommodationId) {
+      this.reservation.accommodationId = this.accommodationId;
+    }
+  }
+
   updateReservation() {
     this.reservationChange.emit(this.reservation);
   }
 
-  confirmReservation() {
-    console.log('Reserva confirmada:', this.reservation);
-    alert('Reserva confirmada correctamente 🎉');
+  /** ✅ Confirmar la creación de la reserva */
+  confirmReservation(form?: NgForm) {
+    if (!this.reservation.checkIn || !this.reservation.checkOut) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Fechas requeridas',
+        text: 'Por favor selecciona las fechas de check-in y check-out.',
+        confirmButtonColor: '#007bff',
+      });
+      return;
+    }
+
+    const payload: CreateReservationDTO = {
+      accommodationId: this.accommodationId,
+      checkIn: new Date(this.reservation.checkIn).toISOString(),
+      checkOut: new Date(this.reservation.checkOut).toISOString(),
+      guests: this.reservation.guests,
+    };
+
+    this.reservationService.createReservation(payload).subscribe({
+      next: (res) => {
+        console.log('✅ Reserva creada exitosamente:', res);
+        Swal.fire({
+          icon: 'success',
+          title: '🎉 ¡Reserva exitosa!',
+          text: 'Tu reserva ha sido confirmada correctamente.',
+          confirmButtonColor: '#007bff',
+        }).then(() => {
+          form?.resetForm();
+          this.router.navigate(['/profile']); // 🔁 Redirigir tras crear
+        });
+      },
+      error: (err) => {
+        console.error('❌ Error al crear la reserva:', err);
+
+        if (err.status === 422) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Fechas ocupadas',
+            text: 'Ya existe una reserva para esas fechas. Intenta con otras.',
+            confirmButtonColor: '#f39c12',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al crear la reserva',
+            text: 'Ocurrió un error inesperado. Intenta nuevamente.',
+            confirmButtonColor: '#d33',
+          });
+        }
+      },
+    });
   }
 }

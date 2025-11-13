@@ -1,3 +1,5 @@
+(window as any).global = window;
+(globalThis as any).global = globalThis;
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
 import { routes } from './app/app.routes';

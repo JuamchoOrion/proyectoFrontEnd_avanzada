@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -32,13 +33,13 @@ export class Login {
     console.log('Datos enviados:', this.loginForm.value);
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
-        console.log('✅ Login exitoso', response);
-        alert('Login exitoso');
+        Swal.fire('Éxito', 'Login exitoso', 'success');
+
         this.ngZone.run(() => this.router.navigate(['/landing']));
       },
       error: (error) => {
-        console.error('❌ Error en el login', error);
-        alert('Error en el login');
+        const backendMsg = error.error?.content || error.error?.message || 'Ha ocurrido un error';
+        Swal.fire('Error', backendMsg, 'error');
       },
     });
   }

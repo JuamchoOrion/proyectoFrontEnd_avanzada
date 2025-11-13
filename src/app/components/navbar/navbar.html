@@ -1,8 +1,15 @@
 <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/">
-      <span class="logo-icon">🌍</span>
-      <span class="fw-bold">MiViaje</span>
+      <img
+        src="https://res.cloudinary.com/dbeyylkba/image/upload/v1762926457/ChatGPT_Image_12_nov_2025_12_46_32_a.m._maxsob.png  "
+        alt="StayNow Logo"
+        width="38"
+        height="38"
+        class="me-2"
+      />
+
+      <span class="fw-bold text-white">StayNow</span>
     </a>
 
     <button
@@ -20,8 +27,14 @@
         <li class="nav-item"><a class="nav-link" routerLink="/profile">Mi perfil</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/reservations">Reservas</a></li>
-        <li class="nav-item"><a class="nav-link" routerLink="/host">Ser anfitrión</a></li>
-
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/host" *ngIf="!isHost">Ser anfitrión</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/create-accommodation" *ngIf="isHost"
+            >Crear Alojamiento</a
+          >
+        </li>
         <li class="nav-item ms-lg-3" *ngIf="!isLoggedIn">
           <a class="btn btn-light btn-sm px-3 fw-semibold shadow-sm" routerLink="/login">
             Iniciar sesión
