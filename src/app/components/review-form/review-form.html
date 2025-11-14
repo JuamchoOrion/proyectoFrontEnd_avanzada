@@ -1,0 +1,25 @@
+<div class="card shadow-sm p-3 mt-4">
+  <h5>⭐ Escribe una reseña</h5>
+
+  <form (ngSubmit)="submitReview()" class="mt-3">
+    <!-- Rating -->
+    <label class="form-label fw-bold">Calificación</label>
+    <select class="form-select" [(ngModel)]="newReview.rating" name="rating">
+      <option *ngFor="let r of [1, 2, 3, 4, 5]" [value]="r">{{ r }} ⭐</option>
+    </select>
+
+    <!-- Comentario -->
+    <label class="form-label fw-bold mt-3">Comentario</label>
+    <textarea
+      class="form-control"
+      [(ngModel)]="newReview.text"
+      name="text"
+      rows="3"
+      placeholder="Escribe tu experiencia aquí..."
+    ></textarea>
+
+    <button class="btn btn-primary mt-3 w-100" [disabled]="loading">
+      {{ loading ? 'Enviando...' : 'Enviar reseña' }}
+    </button>
+  </form>
+</div>

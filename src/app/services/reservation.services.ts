@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ReservationDTO } from '../models/reservation-dto';
 import { CreateReservationDTO } from '../models/create-reservation-dto';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,31 +12,56 @@ export class ReservationService {
 
   constructor(private http: HttpClient) {}
 
-  /** ✅ Obtener reservas del usuario autenticado */
+  /** ✅ Obtener reservas iniciales (sin filtros) */
   getUserReservations(): Observable<ReservationDTO[]> {
     return this.http
-      .get<{ error: boolean; content: { content: ReservationDTO[] } }>(`${this.apiUrl}`, {
+      .get<{ error: boolean; content: any }>(this.apiUrl, {
         withCredentials: true,
       })
-      .pipe(map((res) => res.content.content)); // ✅ accede al array real
+      .pipe(
+        map((res) => res.content?.content ?? []) // <-- seguro
+      );
   }
-   /** 🔹 Crear una nueva reserva */
-    createReservation(dto: CreateReservationDTO): Observable<ReservationDTO> {
-      return this.http.post<ReservationDTO>(this.apiUrl, dto);
+
+  /** 🔹 Crear una nueva reserva */
+  createReservation(dto: CreateReservationDTO): Observable<ReservationDTO> {
+    return this.http.post<ReservationDTO>(this.apiUrl, dto);
+  }
+
+  /** 🔹 Obtener reservas del usuario actual */
+  getReservations(): Observable<ReservationDTO[]> {
+    return this.http.get<ReservationDTO[]>(this.apiUrl);
+  }
+
+  /** 🔹 Obtener reserva por ID */
+  getReservationById(id: number): Observable<ReservationDTO> {
+    return this.http
+      .get<{ error: boolean; content: ReservationDTO }>(`${this.apiUrl}/${id}`)
+      .pipe(map((res) => res.content));
+  }
+
+  /** 🔹 Cancelar una reserva */
+  cancelReservation(id: number): Observable<ReservationDTO> {
+    return this.http.patch<ReservationDTO>(`${this.apiUrl}/${id}/cancel`, {});
+  }
+
+  /** 🔍 Obtener reservas con filtros dinámicos */
+  getUserReservationsFiltered(params?: any): Observable<ReservationDTO[]> {
+    let httpParams = new HttpParams();
+
+    if (params) {
+      Object.keys(params).forEach((key) => {
+        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+          httpParams = httpParams.set(key, params[key]);
+        }
+      });
     }
-  
-    /** 🔹 Obtener reservas del usuario actual */
-    getReservations(): Observable<ReservationDTO[]> {
-      return this.http.get<ReservationDTO[]>(this.apiUrl);
-    }
-  
-    /** 🔹 Obtener reserva por ID */
-    getReservationById(id: number): Observable<ReservationDTO> {
-      return this.http.get<ReservationDTO>(`${this.apiUrl}/${id}`);
-    }
-  
-    /** 🔹 Cancelar una reserva */
-    cancelReservation(id: number): Observable<ReservationDTO> {
-      return this.http.patch<ReservationDTO>(`${this.apiUrl}/${id}/cancel`, {});
-    }
+
+    return this.http
+      .get<{ error: boolean; content: { content: ReservationDTO[] } }>(this.apiUrl, {
+        params: httpParams,
+        withCredentials: true,
+      })
+      .pipe(map((res) => res.content.content));
+  }
 }

@@ -1,36 +1,9 @@
-<section class="reviews mt-5">
-  <h4 class="mb-4 text-primary">Reseñas</h4>
+<div class="reviews-container" *ngIf="reviews.length > 0; else noReviews">
+  <h3 class="mb-4">Reseñas</h3>
 
-  <div class="row" *ngIf="reviews?.length; else noReviews">
-    <div class="col-md-6" *ngFor="let r of reviews">
-      <app-review-card [review]="r"></app-review-card>
-    </div>
-  </div>
+  <app-review-card *ngFor="let r of reviews" [review]="r" class="mb-3"></app-review-card>
+</div>
 
-  <ng-template #noReviews>
-    <p class="text-muted">Aún no hay reseñas para este alojamiento.</p>
-  </ng-template>
-
-  <div class="row mt-4">
-    <div class="col-md-8">
-      <h5>Deja tu reseña</h5>
-      <form class="card p-3">
-        <div class="mb-3">
-          <label class="form-label">Calificación</label>
-          <select class="form-select">
-            <option *ngFor="let n of [5, 4, 3, 2, 1]" [value]="n">⭐ {{ n }}</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Comentario</label>
-          <textarea
-            class="form-control"
-            rows="3"
-            placeholder="Escribe tu experiencia..."
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar reseña</button>
-      </form>
-    </div>
-  </div>
-</section>
+<ng-template #noReviews>
+  <p class="text-muted mt-4">Este alojamiento aún no tiene reseñas.</p>
+</ng-template>

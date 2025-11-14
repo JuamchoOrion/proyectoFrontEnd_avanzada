@@ -1,5 +1,5 @@
 export interface AccommodationDTO {
-  id: string;
+  id: number;
   hostId: string;
   city: string;
   description: string;

@@ -12,27 +12,9 @@
       <main class="content">
         <h2 class="mb-4 text-primary fw-bold">Mis Reservas</h2>
 
-        <!-- FILTROS -->
-        <div class="search-section mb-4">
-          <form class="row g-3 align-items-end">
-            <div class="col-md-3">
-              <label class="form-label">Fecha</label>
-              <input type="date" class="form-control" />
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Estado</label>
-              <select class="form-select">
-                <option>Todos</option>
-                <option>Confirmadas</option>
-                <option>Pendientes</option>
-                <option>Canceladas</option>
-              </select>
-            </div>
-            <div class="col-md-2 d-grid">
-              <button type="submit" class="btn btn-primary">Filtrar</button>
-            </div>
-          </form>
-        </div>
+      <!-- FILTROS -->
+       <app-reservation-filter (filtrar)="aplicarFiltros($event)"></app-reservation-filter>
+
 
         <!-- Sección de reservas -->
         <app-reservation-section [reservas]="reservas" (cancelar)="onCancelarReserva($event)">

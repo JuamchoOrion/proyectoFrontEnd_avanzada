@@ -1,5 +1,17 @@
-<div class="card p-3 mb-3 shadow-sm">
-  <strong>{{ review.author || 'Usuario anónimo' }}</strong>
-  <p class="text-muted mb-1">⭐ {{ review.rating }}</p>
-  <p>{{ review.comment }}</p>
+<div class="card shadow-sm p-3 mb-3 review-card">
+  <div class="d-flex justify-content-between">
+    <strong>{{ review.userName }}</strong>
+    <span>⭐ {{ review.rating }}/5</span>
+  </div>
+
+  <p class="mt-2">{{ review.text }}</p>
+
+  <small class="text-muted">
+    {{ review.createdAt | date : 'medium' }}
+  </small>
+
+  <div class="mt-3 p-2 bg-light border rounded" *ngIf="review.reply">
+    <strong>Respuesta del anfitrión:</strong>
+    <p class="m-0">{{ review.reply }}</p>
+  </div>
 </div>

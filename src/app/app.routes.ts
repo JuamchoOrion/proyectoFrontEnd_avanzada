@@ -15,10 +15,15 @@ import { HomeMap } from './components/home-map/home-map';
 import { CreateReservationComponent } from './pages/create-reservation/create-reservation';
 import { EditProfilePage } from './pages/edit-profile/edit-profile';
 import { Chat } from './pages/chat/chat';
+import { ReservationDetail } from './pages/review-detail/review-detail';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
+
   { path: 'login', component: Login },
+  { path: 'register', component: Register },
+  { path: 'recover', component: Recover },
+
   { path: 'profile', component: Profile, canActivate: [AuthGuard] },
 
   {
@@ -28,7 +33,7 @@ export const routes: Routes = [
   },
 
   { path: 'edit-profile', component: EditProfilePage, canActivate: [AuthGuard] },
-  { path: 'register', component: Register },
+
   { path: 'landing', component: Landing },
   { path: 'accommodation-metrics/:id', component: AccommodationMetrics },
   {
@@ -36,16 +41,27 @@ export const routes: Routes = [
     component: CreateReservationComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'accommodation/:id', component: AccommodationDetail, canActivate: [AuthGuard] },
+  {
+    path: 'accommodation/:id',
+    component: AccommodationDetail,
+    canActivate: [AuthGuard],
+  },
+
   {
     path: 'create-accommodation',
     component: CreateAccommodationComponent,
     canActivate: [RoleGuard],
   },
   { path: 'chat', component: Chat },
-  { path: 'recover', component: Recover },
-  { path: 'logout', redirectTo: 'login' },
-  { path: 'home', redirectTo: 'landing' },
+
   { path: 'map', component: HomeMap },
+
+  {
+    path: 'reservations/:id',
+    component: ReservationDetail,
+    canActivate: [AuthGuard],
+  },
+
+  // ⬇️ SIEMPRE AL FINAL
   { path: '**', redirectTo: 'landing' },
 ];

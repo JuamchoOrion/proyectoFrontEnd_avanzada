@@ -44,4 +44,7 @@ export class ReviewService {
         })
       );
   }
+  createReview(review: { text: string; rating: number; reservationId: number | String }) {
+    return this.http.post<ApiResponse<ReviewDTO>>(`${this.apiUrl}`, review);
+  }
 }
