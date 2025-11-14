@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { CreateUserDTO } from '../models/createUser-dto';
+import { Observable, of, switchMap } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { CreateUserDTO } from '../models/createUser-dto';
 import { ResetPasswordDTO } from '../models/reset-password-dto';
+
 interface ResponseDTO<T> {
   error: boolean;
   content: T;
   message?: string;
 }
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:9090/api/auth';
+  private hostsUrl = 'http://localhost:9090/api/hosts';
 
   constructor(private http: HttpClient) {}
+
   register(dto: CreateUserDTO): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, dto, { withCredentials: true });
   }
@@ -34,6 +38,7 @@ export class AuthService {
       withCredentials: true,
     });
   }
+
   recoverPassword(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/password/reset`, { email }, { withCredentials: true });
   }
@@ -42,23 +47,39 @@ export class AuthService {
     return this.http.patch(`${this.apiUrl}/password/confirm`, dto, { withCredentials: true });
   }
 
+  /** Devuelve id y role del usuario logeado */
   getCurrentUser(): Observable<any> {
     return this.http
-      .get(`${this.apiUrl}/me`, {
-        withCredentials: true,
-      })
+      .get(`${this.apiUrl}/me`, { withCredentials: true })
       .pipe(
-        map((res: any) => res.content), // solo devolvemos la parte útil
+        map((res: any) => res.content), // solo la parte útil
         catchError(() => of(null))
       );
   }
+
+  /**
+   * Para hosts: obtiene el perfil completo usando el id
+   * Primero obtiene id y role, luego consulta /api/hosts/{id}
+   */
+  getHostProfile(): Observable<any> {
+    return this.getCurrentUser().pipe(
+      switchMap((user) => {
+        if (user?.role === 'ROLE_HOST' && user?.id) {
+          return this.http.get(`${this.hostsUrl}/${user.id}`, { withCredentials: true }).pipe(
+            map((res: any) => res.content),
+            catchError(() => of(null))
+          );
+        }
+        return of(null);
+      })
+    );
+  }
+
   logout(): Observable<ResponseDTO<string>> {
     return this.http.post<ResponseDTO<string>>(
       `${this.apiUrl}/logout`,
       {},
-      {
-        withCredentials: true,
-      }
+      { withCredentials: true }
     );
   }
 }

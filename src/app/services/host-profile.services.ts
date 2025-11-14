@@ -1,0 +1,58 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { Accommodation } from '../models/accommodation';
+import { UserProfileDTO } from '../models/user-dto';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HostService {
+  private apiUrl = 'http://localhost:9090/api/hosts';
+
+  constructor(private http: HttpClient) {}
+
+  /** Obtener datos del host logeado */
+  getCurrentHostProfile(): Observable<UserProfileDTO> {
+    return this.http
+      .get<{ error: boolean; content: UserProfileDTO; message: string }>(
+        `${this.apiUrl}/me`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map((res) => {
+          console.log("🟣 RAW RESPONSE /me:", res);
+          if (res.error || !res.content) {
+            throw new Error(res.message || 'Error obteniendo host');
+          }
+          return res.content; // ⬅️ EL PUNTO IMPORTANTE
+        })
+      );
+  }
+
+  /** Obtener alojamientos del host */
+  getHostAccommodations(hostId: string | number): Observable<Accommodation[]> {
+    return this.http.get<Accommodation[]>(
+      `${this.apiUrl}/${String(hostId)}/accommodations`,
+      { withCredentials: true }
+    );
+  }
+
+  /** Eliminar alojamiento */
+  deleteAccommodation(hostId: string | number, accommodationId: string | number) {
+    return this.http.delete(
+      `${this.apiUrl}/${String(hostId)}/accommodations/${String(accommodationId)}`,
+      { withCredentials: true }
+    );
+  }
+
+  /** Obtener host por ID */
+  getHostById(hostId: string | number): Observable<UserProfileDTO> {
+    return this.http
+      .get<{ error: boolean; content: UserProfileDTO; message: string }>(
+        `${this.apiUrl}/${String(hostId)}`,
+        { withCredentials: true }
+      )
+      .pipe(map((res) => res.content));
+  }
+}
