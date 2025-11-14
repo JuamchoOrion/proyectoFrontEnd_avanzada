@@ -39,7 +39,9 @@
 <div class="text-center my-5" *ngIf="loading">
   <div class="spinner-border text-primary"></div>
 </div>
-
+<div class="contenedor-para-enviar-resenia" *ngIf="isHost">
+  <h1>ENVIAR RESENIA</h1>
+</div>
 <!-- Error -->
 <div class="text-center text-danger my-5" *ngIf="error">
   {{ error }}

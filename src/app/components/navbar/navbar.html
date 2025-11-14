@@ -25,6 +25,9 @@
       <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item"><a class="nav-link" routerLink="/explore">Explorar</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/profile">Mi perfil</a></li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/profile-host" *ngIf="isHost">Mi perfil(anfitrión)</a>
+        </li>
         <li class="nav-item"><a class="nav-link" routerLink="/chat">Chat</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/reservations">Reservas</a></li>
         <li class="nav-item">

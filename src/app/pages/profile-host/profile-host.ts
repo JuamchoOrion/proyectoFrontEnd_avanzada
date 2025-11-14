@@ -8,7 +8,12 @@ import { AccommodationFilterComponent } from '../../components/accommodation-fil
 import { HostService } from '../../services/host-profile.services';
 import { Accommodation } from '../../models/accommodation';
 import { UserProfileDTO } from '../../models/user-dto';
-
+import { ReservationDTO } from '../../models/reservation-dto';
+import { RouterModule } from '@angular/router';
+import { ReservationCard } from '../../components/reservation-card/reservation-card';
+import { ReservationSection } from '../../components/reservation-section/reservation-section';
+import { AccommodationService } from '../../services/accommodation.services';
+import { AccommodationDTO } from '../../models/accommodation-dto';
 @Component({
   selector: 'app-profile-host',
   standalone: true,
@@ -18,18 +23,24 @@ import { UserProfileDTO } from '../../models/user-dto';
     Footer,
     Notifications,
     DestinationCard,
-    AccommodationFilterComponent
+    AccommodationFilterComponent,
+    ReservationCard,
+    ReservationSection,
+    RouterModule,
   ],
   templateUrl: './profile-host.html',
   styleUrls: ['./profile-host.css'],
 })
 export class ProfileHost implements OnInit {
-
-  accommodations: Accommodation[] = [];
+  accommodations: AccommodationDTO[] = [];
   notificaciones: any[] = [];
   currentUser: UserProfileDTO | null = null;
+  reservations: ReservationDTO[] = [];
 
-  constructor(private hostService: HostService) {}
+  constructor(
+    private hostService: HostService,
+    private accommodationService: AccommodationService
+  ) {}
 
   ngOnInit() {
     console.log('🔹 Iniciando carga de perfil del host...');
@@ -43,7 +54,7 @@ export class ProfileHost implements OnInit {
           console.warn('⚠️ HostData es null o indefinido');
           this.notificaciones.push({
             tipo: 'error',
-            mensaje: 'No se recibió información del host'
+            mensaje: 'No se recibió información del host',
           });
           return;
         }
@@ -52,7 +63,7 @@ export class ProfileHost implements OnInit {
           console.warn('⚠️ HostData.id no existe:', hostData);
           this.notificaciones.push({
             tipo: 'error',
-            mensaje: 'El perfil del host no tiene ID válido'
+            mensaje: 'El perfil del host no tiene ID válido',
           });
           return;
         }
@@ -62,14 +73,15 @@ export class ProfileHost implements OnInit {
 
         // 🔹 Cargar alojamientos del host
         this.loadAccommodations(hostData.id);
+        this.loadReservations(hostData.id);
       },
       error: (err) => {
         console.error('❌ Error al cargar perfil del host:', err);
         this.notificaciones.push({
           tipo: 'error',
-          mensaje: 'No se pudo cargar el perfil del host'
+          mensaje: 'No se pudo cargar el perfil del host',
         });
-      }
+      },
     });
   }
 
@@ -84,7 +96,7 @@ export class ProfileHost implements OnInit {
         if (!res || res.length === 0) {
           this.notificaciones.push({
             tipo: 'info',
-            mensaje: 'No tienes alojamientos registrados'
+            mensaje: 'No tienes alojamientos registrados',
           });
         }
       },
@@ -92,12 +104,34 @@ export class ProfileHost implements OnInit {
         console.error('❌ Error al cargar alojamientos:', err);
         this.notificaciones.push({
           tipo: 'error',
-          mensaje: 'No se pudieron cargar los alojamientos'
+          mensaje: 'No se pudieron cargar los alojamientos',
         });
       },
     });
   }
+  loadReservations(hostId: string | number) {
+    console.log('🔹 Cargando reservas recibidas para hostId:', hostId);
 
+    this.hostService.getHostReservations(String(hostId)).subscribe({
+      next: (res) => {
+        console.log('🟢 Reservas recibidas:', res);
+        this.mapearReservas(res);
+        if (!res || res.length === 0) {
+          this.notificaciones.push({
+            tipo: 'info',
+            mensaje: 'No tienes reservas recibidas aún',
+          });
+        }
+      },
+      error: (err) => {
+        console.error('❌ Error al cargar reservas:', err);
+        this.notificaciones.push({
+          tipo: 'error',
+          mensaje: 'No se pudieron cargar las reservas',
+        });
+      },
+    });
+  }
   /** Filtrar alojamientos */
   aplicarFiltros(filtros: any) {
     console.log('Filtros aplicados:', filtros);
@@ -111,20 +145,20 @@ export class ProfileHost implements OnInit {
 
     this.hostService.deleteAccommodation(String(this.currentUser.id), accId).subscribe({
       next: () => {
-        this.accommodations = this.accommodations.filter(a => a.id !== accId);
+        this.accommodations = this.accommodations.filter((a) => a.id !== accId);
         console.log('✅ Alojamiento eliminado correctamente:', accId);
         this.notificaciones.push({
           tipo: 'success',
-          mensaje: `Alojamiento #${accId} eliminado correctamente`
+          mensaje: `Alojamiento #${accId} eliminado correctamente`,
         });
       },
       error: (err) => {
         console.error('❌ Error al eliminar alojamiento:', err);
         this.notificaciones.push({
           tipo: 'error',
-          mensaje: err.error?.message || 'Error al eliminar alojamiento'
+          mensaje: err.error?.message || 'Error al eliminar alojamiento',
         });
-      }
+      },
     });
   }
 
@@ -132,5 +166,36 @@ export class ProfileHost implements OnInit {
   onLimpiarNotificaciones() {
     this.notificaciones = [];
   }
+  onCancelarReserva(reservaId: string | number) {}
+  private mapearReservas(res: ReservationDTO[]) {
+    this.reservations = res.map((r) => ({
+      ...r,
+      titulo: `Reserva #${r.id}`,
+      checkin: r.checkIn.split('T')[0],
+      checkout: r.checkOut.split('T')[0],
+      estado:
+        r.reservationStatus === 'CONFIRMED'
+          ? 'Confirmada'
+          : r.reservationStatus === 'PENDING'
+          ? 'Pendiente'
+          : r.reservationStatus === 'CANCELED'
+          ? 'Cancelada'
+          : 'Completada',
+      imagen: '',
+    }));
 
+    // Obtener la imagen del alojamiento
+    this.reservations.forEach((reserva) => {
+      if (reserva.accommodationId) {
+        this.accommodationService.getAccommodationById(reserva.accommodationId).subscribe({
+          next: (acc) => {
+            reserva.imagen = acc.mainImage || acc.images?.[0] || 'assets/default.jpg';
+          },
+          error: () => (reserva.imagen = 'assets/default.jpg'),
+        });
+      } else {
+        reserva.imagen = 'assets/default.jpg';
+      }
+    });
+  }
 }

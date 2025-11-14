@@ -15,6 +15,7 @@ import { Map } from '../../components/map/map';
 import { MapService } from '../../services/map/map-service';
 import { Marker } from 'mapbox-gl';
 import { MarkerDTO } from '../../models/marker-dto';
+import { AuthService } from '../../services/auth.services';
 @Component({
   selector: 'app-accommodation-detail',
   standalone: true,
@@ -36,12 +37,13 @@ export class AccommodationDetail implements OnInit {
   reviews: ReviewDTO[] = [];
   loading = true;
   error = '';
-
+  isHost = false;
   constructor(
     private route: ActivatedRoute,
     private accommodationService: AccommodationService,
     private reviewService: ReviewService,
-    private mapService: MapService
+    private mapService: MapService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +55,15 @@ export class AccommodationDetail implements OnInit {
       this.loading = false;
       return;
     }
-
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.isHost = user?.role === 'ROLE_HOST';
+      },
+      error: (err) => {
+        console.error('error obteniendo rol ', err);
+        this.isHost = false;
+      },
+    });
     // 1️⃣ Obtener alojamiento
     this.accommodationService.getAccommodationById(id).subscribe({
       next: (data) => {
