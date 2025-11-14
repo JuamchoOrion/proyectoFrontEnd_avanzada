@@ -13,9 +13,10 @@ export class ReservationCard {
   @Input() reserva: any;
   @Output() abrirModal = new EventEmitter<any>();
 
-  abrir() {
-    this.abrirModal.emit(this.reserva); // ← ENVÍA LA RESERVA SELECCIONADA
-  }
+  abrir(event: Event) {
+  event.stopPropagation(); // 🚫 evita que se active verDetalle()
+  this.abrirModal.emit(this.reserva);
+}
   constructor(private router: Router) {}
 
   verDetalle() {
