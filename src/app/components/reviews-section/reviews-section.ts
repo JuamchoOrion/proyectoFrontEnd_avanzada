@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReviewDTO } from '../../models/review-dto';
 import { ReviewCard } from '../review-card/review-card';
 
 @Component({
@@ -10,5 +11,5 @@ import { ReviewCard } from '../review-card/review-card';
   styleUrls: ['./reviews-section.css'],
 })
 export class ReviewsSection {
-  @Input() reviews: any[] = [];
+  @Input() reviews: ReviewDTO[] = [];
 }

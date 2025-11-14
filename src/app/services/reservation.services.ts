@@ -14,28 +14,33 @@ export class ReservationService {
   /** ✅ Obtener reservas del usuario autenticado */
   getUserReservations(): Observable<ReservationDTO[]> {
     return this.http
-      .get<{ error: boolean; content: { content: ReservationDTO[] } }>(`${this.apiUrl}`, {
+      .get<{ error: boolean; content: any }>(this.apiUrl, {
         withCredentials: true,
       })
-      .pipe(map((res) => res.content.content)); // ✅ accede al array real
+      .pipe(
+        map((res) => res.content?.content ?? []) // <-- seguro
+      );
   }
-   /** 🔹 Crear una nueva reserva */
-    createReservation(dto: CreateReservationDTO): Observable<ReservationDTO> {
-      return this.http.post<ReservationDTO>(this.apiUrl, dto);
-    }
-  
-    /** 🔹 Obtener reservas del usuario actual */
-    getReservations(): Observable<ReservationDTO[]> {
-      return this.http.get<ReservationDTO[]>(this.apiUrl);
-    }
-  
-    /** 🔹 Obtener reserva por ID */
-    getReservationById(id: number): Observable<ReservationDTO> {
-      return this.http.get<ReservationDTO>(`${this.apiUrl}/${id}`);
-    }
-  
-    /** 🔹 Cancelar una reserva */
-    cancelReservation(id: number): Observable<ReservationDTO> {
-      return this.http.patch<ReservationDTO>(`${this.apiUrl}/${id}/cancel`, {});
-    }
+
+  /** 🔹 Crear una nueva reserva */
+  createReservation(dto: CreateReservationDTO): Observable<ReservationDTO> {
+    return this.http.post<ReservationDTO>(this.apiUrl, dto);
+  }
+
+  /** 🔹 Obtener reservas del usuario actual */
+  getReservations(): Observable<ReservationDTO[]> {
+    return this.http.get<ReservationDTO[]>(this.apiUrl);
+  }
+
+  /** 🔹 Obtener reserva por ID */
+  getReservationById(id: number): Observable<ReservationDTO> {
+    return this.http
+      .get<{ error: boolean; content: ReservationDTO }>(`${this.apiUrl}/${id}`)
+      .pipe(map((res) => res.content));
+  }
+
+  /** 🔹 Cancelar una reserva */
+  cancelReservation(id: number): Observable<ReservationDTO> {
+    return this.http.patch<ReservationDTO>(`${this.apiUrl}/${id}/cancel`, {});
+  }
 }

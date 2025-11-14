@@ -4,7 +4,7 @@ export interface ReviewDTO {
   userName: string;
   rating: number;
   text: string;
-  date: string;
+  createdAt: string; // ← CORREGIDO
   reply: string;
-  accommodationId: string;
+  accommodationId: number;
 }

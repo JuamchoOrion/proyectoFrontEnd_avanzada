@@ -1,0 +1,31 @@
+<div class="container my-5" *ngIf="reservation">
+  <h2>Reserva #{{ reservation.id }}</h2>
+  <p><b>Entrada:</b> {{ reservation.checkIn | date : 'medium' }}</p>
+  <p><b>Salida:</b> {{ reservation.checkOut | date : 'medium' }}</p>
+  <p><b>Huéspedes:</b> {{ reservation.guestsNumber }}</p>
+  <p><b>Total:</b> ${{ reservation.totalPrice }}</p>
+
+  <hr />
+
+  <div *ngIf="accommodation">
+    <h3>{{ accommodation?.city }}</h3>
+    <img [src]="accommodation?.mainImage" class="img-fluid rounded mb-3" />
+
+    <p>{{ accommodation?.description }}</p>
+  </div>
+
+  <hr />
+
+  <app-review-form
+    [reservationId]="reservation?.id ?? null"
+    (reviewCreated)="onReviewCreated($event)"
+  >
+  </app-review-form>
+
+  <hr />
+
+  <!-- ⭐ RESEÑAS -->
+  <app-reviews-section [reviews]="reviews"></app-reviews-section>
+</div>
+
+<app-footer></app-footer>

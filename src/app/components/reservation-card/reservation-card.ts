@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-card',
@@ -14,5 +15,10 @@ export class ReservationCard {
 
   abrir() {
     this.abrirModal.emit();
+  }
+  constructor(private router: Router) {}
+
+  verDetalle() {
+    this.router.navigate(['/reservations', this.reserva.id]);
   }
 }
