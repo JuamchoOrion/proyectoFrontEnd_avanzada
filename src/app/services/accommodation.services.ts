@@ -17,7 +17,24 @@ interface ApiResponse<T> {
   error: boolean;
   content: PageResponse<T> | T;
 }
+export interface ApiResponsePage<T> {
+  error: boolean;
+  content: {
+    content: T[];
+    totalPages: number;
+    totalElements: number;
+    size: number;
+    number: number;
+    first: boolean;
+    last: boolean;
+  };
+}
 
+export interface DestinationsPage {
+  content: DestinationDTO[];
+  totalPages: number;
+  page: number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -25,56 +42,38 @@ export class AccommodationService {
   private apiUrl = 'http://localhost:9090/api/accommodations';
 
   constructor(private http: HttpClient) {}
-  /**
-  getDestinations(page = 0, size = 10): Observable<DestinationDTO[]> {
+  getDestinations(page = 0, size = 10): Observable<DestinationsPage> {
     return this.http
-      .get<ApiResponse<PageResponse<AccommodationDTO>>>(`${this.apiUrl}?page=${page}&size=${size}`)
+      .get<ApiResponsePage<AccommodationDTO>>(`${this.apiUrl}?page=${page}&size=${size}`)
       .pipe(
         map((response) => {
-          const page = response.content as PageResponse<AccommodationDTO>;
-          //const list = page.content;
-          const list = Array.isArray(page.content) ? page.content : (page as any).content || [];
-          return list
+          const pageData = response.content; // Page<AccommodationDTO>
+          const list = pageData.content; // Items reales
+
+          const destinations: DestinationDTO[] = list
             .filter((a) => a.status === 'ACTIVE')
             .map((a) => ({
               id: a.id,
               city: a.city,
               description: a.description,
               price: a.pricePerNight,
-              image: a.mainImage || a.images?.[0] || 'assets/default.jpg',
+              image: a.mainImage?.startsWith('http')
+                ? a.mainImage
+                : a.images?.[0]?.startsWith('http')
+                ? a.images[0]
+                : 'assets/default.jpg',
               images: a.images,
               location: {
                 latitude: a.latitude,
                 longitude: a.longitude,
               },
             }));
-        })
-      );
-  }*/
-  getDestinations(page = 0, size = 10): Observable<DestinationDTO[]> {
-    return this.http
-      .get<ApiResponse<PageResponse<AccommodationDTO>>>(`${this.apiUrl}?page=${page}&size=${size}`)
-      .pipe(
-        map((response) => {
-          const pageData = response.content as PageResponse<AccommodationDTO>;
-          // ✅ El verdadero arreglo está dentro de pageData.content
-          const list: AccommodationDTO[] = Array.isArray(pageData.content)
-            ? pageData.content
-            : (pageData as any).content || [];
-          return list
-            .filter((a) => a.status === 'ACTIVE')
-            .map((a) => ({
-              id: a.id,
-              city: a.city,
-              description: a.description,
-              price: a.pricePerNight,
-              image: a.mainImage || a.images?.[0] || 'assets/default.jpg',
-              images: a.images,
-              location: {
-                latitude: a.latitude,
-                longitude: a.longitude,
-              },
-            }));
+
+          return {
+            content: destinations,
+            totalPages: pageData.totalPages,
+            page: pageData.number,
+          };
         })
       );
   }

@@ -22,12 +22,9 @@ export class HomeMap implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.mapService.create();
-      this.accommodationService.getDestinations().subscribe({
-        next: (places) => {
-          const markers = this.mapItemsToMarkers(places);
-          this.mapService.drawMarkers(markers);
-        },
-        error: (err) => console.error('Error cargando destinos', err),
+      this.accommodationService.getDestinations().subscribe((res) => {
+        const markers = this.mapItemsToMarkers(res.content);
+        this.mapService.drawMarkers(markers); // <-- ESTA LÍNEA ES LA QUE FALTA
       });
     }, 200);
   }

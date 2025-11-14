@@ -32,11 +32,27 @@
     </p>
   </div>
 </section>
+
+<!-- 🗺️ Mapa -->
 <app-home-map [mapHeight]="'600px'" [mapWidth]="'80%'"></app-home-map>
-<!-- 🏡 Destinos cercanos -->
-<section id="destinos" class="fade-up">
+
+<!-- 🏡 Sección Destinos + PAGINACIÓN -->
+<section id="destinos" class="destinos-section fade-up">
+  <h2 class="section-title">Destinos cercanos</h2>
+
   <app-destination-section [destinations]="destinations" [loading]="loading">
   </app-destination-section>
+
+  <!-- PAGINACIÓN -->
+  <div class="pagination-wrapper" *ngIf="totalPages > 1">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">◀ Anterior</button>
+
+    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage + 1 >= totalPages">
+      Siguiente ▶
+    </button>
+  </div>
 </section>
 
 <!-- 🌐 Footer -->
