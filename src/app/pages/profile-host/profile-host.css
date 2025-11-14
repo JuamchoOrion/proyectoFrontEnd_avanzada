@@ -1,0 +1,48 @@
+.profile-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0 2rem;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #eaf5f3;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  min-height: 85vh;
+}
+
+/* Contenido principal */
+.content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+/* Cards */
+.card img {
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .profile-layout {
+    flex-direction: column;
+    margin-top: 5rem;
+    padding: 0 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .content {
+    width: 100%;
+  }
+}

@@ -1,0 +1,95 @@
+<div class="container-fluid mt-4 profile-layout">
+  <div class="row gx-4">
+    <!-- 🧍 Sidebar -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <aside class="sidebar text-center">
+        <!-- Foto de perfil, placeholder mientras carga -->
+        <img 
+          [src]="currentUser?.photoUrl || 'https://picsum.photos/200?grayscale&blur=2'" 
+          alt="Foto de perfil"
+          class="rounded-circle"
+        >
+        <h4>{{ currentUser?.username || 'Nombre Host' }}</h4>
+        <p class="mb-1">📞 {{ currentUser?.phone || 'Teléfono' }}</p>
+        <p class="mb-3">✉️ {{ currentUser?.email || 'Correo' }}</p>
+        <button class="btn btn-primary btn-sm mb-2">Editar Perfil</button>
+        <hr>
+        <button class="btn btn-outline-dark btn-sm w-100 mb-2">➕ Nuevo Alojamiento</button>
+        <button class="btn btn-outline-dark btn-sm w-100">📊 Ver Métricas</button>
+      </aside>
+    </div>
+
+    <!-- 📄 Contenido principal -->
+    <div class="col-lg-9 col-md-8">
+      <main class="content">
+        <h2 class="mb-4 text-primary fw-bold">Mis Alojamientos</h2>
+
+        <!-- FILTROS -->
+        <app-accommodation-filter (filtrar)="aplicarFiltros($event)"></app-accommodation-filter>
+
+        <!-- Lista de alojamientos -->
+        <div class="row g-4">
+          <div class="col-md-6" *ngFor="let acc of accommodations">
+            <div class="card p-3 shadow-sm">
+              <app-destination-card
+                [title]="acc.title"
+                [description]="acc.description"
+                [price]="acc.price"
+                [image]="acc.images?.[0] || 'assets/default.jpg'"
+                [destinationId]="acc.id"
+              ></app-destination-card>
+
+              <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-primary btn-sm">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="onDeleteAccommodation(acc.id)">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="mt-5 mb-4 text-primary fw-bold">Reservas Recibidas</h2>
+
+        <div class="search-section mb-4">
+          <form class="row g-3 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Estado</label>
+              <select class="form-select">
+                <option>Todos</option>
+                <option>Confirmadas</option>
+                <option>Pendientes</option>
+                <option>Canceladas</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-grid">
+              <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="row g-4">
+          <!-- Placeholder de reservas, luego puedes mapear tus reservas reales -->
+          <div class="col-md-6" *ngFor="let r of notificaciones">
+            <div class="card p-3">
+              <h5 class="card-title">{{ r.cliente || 'Cliente Ejemplo' }}</h5>
+              <p class="text-muted">{{ r.detalle || 'Reserva info' }}</p>
+              <span class="badge bg-success">{{ r.status || 'Confirmada' }}</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Notificaciones -->
+      <app-notifications
+        [notificaciones]="notificaciones"
+        (limpiar)="onLimpiarNotificaciones()"
+      ></app-notifications>
+
+      <!-- Footer -->
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

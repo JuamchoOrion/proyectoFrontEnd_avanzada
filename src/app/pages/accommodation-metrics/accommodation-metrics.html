@@ -1,0 +1,40 @@
+<!-- Navbar, Sidebar y Notificaciones -->
+<app-navbar></app-navbar>
+<app-sidebar-profile></app-sidebar-profile>
+<app-notifications></app-notifications>
+
+<div class="container my-5" *ngIf="!loading; else loadingTpl">
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <h2 class="mb-4">Detalle de Alojamiento</h2>
+
+  <!-- Resumen del alojamiento -->
+  <app-destination-summary [destination]="summary"></app-destination-summary>
+
+  <!-- Métricas del alojamiento -->
+  <app-destination-metrics [metrics]="metrics"></app-destination-metrics>
+
+  <!-- Filtros -->
+  <app-destination-filters></app-destination-filters>
+
+  <!-- Tabla de reservas -->
+  <app-reservation-table [reservations]="reservations"></app-reservation-table>
+
+  <!-- Comentarios -->
+  <div *ngFor="let comment of comments">
+    <app-review-card *ngIf="!comment.isHostReply" [review]="comment"></app-review-card>
+    <app-host-comment-card *ngIf="comment.isHostReply" [comment]="comment"></app-host-comment-card>
+  </div>
+</div>
+
+<!-- Template de carga -->
+<ng-template #loadingTpl>
+  <div class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando datos del alojamiento...</p>
+  </div>
+</ng-template>

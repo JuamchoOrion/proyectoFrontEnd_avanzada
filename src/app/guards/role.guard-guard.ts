@@ -9,6 +9,7 @@ export const RoleGuard: CanActivateFn = () => {
 
   return authService.getCurrentUser().pipe(
     map((user) => {
+      console.log(user)
       if (user && user.role === 'ROLE_HOST') {
         console.log('🟢 Acceso permitido: usuario con rol HOST');
         return true;

@@ -4,4 +4,5 @@ export interface UserProfileDTO {
   email: string;
   phone?: string | null;
   photoUrl?: string | null;
+  role?: string;
 }

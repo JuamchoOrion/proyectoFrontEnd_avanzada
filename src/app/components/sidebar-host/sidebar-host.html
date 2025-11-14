@@ -1,0 +1,10 @@
+<div class="sidebar text-center">
+  <img [src]="fotoPerfil || 'assets/default-profile.jpg'" alt="Foto de perfil" class="mb-3 rounded-circle" width="120" height="120" />
+  <h4>{{ nombre }}</h4>
+  <p class="mb-1">📞 {{ telefono }}</p>
+  <p class="mb-3">✉️ {{ correo }}</p>
+  <button class="btn btn-primary btn-sm mb-3">Editar Perfil</button>
+  <hr />
+  <button class="btn btn-outline-dark btn-sm w-100 mb-2" (click)="nuevoAlojamiento()">➕ Nuevo Alojamiento</button>
+  <button class="btn btn-outline-dark btn-sm w-100" (click)="verMetricas()">📊 Ver Métricas</button>
+</div>

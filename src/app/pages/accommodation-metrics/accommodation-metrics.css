@@ -1,0 +1,43 @@
+/* Fondo general */
+:host {
+  display: block;
+  background: #f4fdfc;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* Contenedor principal */
+.container {
+  margin-top: 2rem;
+}
+
+/* Título principal */
+h2 {
+  color: #004466;
+  font-weight: 600;
+}
+
+/* Estado de carga */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.text-center p {
+  color: #008080;
+}
+
+/* Mensaje de error */
+.alert {
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* Espaciado entre secciones */
+app-destination-summary,
+app-destination-metrics,
+app-destination-filters,
+app-reservation-table {
+  display: block;
+  margin-bottom: 2rem;
+}

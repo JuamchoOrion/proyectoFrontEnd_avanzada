@@ -1,0 +1,29 @@
+<div class="card p-3 mb-4 shadow-sm">
+  <form class="row g-3" (ngSubmit)="emitirFiltros()">
+
+    <!-- Título / Ciudad -->
+    <div class="col-md-4">
+      <label class="form-label">Título / Ciudad</label>
+      <input type="text" class="form-control" [(ngModel)]="filtros.title" name="title" placeholder="Buscar...">
+    </div>
+
+    <!-- Precio mínimo -->
+    <div class="col-md-3">
+      <label class="form-label">Precio mínimo</label>
+      <input type="number" class="form-control" [(ngModel)]="filtros.minPrice" name="minPrice">
+    </div>
+
+    <!-- Precio máximo -->
+    <div class="col-md-3">
+      <label class="form-label">Precio máximo</label>
+      <input type="number" class="form-control" [(ngModel)]="filtros.maxPrice" name="maxPrice">
+    </div>
+
+    <!-- Botones -->
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-primary mt-4">Filtrar</button>
+      <button type="button" class="btn btn-secondary mt-2" (click)="limpiar()">Limpiar</button>
+    </div>
+
+  </form>
+</div>

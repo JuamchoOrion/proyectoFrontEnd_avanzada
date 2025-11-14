@@ -3,9 +3,11 @@ import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { Landing } from './pages/landing/landing';
 import { Profile } from './pages/profile/profile';
+import { ProfileHost } from './pages/profile-host/profile-host';
 import { Recover } from './pages/recover/recover';
 import { AuthGuard } from './guards/auth.guard-guard';
 import { AccommodationDetail } from './pages/accommodation-detail/accommodation-detail';
+import { AccommodationMetrics } from './pages/accommodation-metrics/accommodation-metrics';
 import { CreateAccommodationComponent } from './pages/create-accommodation/create-accommodation';
 import { Map } from './components/map/map';
 import { RoleGuard } from './guards/role.guard-guard';
@@ -23,10 +25,17 @@ export const routes: Routes = [
   { path: 'recover', component: Recover },
 
   { path: 'profile', component: Profile, canActivate: [AuthGuard] },
+
+  {
+    path: 'profile-host',
+    component: ProfileHost,
+    canActivate: [AuthGuard, RoleGuard],
+  },
+
   { path: 'edit-profile', component: EditProfilePage, canActivate: [AuthGuard] },
 
   { path: 'landing', component: Landing },
-
+  { path: 'accommodation-metrics/:id', component: AccommodationMetrics },
   {
     path: 'accommodation/:id/reserve',
     component: CreateReservationComponent,
@@ -43,7 +52,6 @@ export const routes: Routes = [
     component: CreateAccommodationComponent,
     canActivate: [RoleGuard],
   },
-
   { path: 'chat', component: Chat },
 
   { path: 'map', component: HomeMap },
