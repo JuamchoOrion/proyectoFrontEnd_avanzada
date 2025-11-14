@@ -1,7 +1,37 @@
 <div class="reviews-container" *ngIf="reviews.length > 0; else noReviews">
   <h3 class="mb-4">Reseñas</h3>
 
-  <app-review-card *ngFor="let r of reviews" [review]="r" class="mb-3"></app-review-card>
+  <div *ngFor="let r of reviews" class="mb-4">
+
+    <!-- Tarjeta original -->
+    <app-review-card [review]="r"></app-review-card>
+
+    <!-- Mostrar respuesta si ya existe -->
+    <div *ngIf="r.reply" class="alert alert-success mt-2">
+      <strong>Respuesta del anfitrión:</strong>
+      <p>{{ r.reply }}</p>
+    </div>
+
+    <!-- Campo de respuesta SOLO si es Host y no hay respuesta aún -->
+    <div *ngIf="isHost && !r.reply" class="mt-2">
+      <label class="form-label">Responder a esta reseña:</label>
+
+      <textarea
+        [(ngModel)]="replyMessages[r.id]"
+        class="form-control"
+        rows="2"
+        placeholder="Escribe una respuesta..."
+      ></textarea>
+
+      <button
+        class="btn btn-primary btn-sm mt-2"
+        (click)="sendReply(r.id)"
+      >
+        Enviar Respuesta
+      </button>
+    </div>
+
+  </div>
 </div>
 
 <ng-template #noReviews>

@@ -47,4 +47,16 @@ export class ReviewService {
   createReview(review: { text: string; rating: number; reservationId: number | String }) {
     return this.http.post<ApiResponse<ReviewDTO>>(`${this.apiUrl}`, review);
   }
+  replyToReview(reviewId: number | string, message: string) {
+  const body = {
+    message: message,
+    reviewId: Number(reviewId)
+  };
+
+  return this.http.post(
+    `${this.apiUrl}/${reviewId}/reply`,
+    body,
+    { withCredentials: true }
+  );
+}
 }

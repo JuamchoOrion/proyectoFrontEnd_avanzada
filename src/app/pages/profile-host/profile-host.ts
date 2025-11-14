@@ -8,6 +8,7 @@ import { AccommodationFilterComponent } from '../../components/accommodation-fil
 import { HostService } from '../../services/host-profile.services';
 import { Accommodation } from '../../models/accommodation';
 import { UserProfileDTO } from '../../models/user-dto';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile-host',
@@ -15,6 +16,7 @@ import { UserProfileDTO } from '../../models/user-dto';
   imports: [
     CommonModule,
     SidebarHostComponent,
+    RouterModule,
     Footer,
     Notifications,
     DestinationCard,
@@ -29,108 +31,64 @@ export class ProfileHost implements OnInit {
   notificaciones: any[] = [];
   currentUser: UserProfileDTO | null = null;
 
+  deletingId: string | number | null = null; // Para spinner en botón
+
   constructor(private hostService: HostService) {}
 
   ngOnInit() {
-    console.log('🔹 Iniciando carga de perfil del host...');
-
-    // 🔹 Obtener datos completos del host logeado
     this.hostService.getCurrentHostProfile().subscribe({
       next: (hostData) => {
-        console.log('🟢 Respuesta recibida del endpoint /me:', hostData);
-
-        if (!hostData) {
-          console.warn('⚠️ HostData es null o indefinido');
-          this.notificaciones.push({
-            tipo: 'error',
-            mensaje: 'No se recibió información del host'
-          });
+        if (!hostData?.id) {
+          this.notificaciones.push({ tipo: 'error', mensaje: 'Perfil inválido' });
           return;
         }
-
-        if (!hostData.id) {
-          console.warn('⚠️ HostData.id no existe:', hostData);
-          this.notificaciones.push({
-            tipo: 'error',
-            mensaje: 'El perfil del host no tiene ID válido'
-          });
-          return;
-        }
-
         this.currentUser = hostData;
-        console.log('✅ Perfil del host asignado a currentUser:', this.currentUser);
-
-        // 🔹 Cargar alojamientos del host
         this.loadAccommodations(hostData.id);
       },
-      error: (err) => {
-        console.error('❌ Error al cargar perfil del host:', err);
-        this.notificaciones.push({
-          tipo: 'error',
-          mensaje: 'No se pudo cargar el perfil del host'
-        });
-      }
+      error: () => this.notificaciones.push({ tipo: 'error', mensaje: 'Error al cargar perfil' })
     });
   }
 
-  /** Cargar alojamientos del host */
   loadAccommodations(hostId: string | number) {
-    console.log('🔹 Cargando alojamientos para hostId:', hostId);
-
     this.hostService.getHostAccommodations(String(hostId)).subscribe({
-      next: (res) => {
-        console.log('🟢 Alojamientos recibidos:', res);
-        this.accommodations = res || [];
-        if (!res || res.length === 0) {
-          this.notificaciones.push({
-            tipo: 'info',
-            mensaje: 'No tienes alojamientos registrados'
-          });
-        }
-      },
-      error: (err) => {
-        console.error('❌ Error al cargar alojamientos:', err);
-        this.notificaciones.push({
-          tipo: 'error',
-          mensaje: 'No se pudieron cargar los alojamientos'
-        });
-      },
+      next: (res) => this.accommodations = res || [],
+      error: () => this.notificaciones.push({ tipo: 'error', mensaje: 'Error al cargar alojamientos' })
     });
   }
 
-  /** Filtrar alojamientos */
-  aplicarFiltros(filtros: any) {
-    console.log('Filtros aplicados:', filtros);
+  aplicarFiltros(filtros: any) { console.log('Filtros:', filtros); }
+
+  /** Confirmar antes de eliminar */
+  confirmDelete(accId: string | number) {
+    if (confirm('¿Estás seguro de eliminar este alojamiento?')) {
+      this.onDeleteAccommodation(accId);
+    }
   }
 
-  /** Eliminar alojamiento */
+  /** Eliminar alojamiento (soft delete) */
   onDeleteAccommodation(accId: string | number) {
     if (!this.currentUser?.id) return;
 
-    console.log('🔹 Eliminando alojamiento:', accId);
+    this.deletingId = accId;
 
     this.hostService.deleteAccommodation(String(this.currentUser.id), accId).subscribe({
       next: () => {
         this.accommodations = this.accommodations.filter(a => a.id !== accId);
-        console.log('✅ Alojamiento eliminado correctamente:', accId);
         this.notificaciones.push({
           tipo: 'success',
           mensaje: `Alojamiento #${accId} eliminado correctamente`
         });
+        this.deletingId = null;
       },
       error: (err) => {
-        console.error('❌ Error al eliminar alojamiento:', err);
         this.notificaciones.push({
           tipo: 'error',
           mensaje: err.error?.message || 'Error al eliminar alojamiento'
         });
+        this.deletingId = null;
       }
     });
   }
 
-  /** Limpiar notificaciones */
-  onLimpiarNotificaciones() {
-    this.notificaciones = [];
-  }
-
+  onLimpiarNotificaciones() { this.notificaciones = []; }
 }

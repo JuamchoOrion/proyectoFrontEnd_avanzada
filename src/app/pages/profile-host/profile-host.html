@@ -3,12 +3,9 @@
     <!-- 🧍 Sidebar -->
     <div class="col-lg-3 col-md-4 mb-4">
       <aside class="sidebar text-center">
-        <!-- Foto de perfil, placeholder mientras carga -->
-        <img 
-          [src]="currentUser?.photoUrl || 'https://picsum.photos/200?grayscale&blur=2'" 
-          alt="Foto de perfil"
-          class="rounded-circle"
-        >
+        <img [src]="currentUser?.photoUrl || 'https://picsum.photos/200?grayscale&blur=2'" 
+             alt="Foto de perfil"
+             class="rounded-circle">
         <h4>{{ currentUser?.username || 'Nombre Host' }}</h4>
         <p class="mb-1">📞 {{ currentUser?.phone || 'Teléfono' }}</p>
         <p class="mb-3">✉️ {{ currentUser?.email || 'Correo' }}</p>
@@ -40,13 +37,26 @@
               ></app-destination-card>
 
               <div class="mt-2 d-flex gap-2">
+                <button class="btn btn-info btn-sm"
+                        [routerLink]="['/accommodation', acc.id]"
+                        [queryParams]="{ metrics: true }">
+                  Ver Métricas
+                </button>
                 <button class="btn btn-primary btn-sm">Editar</button>
-                <button class="btn btn-danger btn-sm" (click)="onDeleteAccommodation(acc.id)">Eliminar</button>
+
+                <!-- BOTÓN ELIMINAR CON SPINNER -->
+                <button class="btn btn-danger btn-sm" 
+                        (click)="confirmDelete(acc.id)" 
+                        [disabled]="deletingId === acc.id">
+                  <span *ngIf="deletingId === acc.id" class="spinner-border spinner-border-sm"></span>
+                  <span *ngIf="deletingId !== acc.id">Eliminar</span>
+                </button>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Sección reservas y notificaciones -->
         <h2 class="mt-5 mb-4 text-primary fw-bold">Reservas Recibidas</h2>
 
         <div class="search-section mb-4">
@@ -71,7 +81,6 @@
         </div>
 
         <div class="row g-4">
-          <!-- Placeholder de reservas, luego puedes mapear tus reservas reales -->
           <div class="col-md-6" *ngFor="let r of notificaciones">
             <div class="card p-3">
               <h5 class="card-title">{{ r.cliente || 'Cliente Ejemplo' }}</h5>
@@ -82,13 +91,11 @@
         </div>
       </main>
 
-      <!-- Notificaciones -->
       <app-notifications
         [notificaciones]="notificaciones"
         (limpiar)="onLimpiarNotificaciones()"
       ></app-notifications>
 
-      <!-- Footer -->
       <app-footer></app-footer>
     </div>
   </div>
