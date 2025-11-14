@@ -13,13 +13,28 @@ export class ReservationService {
   constructor(private http: HttpClient) {}
 
   /** ✅ Obtener reservas iniciales (sin filtros) */
-  getUserReservations(): Observable<ReservationDTO[]> {
+  getUserReservations(
+    page = 0,
+    size = 5
+  ): Observable<{
+    content: ReservationDTO[];
+    totalPages: number;
+    page: number;
+  }> {
     return this.http
-      .get<{ error: boolean; content: any }>(this.apiUrl, {
+      .get<{ error: boolean; content: any }>(`${this.apiUrl}?page=${page}&size=${size}`, {
         withCredentials: true,
       })
       .pipe(
-        map((res) => res.content?.content ?? []) // <-- seguro
+        map((res) => {
+          const pageData = res.content;
+
+          return {
+            content: pageData.content,
+            totalPages: pageData.totalPages,
+            page: pageData.number,
+          };
+        })
       );
   }
 
@@ -46,22 +61,35 @@ export class ReservationService {
   }
 
   /** 🔍 Obtener reservas con filtros dinámicos */
-  getUserReservationsFiltered(params?: any): Observable<ReservationDTO[]> {
-    let httpParams = new HttpParams();
+  getUserReservationsFiltered(
+    filtros: any,
+    page = 0,
+    size = 5
+  ): Observable<{
+    content: ReservationDTO[];
+    totalPages: number;
+    page: number;
+  }> {
+    let params = new HttpParams().set('page', page).set('size', size);
 
-    if (params) {
-      Object.keys(params).forEach((key) => {
-        if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
-          httpParams = httpParams.set(key, params[key]);
-        }
-      });
-    }
+    Object.keys(filtros || {}).forEach((key) => {
+      if (filtros[key]) params = params.set(key, filtros[key]);
+    });
 
     return this.http
-      .get<{ error: boolean; content: { content: ReservationDTO[] } }>(this.apiUrl, {
-        params: httpParams,
+      .get<{ error: boolean; content: any }>(this.apiUrl, {
+        params,
         withCredentials: true,
       })
-      .pipe(map((res) => res.content.content));
+      .pipe(
+        map((res) => {
+          const p = res.content;
+          return {
+            content: p.content,
+            totalPages: p.totalPages,
+            page: p.number,
+          };
+        })
+      );
   }
 }

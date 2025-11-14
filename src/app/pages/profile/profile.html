@@ -28,4 +28,24 @@
     </div>
   </div>
 </div>
-<app-footer></app-footer>
+<div class="pagination-wrapper" *ngIf="totalPages > 1">
+  <button
+    class="page-btn"
+    (click)="loadReservations(currentPage - 1)"
+    [disabled]="currentPage === 0"
+  >
+    ◀ Anterior
+  </button>
+
+  <span class="page-info">
+    Página <strong>{{ currentPage + 1 }}</strong> de {{ totalPages }}
+  </span>
+
+  <button
+    class="page-btn"
+    (click)="loadReservations(currentPage + 1)"
+    [disabled]="currentPage + 1 >= totalPages"
+  >
+    Siguiente ▶
+  </button>
+</div>

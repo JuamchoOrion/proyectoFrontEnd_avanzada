@@ -42,7 +42,7 @@ export class AccommodationService {
   private apiUrl = 'http://localhost:9090/api/accommodations';
 
   constructor(private http: HttpClient) {}
-  getDestinations(page = 0, size = 10): Observable<DestinationsPage> {
+  getDestinations(page = 0, size = 9): Observable<DestinationsPage> {
     return this.http
       .get<ApiResponsePage<AccommodationDTO>>(`${this.apiUrl}?page=${page}&size=${size}`)
       .pipe(

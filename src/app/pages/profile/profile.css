@@ -109,3 +109,43 @@
     gap: 0.5rem;
   }
 }
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1rem;
+}
+
+.page-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  background-color: #0077b6;
+  border: none;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #005f8e;
+  transform: translateY(-2px);
+}
+
+.page-btn:disabled {
+  background-color: #bcd3df;
+  color: #6e7e85;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.page-info {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+}

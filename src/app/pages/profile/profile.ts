@@ -7,7 +7,7 @@ import { ReservationService } from '../../services/reservation.services';
 import { AccommodationService } from '../../services/accommodation.services';
 import { ReservationDTO } from '../../models/reservation-dto';
 import { ReservationFilterComponent } from '../../components/reservation-filter/reservations-filter';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -16,16 +16,18 @@ import { ReservationFilterComponent } from '../../components/reservation-filter/
     ReservationFilterComponent,
     ReservationSection,
     Notifications,
-    Footer
+    Footer,
+    CommonModule,
   ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
 })
 export class Profile implements OnInit {
-
   reservas: ReservationDTO[] = [];
   notificaciones: any[] = [];
-
+  currentPage = 0;
+  totalPages = 0;
+  pageSize = 4;
   constructor(
     private reservationService: ReservationService,
     private accommodationService: AccommodationService
@@ -38,10 +40,13 @@ export class Profile implements OnInit {
   /** ============================
    *  🔹 Cargar todas las reservas
    *  ============================ */
-  loadReservations() {
-    this.reservationService.getUserReservations().subscribe({
+  loadReservations(page: number = 0) {
+    this.reservationService.getUserReservations(page, this.pageSize).subscribe({
       next: (res) => {
-        this.mapearReservas(res);
+        this.totalPages = res.totalPages;
+        this.currentPage = res.page;
+
+        this.mapearReservas(res.content);
       },
       error: (err) => console.error('❌ Error al cargar reservas:', err),
     });
@@ -50,13 +55,17 @@ export class Profile implements OnInit {
   /** ===================================================
    *  🔹 Filtros enviados desde <app-reservations-filter>
    *  =================================================== */
-  aplicarFiltros(filtros: any) {
-  this.reservationService.getUserReservationsFiltered(filtros).subscribe({
-    next: (res) => this.mapearReservas(res),
-    error: (err) => console.error("❌ Error al aplicar filtros:", err)
-  });
-}
+  aplicarFiltros(filtros: any, page: number = 0) {
+    this.reservationService.getUserReservationsFiltered(filtros, page, this.pageSize).subscribe({
+      next: (res) => {
+        this.totalPages = res.totalPages;
+        this.currentPage = res.page;
 
+        this.mapearReservas(res.content);
+      },
+      error: (err) => console.error('❌ Error al aplicar filtros:', err),
+    });
+  }
   /** ==============================
    *  🔹 Mapear reservas con imagen
    *  ============================== */
@@ -84,7 +93,7 @@ export class Profile implements OnInit {
             reserva.imagen =
               alojamiento.mainImage || alojamiento.images?.[0] || 'assets/default.jpg';
           },
-          error: () => reserva.imagen = 'assets/default.jpg'
+          error: () => (reserva.imagen = 'assets/default.jpg'),
         });
       } else {
         reserva.imagen = 'assets/default.jpg';
@@ -95,13 +104,13 @@ export class Profile implements OnInit {
   /** ============================
    *  🔹 Cancelar reserva
    *  ============================ */
-   /** 🔥 CANCELAR RESERVA */
+  /** 🔥 CANCELAR RESERVA */
   onCancelarReserva(id: number) {
     this.reservationService.cancelReservation(id).subscribe({
       next: (res) => {
         this.notificaciones.push({
           tipo: 'success',
-          mensaje: `La reserva #${id} fue cancelada correctamente`
+          mensaje: `La reserva #${id} fue cancelada correctamente`,
         });
 
         // Actualizar la lista después de cancelar
@@ -110,17 +119,13 @@ export class Profile implements OnInit {
       error: (err) => {
         this.notificaciones.push({
           tipo: 'error',
-          mensaje: err.error?.message || 'Error al cancelar la reserva'
+          mensaje: err.error?.message || 'Error al cancelar la reserva',
         });
-      }
+      },
     });
   }
-
-  
-
 
   onLimpiarNotificaciones() {
     this.notificaciones = [];
   }
-
 }
