@@ -25,17 +25,24 @@ export class HostService {
           if (res.error || !res.content) {
             throw new Error(res.message || 'Error obteniendo host');
           }
-          return res.content; // ⬅️ EL PUNTO IMPORTANTE
+          return res.content;
         })
       );
   }
 
   /** Obtener alojamientos del host */
   getHostAccommodations(hostId: string | number): Observable<Accommodation[]> {
-    return this.http.get<Accommodation[]>(
-      `${this.apiUrl}/${String(hostId)}/accommodations`,
-      { withCredentials: true }
-    );
+    return this.http
+      .get<{ error: boolean; content: Accommodation[]; message: string }>(
+        `${this.apiUrl}/${String(hostId)}/accommodations`,
+        { withCredentials: true }
+      )
+      .pipe(
+        map((res) => {
+          console.log("🟣 RAW RESPONSE /accommodations:", res);
+          return res.content || [];
+        })
+      );
   }
 
   /** Eliminar alojamiento */
