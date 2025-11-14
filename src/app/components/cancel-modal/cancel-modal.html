@@ -5,20 +5,21 @@
         <h5 class="modal-title">Cancelar Reserva</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+
       <div class="modal-body">
-        ¿Deseas cancelar esta reserva?
+        ¿Deseas cancelar esta reserva #{{ reserva?.id }}?
         <br />
-        <small>Solo puedes cancelar hasta 48 horas antes del check-in.</small>
+        <small>Solo puedes cancelar hasta 48 horas antes del Check-in.</small>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         <button
-          type="button"
-          class="btn btn-cancelar"
+          class="btn btn-danger"
           data-bs-dismiss="modal"
           (click)="confirmarAccion()"
         >
-          Confirmar Cancelación
+          Confirmar cancelación
         </button>
       </div>
     </div>

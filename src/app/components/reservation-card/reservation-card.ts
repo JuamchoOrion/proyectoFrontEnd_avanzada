@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
 })
 export class ReservationCard {
   @Input() reserva: any;
-  @Output() abrirModal = new EventEmitter<void>();
+  @Output() abrirModal = new EventEmitter<any>();
 
   abrir() {
-    this.abrirModal.emit();
+    this.abrirModal.emit(this.reserva); // ← ENVÍA LA RESERVA SELECCIONADA
   }
   constructor(private router: Router) {}
 
