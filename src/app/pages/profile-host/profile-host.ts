@@ -20,6 +20,7 @@ import { AccommodationDTO } from '../../models/accommodation-dto';
   imports: [
     CommonModule,
     SidebarHostComponent,
+    RouterModule,
     Footer,
     Notifications,
     DestinationCard,
@@ -41,11 +42,10 @@ export class ProfileHost implements OnInit {
     private hostService: HostService,
     private accommodationService: AccommodationService
   ) {}
+  deletingId: string | number | null = null; // Para spinner en botón
+
 
   ngOnInit() {
-    console.log('🔹 Iniciando carga de perfil del host...');
-
-    // 🔹 Obtener datos completos del host logeado
     this.hostService.getCurrentHostProfile().subscribe({
       next: (hostData) => {
         console.log('🟢 Respuesta recibida del endpoint /me:', hostData);
@@ -69,9 +69,6 @@ export class ProfileHost implements OnInit {
         }
 
         this.currentUser = hostData;
-        console.log('✅ Perfil del host asignado a currentUser:', this.currentUser);
-
-        // 🔹 Cargar alojamientos del host
         this.loadAccommodations(hostData.id);
         this.loadReservations(hostData.id);
       },
@@ -85,10 +82,7 @@ export class ProfileHost implements OnInit {
     });
   }
 
-  /** Cargar alojamientos del host */
   loadAccommodations(hostId: string | number) {
-    console.log('🔹 Cargando alojamientos para hostId:', hostId);
-
     this.hostService.getHostAccommodations(String(hostId)).subscribe({
       next: (res) => {
         console.log('🟢 Alojamientos recibidos:', res);
@@ -135,13 +129,19 @@ export class ProfileHost implements OnInit {
   /** Filtrar alojamientos */
   aplicarFiltros(filtros: any) {
     console.log('Filtros aplicados:', filtros);
+
+  /** Confirmar antes de eliminar */
+  confirmDelete(accId: string | number) {
+    if (confirm('¿Estás seguro de eliminar este alojamiento?')) {
+      this.onDeleteAccommodation(accId);
+    }
   }
 
-  /** Eliminar alojamiento */
+  /** Eliminar alojamiento (soft delete) */
   onDeleteAccommodation(accId: string | number) {
     if (!this.currentUser?.id) return;
 
-    console.log('🔹 Eliminando alojamiento:', accId);
+    this.deletingId = accId;
 
     this.hostService.deleteAccommodation(String(this.currentUser.id), accId).subscribe({
       next: () => {
@@ -151,9 +151,9 @@ export class ProfileHost implements OnInit {
           tipo: 'success',
           mensaje: `Alojamiento #${accId} eliminado correctamente`,
         });
+        this.deletingId = null;
       },
       error: (err) => {
-        console.error('❌ Error al eliminar alojamiento:', err);
         this.notificaciones.push({
           tipo: 'error',
           mensaje: err.error?.message || 'Error al eliminar alojamiento',

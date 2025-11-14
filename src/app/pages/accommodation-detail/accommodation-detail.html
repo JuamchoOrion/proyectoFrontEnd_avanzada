@@ -3,12 +3,10 @@
 <div class="container my-5" *ngIf="!loading && destination">
   <!-- Sección superior: carrusel + tarjeta -->
   <div class="row g-4 align-items-center">
-    <!-- Carrusel a la izquierda -->
     <div class="col-md-7">
       <app-carousel [images]="destination.images" showMode="all"></app-carousel>
     </div>
 
-    <!-- Información del destino a la derecha -->
     <div class="col-md-5">
       <app-destination-info [destination]="destination"></app-destination-info>
     </div>
@@ -24,6 +22,7 @@
     </div>
     <div class="col-md-4"></div>
   </div>
+
   <!-- Mapa -->
   <div class="row mt-5">
     <div class="col-12">
@@ -31,8 +30,31 @@
     </div>
   </div>
 
+<!-- MÉTRICAS (solo host) -->
+<div *ngIf="isHost && showMetrics" class="mt-5">
+  <h4 class="mb-4">📊 Métricas del alojamiento</h4>
+
+  <div class="row text-center mb-5">
+    <div class="col-md-6 mb-3">
+      <div class="metric-card p-3 border rounded">
+        <p>Total de Reservas</p>
+        <p class="h5">{{ metrics?.totalReservations }}</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="metric-card p-3 border rounded">
+        <p>Calificación Promedio</p>
+        <p class="h5">{{ metrics?.averageRating | number:'1.1-2' }} ⭐</p>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- Reseñas -->
-  <app-reviews-section [reviews]="reviews"></app-reviews-section>
+  <app-reviews-section
+    [reviews]="reviews"
+    [isHost]="isHost"
+  ></app-reviews-section>
 </div>
 
 <!-- Loader -->
