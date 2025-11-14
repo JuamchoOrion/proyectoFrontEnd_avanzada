@@ -6,6 +6,7 @@ import { UserService } from '../../services/user.services';
 import { UserProfileDTO } from '../../models/user-dto';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Footer } from '../../components/footer/footer';
 
 interface Contact extends UserProfileDTO {
   displayName?: string;
@@ -14,7 +15,7 @@ interface Contact extends UserProfileDTO {
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Footer],
   templateUrl: './chat.html',
   styleUrls: ['./chat.css'],
 })

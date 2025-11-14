@@ -34,7 +34,6 @@ export class Login {
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         Swal.fire('Éxito', 'Login exitoso', 'success');
-
         this.ngZone.run(() => this.router.navigate(['/landing']));
       },
       error: (error) => {

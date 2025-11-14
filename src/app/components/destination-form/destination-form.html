@@ -7,26 +7,66 @@
 
     <div class="mb-3">
       <label class="form-label">Descripción</label>
-      <textarea class="form-control" name="description" [(ngModel)]="dto.description" rows="4" required></textarea>
+      <textarea
+        class="form-control"
+        name="description"
+        [(ngModel)]="dto.description"
+        rows="4"
+        required
+      ></textarea>
     </div>
 
     <h5 class="text-primary mt-4">Ubicación</h5>
+
     <div class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Ciudad</label>
         <input type="text" class="form-control" name="city" [(ngModel)]="dto.city" required />
       </div>
+
       <div class="col-md-6">
         <label class="form-label">Dirección</label>
         <input type="text" class="form-control" name="address" [(ngModel)]="dto.address" required />
       </div>
+
+      <!-- 🔥 MAPA INTERACTIVO -->
+      <div class="col-12 mt-3">
+        <label class="form-label fw-bold">Selecciona la ubicación en el mapa</label>
+        <div
+          id="map"
+          style="height: 350px; width: 100%; border-radius: 10px; border: 1px solid #ccc"
+        ></div>
+
+        <!-- Coordenadas seleccionadas -->
+        <p class="mt-2 text-success" *ngIf="dto.latitude && dto.longitude">
+          📍 Ubicación seleccionada:
+          <strong>{{ dto.latitude }}</strong
+          >,
+          <strong>{{ dto.longitude }}</strong>
+        </p>
+      </div>
+
+      <!-- Inputs opcionales (se llenan automáticamente) -->
       <div class="col-md-6">
         <label class="form-label">Latitud</label>
-        <input type="text" class="form-control" name="latitude" [(ngModel)]="dto.latitude" />
+        <input
+          type="text"
+          class="form-control"
+          name="latitude"
+          [(ngModel)]="dto.latitude"
+          readonly
+        />
       </div>
+
       <div class="col-md-6">
         <label class="form-label">Longitud</label>
-        <input type="text" class="form-control" name="longitude" [(ngModel)]="dto.longitude" />
+        <input
+          type="text"
+          class="form-control"
+          name="longitude"
+          [(ngModel)]="dto.longitude"
+          readonly
+        />
       </div>
     </div>
 
@@ -34,101 +74,113 @@
     <div class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Precio por noche</label>
-        <input type="number" class="form-control" name="pricePerNight" [(ngModel)]="dto.pricePerNight" required />
+        <input
+          type="number"
+          class="form-control"
+          name="pricePerNight"
+          [(ngModel)]="dto.pricePerNight"
+          required
+        />
       </div>
       <div class="col-md-6">
         <label class="form-label">Capacidad máxima</label>
-        <input type="number" class="form-control" name="maxCapacity" [(ngModel)]="dto.maxCapacity" required />
+        <input
+          type="number"
+          class="form-control"
+          name="maxCapacity"
+          [(ngModel)]="dto.maxCapacity"
+          required
+        />
       </div>
     </div>
 
     <h5 class="text-primary mt-4">Servicios</h5>
-<div class="row">
-  <div class="col-md-4">
-    <div class="form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="wifi"
-        (change)="toggleService('WIFI', $event.target.checked)"
-      />
-      <label class="form-check-label" for="wifi">WiFi</label>
-    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="wifi"
+            (change)="toggleService('WIFI', $event.target.checked)"
+          />
+          <label class="form-check-label" for="wifi">WiFi</label>
+        </div>
 
-    <div class="form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="pool"
-        (change)="toggleService('POOL', $event.target.checked)"
-      />
-      <label class="form-check-label" for="pool">Piscina</label>
-    </div>
-  </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="pool"
+            (change)="toggleService('POOL', $event.target.checked)"
+          />
+          <label class="form-check-label" for="pool">Piscina</label>
+        </div>
+      </div>
 
-  <div class="col-md-4">
-    <div class="form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="breakfast"
-        (change)="toggleService('BREAKFAST', $event.target.checked)"
-      />
-      <label class="form-check-label" for="breakfast">Desayuno incluido</label>
-    </div>
+      <div class="col-md-4">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="breakfast"
+            (change)="toggleService('BREAKFAST', $event.target.checked)"
+          />
+          <label class="form-check-label" for="breakfast">Desayuno incluido</label>
+        </div>
 
-    <div class="form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="air"
-        (change)="toggleService('AIR_CONDITIONING', $event.target.checked)"
-      />
-      <label class="form-check-label" for="air">Aire acondicionado</label>
-    </div>
-  </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="air"
+            (change)="toggleService('AIR_CONDITIONING', $event.target.checked)"
+          />
+          <label class="form-check-label" for="air">Aire acondicionado</label>
+        </div>
+      </div>
 
-  <div class="col-md-4">
-    <div class="form-check">
-      <input
-        type="checkbox"
-        class="form-check-input"
-        id="parking"
-        (change)="toggleService('PARKING', $event.target.checked)"
-      />
-      <label class="form-check-label" for="parking">Parqueadero</label>
+      <div class="col-md-4">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="parking"
+            (change)="toggleService('PARKING', $event.target.checked)"
+          />
+          <label class="form-check-label" for="parking">Parqueadero</label>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <h5 class="text-primary mt-4">Imágenes</h5>
-<div class="mb-3">
-  <input
-    type="file"
-    class="form-control"
-    multiple
-    accept="image/*"
-    (change)="onFilesSelected($event)"
-  />
-  <small class="text-muted">Máximo 10 imágenes (png, jpg, jpeg, webp, gif).</small>
-</div>
-
-<!-- Vista previa con opción de eliminar -->
-<div class="row mt-3" *ngIf="imagePreviews.length > 0">
-  <div class="col-md-3 mb-3 text-center" *ngFor="let img of imagePreviews; let i = index">
-    <div class="position-relative">
-      <img [src]="img" class="img-fluid rounded shadow-sm mb-2" alt="Vista previa" />
-      <button
-        type="button"
-        class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
-        (click)="removeImage(i)"
-      >
-        ✕
-      </button>
+    <div class="mb-3">
+      <input
+        type="file"
+        class="form-control"
+        multiple
+        accept="image/*"
+        (change)="onFilesSelected($event)"
+      />
+      <small class="text-muted">Máximo 10 imágenes (png, jpg, jpeg, webp, gif).</small>
     </div>
-    <small class="text-muted d-block text-truncate">{{ dto.images[i]?.name }}</small>
-  </div>
-</div>
+
+    <!-- Vista previa con opción de eliminar -->
+    <div class="row mt-3" *ngIf="imagePreviews.length > 0">
+      <div class="col-md-3 mb-3 text-center" *ngFor="let img of imagePreviews; let i = index">
+        <div class="position-relative">
+          <img [src]="img" class="img-fluid rounded shadow-sm mb-2" alt="Vista previa" />
+          <button
+            type="button"
+            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
+            (click)="removeImage(i)"
+          >
+            ✕
+          </button>
+        </div>
+        <small class="text-muted d-block text-truncate">{{ dto.images[i]?.name }}</small>
+      </div>
+    </div>
 
     <div class="d-flex justify-content-between mt-4">
       <button type="submit" class="btn btn-primary">Guardar Alojamiento</button>

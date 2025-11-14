@@ -7,11 +7,13 @@ import { ReservationForm } from '../../components/reservation-form/reservation-f
 import { ReservationSummary } from '../../components/reservation-summary/reservation-summary';
 import { AccommodationService } from '../../services/accommodation.services';
 import { CreateReservationDTO } from '../../models/create-reservation-dto';
-
+import { Map } from '../../components/map/map';
+import { MapService } from '../../services/map/map-service';
+import { MarkerDTO } from '../../models/marker-dto';
 @Component({
   selector: 'app-create-reservation',
   standalone: true,
-  imports: [CommonModule, Navbar, Footer, ReservationForm, ReservationSummary],
+  imports: [CommonModule, Navbar, Footer, ReservationForm, ReservationSummary, Map ],
   templateUrl: './create-reservation.html',
   styleUrls: ['./create-reservation.css'],
 })
@@ -27,7 +29,8 @@ export class CreateReservationComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private accommodationService: AccommodationService
+    private accommodationService: AccommodationService,
+    private mapService: MapService
   ) {}
 
   ngOnInit() {
@@ -40,6 +43,20 @@ export class CreateReservationComponent implements OnInit {
       next: (data) => {
         this.accommodation = data;
         console.log('🟢 Alojamiento cargado:', data);
+         const marker: MarkerDTO = {
+        id: data.id,
+        title: data.address,
+        photoUrl: data.mainImage || data.images?.[0] || '',
+        location: {
+          latitude: data.latitude,
+          longitude: data.longitude,
+        },
+      };
+       // Esperar a que el mapa se renderice
+      setTimeout(() => {
+        this.mapService.drawMarkers([marker]);
+      }, 200);
+    
       },
       error: (err) => {
         console.error('❌ Error al cargar alojamiento:', err);

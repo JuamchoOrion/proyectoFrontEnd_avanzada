@@ -7,33 +7,55 @@ import { Footer } from '../../components/footer/footer';
 import { AccommodationService } from '../../services/accommodation.services';
 import { DestinationDTO } from '../../models/destination-dto';
 import { HomeMap } from '../../components/home-map/home-map';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [Navbar, SearchFilter, CarouselComponent, DestinationsSection, Footer, HomeMap],
+  imports: [
+    Navbar,
+    SearchFilter,
+    CarouselComponent,
+    DestinationsSection,
+    Footer,
+    HomeMap,
+    CommonModule,
+  ],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
 })
 export class Landing implements OnInit {
   destinations: DestinationDTO[] = [];
   heroImages: string[] = [];
+  currentPage = 0;
+  totalPages = 0;
   loading = true;
 
   constructor(private accommodationService: AccommodationService) {}
 
   ngOnInit(): void {
-    this.loadDestinations();
+    this.loadDestinations(0);
   }
 
   /** 🔹 Cargar todos los alojamientos al iniciar */
-  loadDestinations(): void {
-    this.accommodationService.getDestinations().subscribe({
-      next: (data) => {
-        this.updateDestinations(data);
-      },
-      error: (err) => {
-        console.error('❌ Error al cargar alojamientos:', err);
+
+  loadDestinations(page: number): void {
+    this.loading = true;
+
+    this.accommodationService.getDestinations(page).subscribe({
+      next: (res) => {
+        console.log('📌 RES:', res);
+        console.log('📌 res.totalPages:', res.totalPages);
+        console.log('📌 res.page:', res.page);
+
+        this.destinations = res.content;
+        this.totalPages = res.totalPages;
+        this.currentPage = res.page;
+
+        console.log('📌 this.totalPages:', this.totalPages);
+
+        this.heroImages = [
+          ...res.content.map((d) => d.images?.[0] || d.image || 'assets/default.jpg'),
+        ];
         this.loading = false;
       },
     });
@@ -56,7 +78,10 @@ export class Landing implements OnInit {
       },
     });
   }
-
+  changePage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.loadDestinations(page);
+  }
   /** 🔹 Actualizar destinos y carrusel */
   private updateDestinations(data: DestinationDTO[]): void {
     this.destinations = data;

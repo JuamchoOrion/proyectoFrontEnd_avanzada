@@ -1,37 +1,51 @@
 <div class="login-container">
-  <div class="auth-card">
-    <h3 class="text-center mb-4 text-primary">Restablecer Contraseña</h3>
+  <div class="auth-card animate-fade">
+    <h3 class="text-center mb-3 text-primary">Restablecer contraseña</h3>
+    <p class="staynow-info">Ingresa tu correo para recibir el código de recuperación.</p>
 
+    <!-- Paso 1: enviar código -->
     <form *ngIf="step === 'send'" (ngSubmit)="sendCode()">
-      <div class="mb-3">
-        <label class="form-label">Correo electrónico</label>
-        <input [(ngModel)]="email" name="email" type="email" class="form-control" required />
+      <div class="input-group mb-3">
+        <label>Correo electrónico</label>
+        <input
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          class="form-control"
+          placeholder="tucorreo@email.com"
+          required
+        />
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Enviar código</button>
+      <button type="submit" class="btn-primary w-100">Enviar código</button>
     </form>
+
+    <!-- Paso 2: confirmar y cambiar contraseña -->
     <form *ngIf="step === 'confirm'" (ngSubmit)="changePassword()">
-      <div class="mb-3">
-        <label class="form-label">Código de recuperación</label>
+      <p class="staynow-info">Ingresa el código que enviamos a tu correo.</p>
+
+      <div class="input-group mb-3">
+        <label>Código de recuperación</label>
         <input [(ngModel)]="code" name="code" type="text" class="form-control" required />
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Nueva contraseña</label>
+      <div class="input-group mb-3">
+        <label>Nueva contraseña</label>
         <input
           [(ngModel)]="newPassword"
           name="newPassword"
           type="password"
           class="form-control"
+          placeholder="********"
           required
         />
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Cambiar Contraseña</button>
+      <button type="submit" class="btn-primary w-100">Cambiar contraseña</button>
     </form>
 
     <p class="text-center mt-3">
-      ¿Ya recuerdas tu contraseña?
+      ¿Ya la recordaste?
       <a routerLink="/login" class="toggle-link">Inicia sesión</a>
     </p>
   </div>

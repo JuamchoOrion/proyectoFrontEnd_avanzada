@@ -1,19 +1,14 @@
-<section class="container mb-5">
-  <h2 class="mb-4 text-center text-primary">Destinos Cercanos</h2>
-
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border text-primary"></div>
+<div *ngIf="loading" class="loading-center">
+  <div class="spinner-border text-primary"></div>
+</div>
+<div class="row g-4 justify-content-center">
+  <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let d of destinations">
+    <app-destination-card
+      [title]="d.city"
+      [description]="d.description"
+      [price]="d.price"
+      [image]="d.image"
+      [destinationId]="d.id"
+    ></app-destination-card>
   </div>
-
-  <div *ngIf="!loading" class="row g-4">
-    <div class="col-md-4" *ngFor="let d of destinations">
-      <app-destination-card
-        [title]="d.city"
-        [description]="d.description"
-        [price]="d.price"
-        [image]="d.image"
-        [destinationId]="d.id"
-      ></app-destination-card>
-    </div>
-  </div>
-</section>
+</div>

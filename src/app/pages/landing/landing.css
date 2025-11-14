@@ -1,7 +1,8 @@
 :host {
   display: block;
-  margin-top: -20px; /* 🔥 compensa la altura de la navbar */
+  /* NO usamos margin negativo, ya no se necesita */
 }
+
 /* 🌍 Hero principal */
 .hero-section {
   background: linear-gradient(rgba(0, 68, 102, 0.6), rgba(0, 68, 102, 0.6)),
@@ -24,26 +25,22 @@
   }
 }
 
-/* ✨ Efectos de animación */
-.fade-in {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fadeIn 1s ease-out forwards;
-}
-.fade-in-delay {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fadeIn 1s ease-out 0.5s forwards;
-}
-.fade-up {
+/* ✨ Animaciones */
+.fade-in,
+.fade-in-delay,
+.fade-up,
+.fade-up-delay {
   opacity: 0;
   transform: translateY(25px);
   animation: fadeIn 1.2s ease-out forwards;
 }
+
+.fade-in-delay {
+  animation-delay: 0.5s;
+}
+
 .fade-up-delay {
-  opacity: 0;
-  transform: translateY(25px);
-  animation: fadeIn 1.2s ease-out 0.5s forwards;
+  animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
@@ -51,15 +48,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* ✈️ Botón principal */
-.scale-on-hover {
-  transition: all 0.3s ease;
-}
-.scale-on-hover:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.3);
 }
 
 /* 🔍 Buscador */
@@ -82,22 +70,48 @@
   overflow: hidden;
 }
 
-/* 💬 Sección informativa */
+/* 💬 Info */
 .info-section {
   background: #f8fafb;
   border-top: 2px solid #e0f0f0;
 }
 
-/* 🏡 Sección destinos */
-#destinos {
-  padding: 3rem 0;
+/* 🏡 Destinos */
+.destinos-section {
+  padding: 4rem 0;
 }
 
-/* 🧁 Transiciones suaves */
-section,
-div,
-h1,
-h2,
-p {
-  transition: all 0.3s ease-in-out;
+.section-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #0077b6;
+  margin-bottom: 2rem;
+}
+
+/* 🔢 PAGINACIÓN */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.pagination-wrapper button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #008080;
+  color: white;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.pagination-wrapper button:disabled {
+  background-color: #b9dada;
+  cursor: not-allowed;
+}
+
+.pagination-wrapper button:hover:not(:disabled) {
+  background-color: #006666;
 }

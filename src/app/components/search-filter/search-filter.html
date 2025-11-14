@@ -1,40 +1,28 @@
-<section class="container search-section">
-  <form class="row g-3 align-items-end" (ngSubmit)="onSubmit()">
-    <div class="col-md-3">
-      <label class="form-label">Ciudad</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Ej. Bogotá"
-        [(ngModel)]="city"
-        name="city"
-      />
+<section class="search-bar container">
+  <form class="search-bar-inner" (ngSubmit)="onSubmit()">
+    <div class="search-item">
+      <label>Ciudad</label>
+      <input type="text" placeholder="Ej. Bogotá" [(ngModel)]="city" name="city" />
     </div>
 
-    <div class="col-md-2">
-      <label class="form-label">Check-in</label>
-      <input type="date" class="form-control" [(ngModel)]="checkIn" name="checkIn" />
+    <div class="search-item">
+      <label>Check-in</label>
+      <input type="date" [(ngModel)]="checkIn" name="checkIn" />
     </div>
 
-    <div class="col-md-2">
-      <label class="form-label">Check-out</label>
-      <input type="date" class="form-control" [(ngModel)]="checkOut" name="checkOut" />
+    <div class="search-item">
+      <label>Check-out</label>
+      <input type="date" [(ngModel)]="checkOut" name="checkOut" />
     </div>
 
-    <div class="col-md-2">
-      <label class="form-label">Precio máx.</label>
-      <input
-        type="number"
-        class="form-control"
-        placeholder="$200000"
-        [(ngModel)]="maxPrice"
-        name="maxPrice"
-      />
+    <div class="search-item">
+      <label>Precio máx.</label>
+      <input type="number" placeholder="$200000" [(ngModel)]="maxPrice" name="maxPrice" />
     </div>
 
-    <div class="col-md-2">
-      <label class="form-label">Servicios</label>
-      <select class="form-select" [(ngModel)]="service" name="service">
+    <div class="search-item">
+      <label>Servicios</label>
+      <select [(ngModel)]="service" name="service">
         <option value="">Todos</option>
         <option value="WIFI">WiFi</option>
         <option value="POOL">Piscina</option>
@@ -43,8 +31,6 @@
       </select>
     </div>
 
-    <div class="col-md-1 d-grid">
-      <button type="submit" class="btn btn-primary">Buscar</button>
-    </div>
+    <button class="search-btn"><i class="bi bi-search"></i> Buscar</button>
   </form>
 </section>

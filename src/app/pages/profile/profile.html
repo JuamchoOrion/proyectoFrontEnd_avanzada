@@ -12,9 +12,8 @@
       <main class="content">
         <h2 class="mb-4 text-primary fw-bold">Mis Reservas</h2>
 
-      <!-- FILTROS -->
-       <app-reservation-filter (filtrar)="aplicarFiltros($event)"></app-reservation-filter>
-
+        <!-- FILTROS -->
+        <app-reservation-filter (filtrar)="aplicarFiltros($event)"></app-reservation-filter>
 
         <!-- Sección de reservas -->
         <app-reservation-section [reservas]="reservas" (cancelar)="onCancelarReserva($event)">
@@ -26,7 +25,7 @@
       </app-notifications>
 
       <!-- Footer -->
-      <app-footer></app-footer>
     </div>
   </div>
 </div>
+<app-footer></app-footer>

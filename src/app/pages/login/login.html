@@ -1,41 +1,31 @@
-<div class="login-container">
-  <div class="auth-card">
-    <h3 class="text-center mb-4 text-primary">Iniciar Sesión</h3>
-
-    <!-- ✅ Conecta el formulario -->
+<div class="login-wrapper">
+  <div class="login-card animate-fade">
+    <h3 class="title">Bienvenido de nuevo</h3>
+    <p class="subtitle">Ingresa tus credenciales para continuar</p>
+    <p class="subtitle">StayNow te conecta con alojamientos confiables en todo el país.</p>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label class="form-label">Correo electrónico</label>
-        <!-- ✅ Agrega formControlName -->
-        <input
-          type="email"
-          class="form-control"
-          placeholder="ejemplo@email.com"
-          formControlName="email"
-        />
+      <!-- Campo email -->
+      <div class="input-group">
+        <label>Correo electrónico</label>
+        <input type="email" formControlName="email" placeholder="ejemplo@email.com" />
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Contraseña</label>
-        <!-- ✅ Agrega formControlName -->
-        <input
-          type="password"
-          class="form-control"
-          placeholder="********"
-          formControlName="password"
-        />
+      <!-- Campo contraseña -->
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="********" />
       </div>
 
-      <div class="d-flex justify-content-between mb-3">
-        <a routerLink="/recover" class="small text-muted toggle-link">¿Olvidaste tu contraseña?</a>
+      <div class="text-end mb-2">
+        <a routerLink="/recover" class="link">¿Olvidaste tu contraseña?</a>
       </div>
 
-      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+      <button class="btn-submit" type="submit">Ingresar</button>
     </form>
 
-    <p class="text-center mt-3">
+    <p class="register-text">
       ¿No tienes cuenta?
-      <a routerLink="/register" class="toggle-link">Regístrate</a>
+      <a routerLink="/register" class="link">Regístrate aquí</a>
     </p>
   </div>
 </div>
