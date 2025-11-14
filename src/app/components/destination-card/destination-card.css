@@ -1,9 +1,64 @@
-.card {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.accommodation-card {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  transition: 0.25s ease;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
-.card img {
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+
+.accommodation-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.25s ease;
+}
+
+.accommodation-card:hover img {
+  transform: scale(1.05);
+}
+
+.card-info {
+  padding: 1rem 1.2rem;
+}
+
+.card-title {
+  margin: 0;
+  font-weight: 700;
+  color: #333;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 6px 0 10px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0077b6;
+}
+
+.card-price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #666;
 }

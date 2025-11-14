@@ -1,28 +1,109 @@
+:host {
+  display: block;
+  margin-top: -40px;
+}
+
+/* Fondo moderno con gradiente animado */
 .login-container {
-  background: linear-gradient(to right, #004466, #008080);
+  background: linear-gradient(135deg, #003d5b, #007f7f, #00b3b3);
+  background-size: 200% 200%;
+  animation: bgShift 8s ease-in-out infinite;
   min-height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+/* Animación del fondo */
+@keyframes bgShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Tarjeta */
 .auth-card {
-  background: #fff;
-  border-radius: 15px;
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 2.3rem;
   width: 100%;
   max-width: 450px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.9s ease-out forwards;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+h3.text-primary {
+  color: #004466 !important;
+  font-weight: 800;
+}
+
+.staynow-info {
+  text-align: center;
+  color: #006666;
+  font-size: 0.95rem;
+  margin-top: -10px;
+  margin-bottom: 1.3rem;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d7e6e6;
+  background: #f8fafc;
+  transition: 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #008080;
+  background: white;
+  box-shadow: 0 0 5px rgba(0, 130, 130, 0.4);
+  outline: none;
+}
+
+/* Botón */
 .btn-primary {
   background-color: #008080;
   border: none;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: 0.2s ease;
 }
+
 .btn-primary:hover {
   background-color: #006666;
+  transform: translateY(-2px);
 }
+
 .toggle-link {
   color: #008080;
-  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.toggle-link:hover {
   text-decoration: underline;
 }

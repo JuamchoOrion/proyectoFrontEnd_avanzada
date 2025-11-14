@@ -1,93 +1,97 @@
-<div class="chat-container container py-4">
-  <div class="row">
-    <!-- CONTACTOS -->
-    <div class="col-md-4 border-end">
-      <h5 class="mb-3">💬 Contactos</h5>
+<div class="chat-wrapper container py-4">
+  <div class="chat-box shadow-lg">
+    <div class="row g-0">
+      <!-- CONTACTOS -->
+      <div class="col-md-4 contacts-panel">
+        <h4 class="section-title">💬 Chats</h4>
 
-      <form (ngSubmit)="startNewChat()" class="mb-3">
-        <input
-          class="form-control mb-2"
-          placeholder="Correo del usuario"
-          [(ngModel)]="newEmail"
-          name="email"
-        />
-        <input
-          class="form-control mb-2"
-          placeholder="Primer mensaje"
-          [(ngModel)]="firstMessage"
-          name="firstMsg"
-        />
-        <button class="btn btn-success w-100">Iniciar chat</button>
-      </form>
-
-      <ul class="list-group">
-        <li
-          *ngFor="let c of contacts; trackBy: trackByContactId"
-          (click)="openChat(c)"
-          class="list-group-item list-group-item-action d-flex align-items-center"
-          style="cursor: pointer"
-        >
-          <img
-            [src]="
-              c.photoUrl ||
-              'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg'
-            "
-            class="rounded-circle me-2"
-            style="width: 40px; height: 40px; object-fit: cover"
+        <!-- Nuevo chat -->
+        <form (ngSubmit)="startNewChat()" class="new-chat-form mt-3">
+          <input
+            class="input-modern"
+            placeholder="Correo del usuario"
+            [(ngModel)]="newEmail"
+            name="email"
           />
+          <input
+            class="input-modern mt-2"
+            placeholder="Primer mensaje"
+            [(ngModel)]="firstMessage"
+            name="firstMsg"
+          />
+          <button class="btn btn-success w-100 mt-2">Iniciar chat</button>
+        </form>
 
-          <div>
-            <strong>{{ getContactDisplayName(c) }}</strong>
-            <br />
-            <small>{{ c.email }}</small>
-          </div>
-        </li>
-      </ul>
-    </div>
+        <!-- Lista de contactos -->
+        <ul class="contact-list mt-4">
+          <li
+            *ngFor="let c of contacts; trackBy: trackByContactId"
+            (click)="openChat(c)"
+            class="contact-item"
+          >
+            <img
+              [src]="
+                c.photoUrl ||
+                'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg'
+              "
+              class="contact-avatar"
+            />
 
-    <!-- CHAT -->
-    <div class="col-md-8">
-      <div *ngIf="!selectedContact" class="text-center text-muted mt-5">
-        Selecciona o inicia un chat para comenzar
+            <div>
+              <strong>{{ getContactDisplayName(c) }}</strong>
+              <br />
+              <small class="text-muted">{{ c.email }}</small>
+            </div>
+          </li>
+        </ul>
       </div>
 
-      <div *ngIf="selectedContact">
-        <div class="bg-light p-3 rounded mb-3">
-          <h5 class="mb-0">{{ selectedContact.username }}</h5>
-          <small class="text-muted">{{ selectedContact.email }}</small>
+      <!-- CHAT -->
+      <div class="col-md-8 chat-panel">
+        <div *ngIf="!selectedContact" class="empty-chat">
+          <p>Selecciona un contacto para comenzar 😊</p>
         </div>
 
-        <div
-          class="chat-messages bg-white border rounded p-3 mb-3"
-          style="height: 400px; overflow-y: auto"
-        >
-          <div *ngFor="let m of messages" class="mb-2">
-            <div [class.text-end]="m.senderId === me.id">
-              <div
-                class="d-inline-block p-2 rounded"
-                [class.bg-primary]="m.senderId === me.id"
-                [class.text-white]="m.senderId === me.id"
-                [class.bg-light]="m.senderId !== me.id"
-                style="max-width: 70%; word-wrap: break-word"
-              >
+        <div *ngIf="selectedContact" class="d-flex flex-column h-100">
+          <!-- HEADER -->
+          <div class="chat-header">
+            <img
+              [src]="
+                selectedContact.photoUrl ||
+                'https://res.cloudinary.com/dbeyylkba/image/upload/v1762801754/307ce493-b254-4b2d-8ba4-d12c080d6651_w7ozqw.jpg'
+              "
+              class="chat-header-avatar"
+            />
+            <div>
+              <strong class="chat-header-name">{{ selectedContact.username }}</strong>
+              <br />
+              <small class="text-muted">{{ selectedContact.email }}</small>
+            </div>
+          </div>
+
+          <!-- MENSAJES -->
+          <div class="messages-area" #scrollMe>
+            <div *ngFor="let m of messages" class="message-row" [class.me]="m.senderId === me.id">
+              <div class="message-bubble">
                 {{ m.content }}
-                <br />
-                <small class="text-muted">{{ m.timestamp | date : 'short' }}</small>
+                <div class="message-time">{{ m.timestamp | date : 'shortTime' }}</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <form (ngSubmit)="send()" class="d-flex">
-          <input
-            [(ngModel)]="newMessage"
-            name="msg"
-            class="form-control me-2"
-            placeholder="Escribe..."
-          />
-          <button class="btn btn-primary">Enviar</button>
-        </form>
+          <!-- INPUT -->
+          <form (ngSubmit)="send()" class="message-input-area">
+            <input
+              [(ngModel)]="newMessage"
+              name="msg"
+              class="message-input"
+              placeholder="Escribe un mensaje..."
+            />
+            <button class="btn btn-primary send-btn">Enviar</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<app-footer></app-footer>

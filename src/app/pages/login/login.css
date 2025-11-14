@@ -1,36 +1,131 @@
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh; /* ocupa toda la pantalla */
-  background: linear-gradient(to right, #004466, #008080);
-}
-
-.auth-card {
-  background: #fff;
-  border-radius: 15px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-primary {
-  background-color: #008080;
-  border: none;
-  border-radius: 10px;
-}
-
-.btn-primary:hover {
-  background-color: #006666;
-}
-
-.toggle-link {
-  color: #008080;
-  cursor: pointer;
-  text-decoration: underline;
-}
 :host {
   display: block;
-  margin-top: -40px; /* 🔥 compensa la altura de la navbar */
+  margin-top: -40px;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  /* 🌈 Fondo moderno degradado + blur */
+  background: linear-gradient(135deg, #003d5b, #007f7f, #00b3b3);
+  background-size: 200% 200%;
+  animation: bgShift 8s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Tarjeta principal */
+.login-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.title {
+  text-align: center;
+  font-weight: 800;
+  color: #004466;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Campos */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #004466;
+  margin-bottom: 4px;
+}
+
+.input-group input {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d7e6e6;
+  background: #f9fbfb;
+  transition: 0.2s;
+}
+
+.input-group input:focus {
+  border-color: #008080;
+  background: white;
+  box-shadow: 0 0 4px rgba(0, 128, 128, 0.35);
+  outline: none;
+}
+
+/* Links */
+.link {
+  color: #008080;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #006666;
+}
+
+/* Botón */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #008080;
+  color: white;
+  font-weight: 700;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  transition: 0.2s;
+}
+
+.btn-submit:hover {
+  background: #006666;
+  transform: translateY(-2px);
+}
+
+/* Registrar */
+.register-text {
+  text-align: center;
+  margin-top: 1rem;
+  color: #555;
+}
+
+/* Animación */
+.animate-fade {
+  opacity: 0;
+  animation: fadeIn 0.9s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }

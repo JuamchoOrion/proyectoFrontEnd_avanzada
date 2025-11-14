@@ -4,11 +4,11 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.services';
 import { ResetPasswordDTO } from '../../models/reset-password-dto';
 import { CommonModule } from '@angular/common';
-
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-recover',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './recover.html',
   styleUrls: ['./recover.css'],
 })

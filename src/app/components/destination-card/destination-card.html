@@ -1,15 +1,15 @@
-<div
-  class="card shadow-sm h-100 hover-scale"
-  [routerLink]="['/accommodation', destinationId]"
-  style="cursor: pointer;"
->
-  <img [src]="image" class="card-img-top" [alt]="title" />
+<div class="accommodation-card" [routerLink]="['/accommodation', destinationId]">
+  <div class="card-image">
+    <img [src]="image" [alt]="title" />
+  </div>
 
-  <div class="card-body">
+  <div class="card-info">
     <h5 class="card-title">{{ title }}</h5>
-    <p class="card-text">{{ description }}</p>
-    <p class="fw-bold text-success">
-      {{ price | currency: 'COP':'symbol':'1.0-0' }} / noche
+    <p class="card-desc">{{ description }}</p>
+
+    <p class="card-price">
+      {{ price | currency : 'COP' : 'symbol' : '1.0-0' }}
+      <span>/ noche</span>
     </p>
   </div>
 </div>

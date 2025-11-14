@@ -5,11 +5,12 @@ import { AuthService } from '../../services/auth.services';
 import { CreateUserDTO } from '../../models/createUser-dto';
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
 })
