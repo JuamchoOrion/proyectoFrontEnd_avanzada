@@ -9,8 +9,8 @@ export class ChatService {
   private ws!: WebSocket;
   private messages$ = new Subject<any>();
 
-  private apiUrl = 'http://localhost:9090/chat';
-  private wsUrl = 'ws://localhost:9090/ws-chat'; // backend
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/chat';
+  private wsUrl = 'ws://proyectofinal-programacion-avanzada-production.up.railway.app/ws-chat'; // backend
 
   constructor(private http: HttpClient) {}
 

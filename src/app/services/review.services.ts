@@ -20,7 +20,7 @@ interface ApiResponse<T> {
   providedIn: 'root',
 })
 export class ReviewService {
-  private apiUrl = 'http://localhost:9090/api/reviews';
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/api/reviews';
 
   constructor(private http: HttpClient) {}
 

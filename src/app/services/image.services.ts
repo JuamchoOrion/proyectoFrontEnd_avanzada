@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ImageService {
-  private apiUrl = 'http://localhost:9090/api/images';
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/api/images';
 
   constructor(private http: HttpClient) {}
 

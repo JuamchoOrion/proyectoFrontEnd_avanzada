@@ -8,7 +8,7 @@ import { CreateReservationDTO } from '../models/create-reservation-dto';
   providedIn: 'root',
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost:9090/reservations';
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/reservations';
 
   constructor(private http: HttpClient) {}
 

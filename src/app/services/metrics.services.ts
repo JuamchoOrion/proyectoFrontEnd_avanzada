@@ -7,7 +7,7 @@ import { MetricsDTO } from '../models/metrics-dto';
   providedIn: 'root',
 })
 export class MetricsService {
-  private apiUrl = 'http://localhost:9090/accommodation';
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/accommodation';
 
   constructor(private http: HttpClient) {}
 

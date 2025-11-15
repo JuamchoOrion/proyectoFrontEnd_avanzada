@@ -9,7 +9,7 @@ import { AccommodationDTO } from '../models/accommodation-dto';
   providedIn: 'root',
 })
 export class HostService {
-  private apiUrl = 'http://localhost:9090/api/hosts';
+  private apiUrl = 'https://proyectofinal-programacion-avanzada-production.up.railway.app/api/hosts';
 
   constructor(private http: HttpClient) {}
 
@@ -65,7 +65,7 @@ export class HostService {
   getHostReservations(hostId: string): Observable<ReservationDTO[]> {
     return this.http
       .get<{ error: boolean; content: ReservationDTO[] }>(
-        `http://localhost:9090/api/hosts/${hostId}/reservations`,
+        `https://proyectofinal-programacion-avanzada-production.up.railway.app/api/hosts/${hostId}/reservations`,
         { withCredentials: true }
       )
       .pipe(map((res) => res.content));
