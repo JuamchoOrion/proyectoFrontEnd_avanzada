@@ -1,0 +1,129 @@
+/* ===== 🎯 Contenedor principal ===== */
+.card {
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== 🧭 Labels y textos ===== */
+.form-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.text-primary {
+  color: #0077b6 !important;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+/* ===== 💡 Inputs ===== */
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 5px rgba(0, 119, 182, 0.3);
+}
+
+/* ===== 🔘 Checkboxes (Servicios) ===== */
+.form-check-input {
+  accent-color: #0077b6;
+  transform: scale(1.2);
+  margin-right: 5px;
+}
+
+.form-check-label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* ===== 📸 Imágenes ===== */
+img.img-fluid {
+  max-height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+img.img-fluid:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Botón de eliminar imagen */
+.btn-danger {
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  line-height: 15px;
+  font-weight: bold;
+  padding: 0;
+  background-color: #dc3545;
+  border: none;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ===== 🧠 Botones generales ===== */
+.btn-primary {
+  background-color: #0077b6;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0096c7;
+  box-shadow: 0 3px 8px rgba(0, 150, 199, 0.3);
+}
+
+.btn-cancelar {
+  background-color: #adb5bd;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #868e96;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== 🧩 Responsive ===== */
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+
+  img.img-fluid {
+    max-height: 120px;
+  }
+
+  .btn-danger {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+}

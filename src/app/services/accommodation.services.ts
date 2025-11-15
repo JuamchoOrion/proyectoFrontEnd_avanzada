@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { DestinationDTO } from '../models/destination-dto';
 import { AccommodationDTO } from '../models/accommodation-dto';
 import { CreateAccommodationDTO } from '../models/create-accommodation-dto';
+import { EditAccommodationDTO } from '../models/edit-accommodation-dto';
 
 interface PageResponse<T> {
   content: T[];
@@ -145,5 +146,13 @@ export class AccommodationService {
             }));
         })
       );
-  }
+}
+updateAccommodation(id: number | string, data: EditAccommodationDTO) {
+  return this.http.put<{ error: boolean; content: AccommodationDTO }>(
+    `${this.apiUrl}/${id}`,
+    data
+  ).pipe(
+    map(res => res.content)
+  );
+}
 }

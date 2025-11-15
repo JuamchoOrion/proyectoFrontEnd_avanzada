@@ -45,7 +45,11 @@
                         [queryParams]="{ metrics: true }">
                   Ver Métricas
                 </button>
-                <button class="btn btn-primary btn-sm">Editar</button>
+                <!-- Botón de editar -->
+                <button class="btn btn-primary btn-sm"
+                        [routerLink]="['/edit-accommodation', acc.id]">
+                  Editar
+                </button>
 
                 <!-- BOTÓN ELIMINAR CON SPINNER -->
                 <button class="btn btn-danger btn-sm" 

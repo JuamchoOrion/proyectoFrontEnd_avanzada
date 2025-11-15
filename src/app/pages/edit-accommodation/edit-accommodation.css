@@ -1,0 +1,34 @@
+/* === Layout general === */
+.page-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f9f8;
+  overflow: hidden;
+}
+
+/* === Sidebar fija === */
+app-sidebar-profile {
+  width: 250px;
+  background-color: #e6f2f0;
+  height: calc(100vh - 56px); /* resto alto del navbar */
+  position: fixed;
+  top: 56px; /* para no quedar debajo del navbar */
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* === Contenido principal === */
+.content {
+  flex-grow: 1;
+  margin-left: 250px; /* mismo ancho que el sidebar */
+  padding: 2rem;
+  background-color: #f4f9f8;
+}
+
+h2 {
+  color: #004466;
+  font-weight: 700;
+}

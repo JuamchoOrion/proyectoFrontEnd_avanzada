@@ -16,6 +16,8 @@ import { CreateReservationComponent } from './pages/create-reservation/create-re
 import { EditProfilePage } from './pages/edit-profile/edit-profile';
 import { Chat } from './pages/chat/chat';
 import { ReservationDetail } from './pages/review-detail/review-detail';
+import { EditAccommodationFormComponent } from './components/edit-accommodation-form/edit-accommodation-form';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'landing', pathMatch: 'full' },
@@ -60,6 +62,11 @@ export const routes: Routes = [
     path: 'reservations/:id',
     component: ReservationDetail,
     canActivate: [AuthGuard],
+  },
+
+  {
+    path: 'edit-accommodation/:id',
+    component: EditAccommodationFormComponent
   },
 
   // ⬇️ SIEMPRE AL FINAL

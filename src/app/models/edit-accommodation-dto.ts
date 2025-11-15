@@ -1,13 +1,13 @@
-/**public record EditAccommodationDTO(
-        String title,
-        String description,
-        String city,
-        String address,
-        Double latitude,
-        Double longitude,
-        Double pricePerNight,
-        Integer maxGuests,
-        List<String> services,
-        List<String> images,
-        String mainImage
-) {}*/
+export interface EditAccommodationDTO {
+  title: string;
+  description: string;
+  city: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  pricePerNight: number;
+  maxGuests: number;
+  services: string[];
+  mainImage: string;
+  images: string[];
+}

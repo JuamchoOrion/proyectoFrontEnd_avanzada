@@ -14,13 +14,13 @@ import { ReservationCard } from '../../components/reservation-card/reservation-c
 import { ReservationSection } from '../../components/reservation-section/reservation-section';
 import { AccommodationService } from '../../services/accommodation.services';
 import { AccommodationDTO } from '../../models/accommodation-dto';
+import { EditAccommodationFormComponent } from '../../components/edit-accommodation-form/edit-accommodation-form';
 @Component({
   selector: 'app-profile-host',
   standalone: true,
   imports: [
     CommonModule,
     SidebarHostComponent,
-    RouterModule,
     Footer,
     Notifications,
     DestinationCard,
@@ -28,6 +28,7 @@ import { AccommodationDTO } from '../../models/accommodation-dto';
     ReservationCard,
     ReservationSection,
     RouterModule,
+    EditAccommodationFormComponent
   ],
   templateUrl: './profile-host.html',
   styleUrls: ['./profile-host.css'],
@@ -129,6 +130,7 @@ export class ProfileHost implements OnInit {
   /** Filtrar alojamientos */
   aplicarFiltros(filtros: any) {
     console.log('Filtros aplicados:', filtros);
+  }
 
   /** Confirmar antes de eliminar */
   confirmDelete(accId: string | number) {
@@ -199,3 +201,4 @@ export class ProfileHost implements OnInit {
     });
   }
 }
+
