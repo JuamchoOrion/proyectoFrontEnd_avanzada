@@ -7,7 +7,8 @@ import { MetricsDTO } from '../models/metrics-dto';
   providedIn: 'root',
 })
 export class MetricsService {
-  private apiUrl = 'http://localhost:9090/api/accommodation';
+  private apiUrl =
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/accommodation';
 
   constructor(private http: HttpClient) {}
 
@@ -17,20 +18,15 @@ export class MetricsService {
    * @param fromDate Fecha inicial (opcional)
    * @param toDate Fecha final (opcional)
    */
-  getMetrics(
-    accommodationId: string,
-    fromDate?: string,
-    toDate?: string
-  ): Observable<MetricsDTO> {
+  getMetrics(accommodationId: string, fromDate?: string, toDate?: string): Observable<MetricsDTO> {
     let params = new HttpParams();
     if (fromDate) params = params.set('fromDate', fromDate);
     if (toDate) params = params.set('toDate', toDate);
 
     return this.http
-      .get<{ error: boolean; content: MetricsDTO }>(
-        `${this.apiUrl}/${accommodationId}/metrics`,
-        { params }
-      )
+      .get<{ error: boolean; content: MetricsDTO }>(`${this.apiUrl}/${accommodationId}/metrics`, {
+        params,
+      })
       .pipe(map((res) => res.content));
   }
 }

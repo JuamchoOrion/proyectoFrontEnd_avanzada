@@ -7,7 +7,8 @@ import { UserProfileDTO } from '../models/user-dto';
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'http://localhost:9090/users'; // 👈 ruta estándar con prefijo /api
+  private apiUrl =
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/users'; // 👈 ruta estándar con prefijo /api
 
   // ✅ Imagen por defecto en Cloudinary
   private defaultPhotoUrl =
@@ -18,9 +19,12 @@ export class UserService {
   /** ✅ Obtener perfil del usuario autenticado */
   getUserProfile(): Observable<UserProfileDTO> {
     return this.http
-      .get<{ error: boolean; content: UserProfileDTO }>('http://localhost:9090/users/profile', {
-        withCredentials: true,
-      })
+      .get<{ error: boolean; content: UserProfileDTO }>(
+        'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/users/profile',
+        {
+          withCredentials: true,
+        }
+      )
       .pipe(
         map((res) => {
           const user = res.content;
@@ -43,11 +47,10 @@ export class UserService {
         })
       );
   }
-/*
+  /*
   editUser(user: Partial<UserProfileDTO>): Observable<any> {
     return this.http.put(`${this.apiUrl}`, user, { withCredentials: true });
     */
-
 
   /** ✏️ Editar perfil (FormData para incluir imagen) */
   editUser(formData: FormData): Observable<any> {

@@ -15,8 +15,10 @@ interface ResponseDTO<T> {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:9090/api/auth';
-  private hostsUrl = 'http://localhost:9090/api/hosts';
+  private apiUrl =
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/auth';
+  private hostsUrl =
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/hosts';
 
   constructor(private http: HttpClient) {}
 
@@ -49,12 +51,10 @@ export class AuthService {
 
   /** Devuelve id y role del usuario logeado */
   getCurrentUser(): Observable<any> {
-    return this.http
-      .get(`${this.apiUrl}/me`, { withCredentials: true })
-      .pipe(
-        map((res: any) => res.content), // solo la parte útil
-        catchError(() => of(null))
-      );
+    return this.http.get(`${this.apiUrl}/me`, { withCredentials: true }).pipe(
+      map((res: any) => res.content),
+      catchError(() => of(null))
+    );
   }
 
   /**

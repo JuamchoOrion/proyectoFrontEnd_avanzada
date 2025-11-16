@@ -39,7 +39,8 @@ export interface DestinationsPage {
   providedIn: 'root',
 })
 export class AccommodationService {
-  private apiUrl = 'http://localhost:9090/api/accommodations';
+  private apiUrl =
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/accommodations';
 
   constructor(private http: HttpClient) {}
   getDestinations(page = 0, size = 9): Observable<DestinationsPage> {
@@ -104,7 +105,7 @@ export class AccommodationService {
       .get<{
         error: boolean;
         data: { id: string; name: string; email: string; photoUrl?: string };
-      }>(`http://localhost:9090/users/${id}`)
+      }>(`https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/users/${id}`)
       .pipe(map((response) => response.data));
   }
   searchDestinations(filters: any, page = 0, size = 10): Observable<DestinationDTO[]> {
