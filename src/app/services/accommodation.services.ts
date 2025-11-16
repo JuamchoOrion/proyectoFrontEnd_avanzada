@@ -87,7 +87,6 @@ export class AccommodationService {
       .get<{ error: boolean; content: AccommodationDTO }>(`${this.apiUrl}/${id}`)
       .pipe(map((response) => response.content));
   }
-
   // ============================================================
   // 🔹 3️⃣ Crear alojamiento (con imágenes y validaciones)
   // ============================================================

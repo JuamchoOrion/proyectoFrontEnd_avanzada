@@ -8,7 +8,7 @@ import { MetricsDTO } from '../models/metrics-dto';
 })
 export class MetricsService {
   private apiUrl =
-    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/accommodation';
+    'https://proyectofinal-programacion-avanzada-production-5ceb.up.railway.app/api/reviews/accommodation';
 
   constructor(private http: HttpClient) {}
 
@@ -24,7 +24,7 @@ export class MetricsService {
     if (toDate) params = params.set('toDate', toDate);
 
     return this.http
-      .get<{ error: boolean; content: MetricsDTO }>(`${this.apiUrl}/${accommodationId}/metrics`, {
+      .get<{ error: boolean; content: MetricsDTO }>(`${this.apiUrl}/${accommodationId}`, {
         params,
       })
       .pipe(map((res) => res.content));
